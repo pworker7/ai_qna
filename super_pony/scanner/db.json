@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-22T14:44:18.800Z",
+  "updated": "2025-08-22T14:46:32.701Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -4147,12 +4147,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408461789670277270",
       "timestamp": "2025-08-22T14:44:18.612Z",
       "content": "CRCL - סגרה את הגאפ"
+    },
+    {
+      "ticker": "SEZL",
+      "user": {
+        "id": "935743401540857866",
+        "name": "Cubby"
+      },
+      "messageId": "1408462350566166639",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408462350566166639",
+      "timestamp": "2025-08-22T14:46:32.340Z",
+      "content": "SEZL"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1408461642060140604",
-      "lastProcessedAt": "2025-08-22T14:43:43.419Z"
+      "lastProcessedId": "1408461789670277270",
+      "lastProcessedAt": "2025-08-22T14:44:18.612Z"
     }
   }
 }

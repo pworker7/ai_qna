@@ -1,0 +1,51 @@
+name: 👑 Super Pony Bot
+
+on:
+  repository_dispatch:
+    types: [super_pony_bot]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  handle-users-commands:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+          persist-credentials: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Super Pony bot
+        env:
+          DISCORD_TOKEN:          ${{ vars.DISCORD_TOKEN }}
+          FINNHUB_TOKEN:          ${{ vars.FINNHUB_TOKEN1 }}
+          DISCORD_APPLICATION_ID: ${{ vars.DISCORD_APPLICATION_ID }}
+          DISCORD_GUILD_ID:       ${{ vars.DISCORD_GUILD_ID }}
+          BOT_CHANNEL_ID:         ${{ vars.BOT_CHANNEL_ID }}
+          LOG_CHANNEL_ID:         ${{ vars.LOG_CHANNEL_ID }}
+          GRAPHS_CHANNEL_ID:      ${{ vars.GRAPHS_CHANNEL_ID }}
+          ANTICIPATED_CHANNEL_ID: ${{ vars.X_EARNINGS_CAL_CHANNEL_ID }}
+          TICKER_BLACKLIST:       ${{ vars.TICKER_BLACKLIST }}
+          DISCORD_SHUTDOWN_WEBHOOK: ${{ vars.DISCORD_SHUTDOWN_WEBHOOK }}
+          SHUTDOWN_SECRET: ${{ vars.SHUTDOWN_SECRET }}
+          CHATROOM_IDS: ${{ vars.CHATROOM_IDS }}
+          GEMINI_API_KEY: ${{ vars.GEMINI_API_KEY }}
+          GEMINI_DEBUG: "1"
+          GEMINI_MODEL: "gemini-2.5-flash-lite" # "gemini-2.5-flash"
+          
+        run: node super_pony/index.mjs

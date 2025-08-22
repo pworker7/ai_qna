@@ -106,15 +106,14 @@ client.once("ready", async () => {
   console.log(`✅ Logged in as ${client.user.tag}`);
   try {
     botLogChannel = client.channels.cache.get(LOG_CHANNEL_ID);
+    await botLogChannel.send("🔵 שומר הודעות מחדר בלה-בלה...");
     if (!botLogChannel) {
       console.warn("Bot Log channel not found, wont be able to delete and repost.");
     }
 
     botChannel = client.channels.cache.get(BOT_CHANNEL_ID);
-    if (botChannel) {
-      await botChannel.send("🔵 שומר הודעות מחדר בלה-בלה...");
-    } else {
-      console.warn("Bot channel not found, skipping scanning message.");
+    if (!botChannel) {
+      console.warn("Bot channel not found, wont be able to respond to user commands.");
     }
 
     // Backfill messages from the last day for specified chat rooms
@@ -131,11 +130,10 @@ client.once("ready", async () => {
       }
     }
 
-    botChannel = client.channels.cache.get(BOT_CHANNEL_ID);
-    if (botChannel) {
-      await botChannel.send("🔵 מבצע סריקה של הטיקרים בחדר גרפים...");
+    if (botLogChannel) {
+      await botLogChannel.send("🔵 מבצע סריקה של הטיקרים בחדר גרפים...");
     } else {
-      console.warn("Bot channel not found, skipping scanning message.");
+      console.warn("Bot log channel not found, skipping scanning message.");
     }
 
     try {
@@ -151,10 +149,10 @@ client.once("ready", async () => {
     }
   
     console.log("✅ Backfill done; now listening for new messages.");
-    if (botChannel) {
-      await botChannel.send("🟢 חזרתי לפעילות, אני זמין, שלחו לי הודעה!");
+    if (botLogChannel) {
+      await botLogChannel.send("🟢 חזרתי לפעילות, אני זמין, שלחו לי הודעה!");
     } else {
-      console.warn("Bot channel not found, skipping ready message.");
+      console.warn("Bot log channel not found, skipping ready message.");
     }
   } catch (e) {
     console.error("Error occurred:", e);
@@ -199,10 +197,10 @@ client.on("messageCreate", async (message) => {
         const text = (message.content || "").trim();
         if (text === `shutdown ${SHUTDOWN_SECRET}`) {
           console.log("🔴 Shutdown command received via webhook, shutting down...");
-          if (botChannel) {
-            await botChannel.send("🔴 אני יורד לדקה של תחזוקה...");
+          if (botLogChannel) {
+            await botLogChannel.send("🔴 אני יורד לדקה של תחזוקה...");
           } else {
-            console.warn("Bot channel not found, skipping shutdown message.");
+            console.warn("Bot log channel not found, skipping shutdown message.");
           }
           return shutdown();
         }

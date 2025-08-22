@@ -15,7 +15,7 @@ import { readLastNFromLatestFile } from "./liveLog.mjs"; // No need for LOG_DIR 
  *   - GEMINI_CACHE_TTL (seconds, optional, default 14400 = 4h)
  */
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
 if (!GEMINI_API_KEY) { throw new Error("GEMINI_API_KEY is not set"); }
 
 const GEMINI_DEBUG = (process.env.GEMINI_DEBUG === "1" || (process.env.GEMINI_DEBUG || "").toLowerCase() === "true");

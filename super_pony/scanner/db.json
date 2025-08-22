@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-22T15:01:17.373Z",
+  "updated": "2025-08-22T19:27:09.345Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -4199,12 +4199,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408463146326167694",
       "timestamp": "2025-08-22T14:49:42.064Z",
       "content": "CRUS מטפסת"
+    },
+    {
+      "ticker": "URA",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1408532969345519636",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408532969345519636",
+      "timestamp": "2025-08-22T19:27:09.169Z",
+      "content": "URA"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1408463146326167694",
-      "lastProcessedAt": "2025-08-22T14:49:42.064Z"
+      "lastProcessedId": "1408528942532526193",
+      "lastProcessedAt": "2025-08-22T19:11:09.102Z"
     }
   }
 }

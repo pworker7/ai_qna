@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-22T14:46:32.701Z",
+  "updated": "2025-08-22T14:47:51.065Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -4160,12 +4160,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408462350566166639",
       "timestamp": "2025-08-22T14:46:32.340Z",
       "content": "SEZL"
+    },
+    {
+      "ticker": "OKLO",
+      "user": {
+        "id": "935743401540857866",
+        "name": "Cubby"
+      },
+      "messageId": "1408462679928209480",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408462679928209480",
+      "timestamp": "2025-08-22T14:47:50.866Z",
+      "content": "OKLO עומדת לפרוץ"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1408461789670277270",
-      "lastProcessedAt": "2025-08-22T14:44:18.612Z"
+      "lastProcessedId": "1408462350566166639",
+      "lastProcessedAt": "2025-08-22T14:46:32.340Z"
     }
   }
 }

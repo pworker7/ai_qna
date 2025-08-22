@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-22T14:43:43.614Z",
+  "updated": "2025-08-22T14:44:18.800Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -4134,12 +4134,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408461642060140604",
       "timestamp": "2025-08-22T14:43:43.419Z",
       "content": "BBAI"
+    },
+    {
+      "ticker": "CRCL",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1408461789670277270",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408461789670277270",
+      "timestamp": "2025-08-22T14:44:18.612Z",
+      "content": "CRCL - סגרה את הגאפ"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1408461200580280341",
-      "lastProcessedAt": "2025-08-22T14:41:58.162Z"
+      "lastProcessedId": "1408461642060140604",
+      "lastProcessedAt": "2025-08-22T14:43:43.419Z"
     }
   }
 }

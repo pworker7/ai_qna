@@ -6,21 +6,46 @@ import path from "path";
  * Env:
  *   - GEMINI_API_KEY (required)
  *   - GEMINI_MODEL (optional, default: gemini-2.5-flash-lite)
- *   - CHATROOM_IDS (space/newline/comma separated)
- *   - CONTEXT_CHANNEL_ID (optional, overrides)
  *   - GEMINI_DEBUG (1/true)
- *   - LOG_DIR (optional; defaults to GH runner path below)
+ *   - LOG_DIR (optional; default below)
+ *   - CONTEXT_CHANNEL_ID (optional; fallback if אין hint)
  */
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
-if (!GEMINI_API_KEY) { throw new Error("GEMINI_API_KEY is not set"); }
+if (!GEMINI_API_KEY) throw new Error("GEMINI_API_KEY is not set");
 
 const GEMINI_DEBUG = (process.env.GEMINI_DEBUG === "1" || (process.env.GEMINI_DEBUG || "").toLowerCase() === "true");
 const LOG_DIR = process.env.LOG_DIR || "/home/runner/work/ai_qna/ai_qna/data/logs";
 
 function glog(...a) { if (GEMINI_DEBUG) console.log("[askGemini]", ...a); }
 
-// --- Gemini generic call ---
+// ========== Helpers to resolve context channel ==========
+async function inferLatestChannelIdFromLogs(dir = LOG_DIR) {
+  let files = [];
+  try { files = await fs.readdir(dir); } catch { return null; }
+  const items = [];
+  for (const f of files) {
+    const m = f.match(/^(\d+)_\d{4}-\d{2}-\d{2}\.jsonl$/);
+    if (!m) continue;
+    const full = path.join(dir, f);
+    let stat;
+    try { stat = await fs.stat(full); } catch { continue; }
+    items.push({ file: f, channelId: m[1], mtime: stat.mtimeMs, size: stat.size });
+  }
+  if (!items.length) return null;
+  items.sort((a,b) => b.mtime - a.mtime || b.size - a.size);
+  return items[0].channelId;
+}
+
+async function resolveContextChannelId(hint) {
+  if (hint) return hint;
+  if (process.env.CONTEXT_CHANNEL_ID) return process.env.CONTEXT_CHANNEL_ID;
+  const inferred = await inferLatestChannelIdFromLogs();
+  glog("inferred contextChannelId:", inferred);
+  return inferred;
+}
+
+// ========== Generic Gemini call ==========
 async function callGemini(model, apiKey, prompt, { temperature = 0.4, maxOutputTokens = 2048 } = {}) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
   const body = { contents: [{ role: "user", parts: [{ text: prompt }]}], generationConfig: { temperature, maxOutputTokens } };
@@ -36,7 +61,7 @@ async function callGemini(model, apiKey, prompt, { temperature = 0.4, maxOutputT
   return text.trim();
 }
 
-// --- Dates extraction via Gemini ---
+// ========== Dates extraction via Gemini ==========
 async function extractDatesArrayWithGemini(model, apiKey, userPrompt, tz = "Asia/Jerusalem") {
   const systemInstr = [
     "אתה ממפה פרומפט של משתמש לטווחי תאריכים מוחלטים.",
@@ -62,7 +87,7 @@ async function extractDatesArrayWithGemini(model, apiKey, userPrompt, tz = "Asia
   return dates;
 }
 
-// --- Read logs for a specific YYYY-MM-DD ---
+// ========== Read logs for a specific YYYY-MM-DD ==========
 async function readLogsForDate(channelId, ymd) {
   const file = path.join(LOG_DIR, `${channelId}_${ymd}.jsonl`);
   let out = [];
@@ -82,18 +107,19 @@ async function readLogsForDate(channelId, ymd) {
   return out;
 }
 
-// --- Main ---
-export async function askGemini({ userPrompt, contextChannelId }) {
+// ========== Main ==========
+export async function askGemini({ userPrompt, contextChannelId } = {}) {
   try {
-    if (!contextChannelId) throw new Error("Missing contextChannelId");
+    const resolvedChannelId = await resolveContextChannelId(contextChannelId);
+    if (!resolvedChannelId) {
+      return "❌ לא נמצא ערוץ לקונטקסט: אין CONTEXT_CHANNEL_ID ולא זוהו קבצי לוג. ודא שקיים לפחות קובץ אחד בפורמט <channelId>_YYYY-MM-DD.jsonl.";
+    }
 
-    // 1) get dates array via Gemini
     const dates = await extractDatesArrayWithGemini(GEMINI_MODEL, GEMINI_API_KEY, userPrompt, "Asia/Jerusalem");
 
-    // 2) per-day summaries
     const perDaySummaries = [];
     for (const ymd of dates) {
-      const msgs = await readLogsForDate(contextChannelId, ymd);
+      const msgs = await readLogsForDate(resolvedChannelId, ymd);
       if (msgs.length === 0) continue;
 
       const MAX = 15000;
@@ -104,7 +130,6 @@ export async function askGemini({ userPrompt, contextChannelId }) {
         acc.push(s); sum += s.length;
       }
       acc = acc.reverse();
-      const dayContext = acc.join("");
 
       const dayPrompt = [
         `הקשר משיחות בתאריך ${ymd} (שעון ישראל).`,
@@ -112,7 +137,7 @@ export async function askGemini({ userPrompt, contextChannelId }) {
         userPrompt,
         "",
         "--- הקשר ---",
-        dayContext
+        acc.join("")
       ].join("\n");
 
       const dayAnswer = await callGemini(GEMINI_MODEL, GEMINI_API_KEY, dayPrompt);
@@ -123,7 +148,6 @@ export async function askGemini({ userPrompt, contextChannelId }) {
       return `לא נמצאו הודעות לתאריכים שביקשת (${dates.join(", ")})`;
     }
 
-    // 3) synthesize
     const synthPrompt = [
       "להלן סיכומי־יום לפי תאריך. סכם אותם לנקודות פעולה/החלטות/נושאים מרכזיים:",
       ...perDaySummaries.map(d => `### ${d.ymd}\n${d.text}`),

@@ -44,7 +44,7 @@ async function inferLatestChannelIdFromLogs(dir = LOG_DIR) {
 async function callGemini(model, apiKey, prompt, { temperature = 0.4, maxOutputTokens = 2048 } = {}) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
   const body = { contents: [{ role: "user", parts: [{ text: prompt }]}], generationConfig: { temperature, maxOutputTokens } };
-  glog("Gemini request:", { url, prompt, temperature, maxOutputTokens });
+  // glog("Gemini request:", { url, prompt, temperature, maxOutputTokens });
   const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
   if (!res.ok) {
     const t = await res.text().catch(()=>"");
@@ -55,7 +55,7 @@ async function callGemini(model, apiKey, prompt, { temperature = 0.4, maxOutputT
   }
   const data = await res.json();
   const text = data?.candidates?.[0]?.content?.parts?.map(p => p.text).join("") || "";
-  glog("Gemini response:", text);
+  // glog("Gemini response:", text.slice(0, 100));
   return text.trim();
 }
 
@@ -92,7 +92,7 @@ async function extractDatesArrayWithGemini(model, apiKey, userPrompt, tz = "Asia
   }
   const data = await res.json();
   const txt = data?.candidates?.[0]?.content?.parts?.map(p => p.text).join("")?.trim() || "{}";
-  glog("Gemini date extraction response:", txt);
+  // glog("Gemini date extraction response:", txt);
 
   const jsonStart = txt.indexOf("{"), jsonEnd = txt.lastIndexOf("}");
   if (jsonStart === -1 || jsonEnd === -1) {
@@ -154,7 +154,7 @@ async function readLogsForDate(channelId, ymd) {
 export async function askGemini(userPrompt) {
   try {
     const channelId = CONTEXT_CHANNEL_ID;
-    glog("contextChannel:", channelId);
+    // glog("contextChannel:", channelId);
 
     if (!userPrompt || typeof userPrompt !== "string" || userPrompt.trim() === "") {
       glog("Invalid or missing userPrompt:", userPrompt, "contextChannelId:", channelId);

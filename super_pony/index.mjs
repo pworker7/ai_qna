@@ -352,14 +352,14 @@ client.on("messageCreate", async (message) => {
       console.log(`❓ User ${message.author.tag} asked Gemini: ${cleanContent}`);
       try {
         const response = await askGemini(cleanContent, message.channel.id);
-        console.log("[Discord.send] chars:", (response || "").length, "preview:", (response || "").slice(0, 300).replace(/\n/g, " "));
+        // console.log("[Discord.send] chars:", (response || "").length, "preview:", (response || "").slice(0, 300).replace(/\n/g, " "));
 
         const maxLen = 1500;
         let responseLines = response.split("\n").map(line => line.trim()).filter(line => line.length > 0);
         let chunk = "";
         for (const line of responseLines) {
           if ((chunk + line + "\n").length > maxLen) {
-            console.log("[Discord.send] chars:", (chunk).length, "chunk:", chunk);
+            // console.log("[Discord.send] chars:", (chunk).length, "chunk:", chunk);
             await message.channel.send(chunk);
             chunk = "";
           }

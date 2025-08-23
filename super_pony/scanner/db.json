@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-23T20:15:33.226Z",
+  "updated": "2025-08-23T20:32:00.212Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -4745,12 +4745,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408907536626876507",
       "timestamp": "2025-08-23T20:15:32.968Z",
       "content": "HST"
+    },
+    {
+      "ticker": "HPE",
+      "user": {
+        "id": "1147127141524328579",
+        "name": "David Bakal"
+      },
+      "messageId": "1408911676811509800",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408911676811509800",
+      "timestamp": "2025-08-23T20:32:00.065Z",
+      "content": "HPE"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1408878550140063976",
-      "lastProcessedAt": "2025-08-23T18:20:22.051Z"
+      "lastProcessedId": "1408907536626876507",
+      "lastProcessedAt": "2025-08-23T20:15:32.968Z"
     }
   }
 }

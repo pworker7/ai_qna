@@ -66,6 +66,12 @@ async function callGemini(model, apiKey, prompt, { temperature = 0.4, maxOutputT
 
 // ========== Dates extraction via Gemini ==========
 async function extractDatesArrayWithGemini(model, apiKey, userPrompt, tz = "Asia/Jerusalem") {
+  // NEW: Validate userPrompt
+  if (!userPrompt || typeof userPrompt !== "string") {
+    glog("Invalid userPrompt for date extraction:", userPrompt);
+    throw new Error("Invalid user prompt for date extraction");
+  }
+
   const systemInstr = [
     "אתה ממפה פרומפט של משתמש לטווחי תאריכים מוחלטים בפורמט YYYY-MM-DD.",
     "החזר JSON **בלבד** עם המפתח dates: רשימת מחרוזות תאריך (ללא טווחים או טקסט נוסף).",
@@ -104,22 +110,24 @@ async function extractDatesArrayWithGemini(model, apiKey, userPrompt, tz = "Asia
     throw new Error("Failed to parse Gemini date response");
   }
   const dates = Array.isArray(json?.dates) ? json.dates : [];
-  if (!dates.length && userPrompt.includes("השבוע")) {
-    glog("No dates returned by Gemini, using fallback for 'השבוע'");
-    const now = new Date().toLocaleString("en-US", { timeZone: tz });
-    const today = new Date(now);
-    const dayOfWeek = today.getDay();
-    const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1)); // Start from Sunday
-    const dates = [];
-    for (let d = new Date(startOfWeek); d <= today; d.setDate(d.getDate() + 1)) {
-      dates.push(d.toISOString().split("T")[0]);
-    }
-    glog("Fallback dates:", dates);
-    return dates;
-  }
+  // MODIFIED: Safely handle fallback without relying on .includes()
   if (!dates.length) {
-    glog("No valid dates returned by Gemini");
+    glog("No dates returned by Gemini, checking for 'השבוע'");
+    if (userPrompt.toLowerCase().includes("השבוע")) {
+      glog("Applying fallback for 'השבוע'");
+      const now = new Date().toLocaleString("en-US", { timeZone: tz });
+      const today = new Date(now);
+      const dayOfWeek = today.getDay();
+      const startOfWeek = new Date(today);
+      startOfWeek.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1)); // Start from Sunday
+      const dates = [];
+      for (let d = new Date(startOfWeek); d <= today; d.setDate(d.getDate() + 1)) {
+        dates.push(d.toISOString().split("T")[0]);
+      }
+      glog("Fallback dates:", dates);
+      return dates;
+    }
+    glog("No valid dates returned by Gemini and no 'השבוע' in prompt");
     throw new Error("No dates returned by Gemini");
   }
   glog("Extracted dates:", dates);
@@ -149,6 +157,12 @@ async function readLogsForDate(channelId, ymd) {
 // ========== Main ==========
 export async function askGemini({ userPrompt, contextChannelId } = {}) {
   try {
+    // NEW: Validate userPrompt at the start
+    if (!userPrompt || typeof userPrompt !== "string" || userPrompt.trim() === "") {
+      glog("Invalid or missing userPrompt:", userPrompt);
+      return "❌ השאלה אינה תקינה. אנא ספק שאלה ברורה.";
+    }
+
     const resolvedChannelId = await resolveContextChannelId(contextChannelId);
     if (!resolvedChannelId) {
       return "❌ לא נמצא ערוץ לקונטקסט: אין CONTEXT_CHANNEL_ID ולא זוהו קבצי לוג. ודא שקיים לפחות קובץ אחד בפורמט <channelId>_YYYY-MM-DD.jsonl.";
@@ -198,7 +212,7 @@ export async function askGemini({ userPrompt, contextChannelId } = {}) {
     return final || "לא התקבלה תשובת סיכום.";
   } catch (error) {
     console.error(`Error in askGemini:`, error);
-    if (error.message === "No dates returned by Gemini") {
+    if (error.message === "Invalid user prompt for date extraction" || error.message === "No dates returned by Gemini") {
       return "❌ לא ניתן לזהות תאריכים מהבקשה. אנא נסח את השאלה מחדש או ציין תאריכים ספציפיים.";
     }
     if (error.status === 429) return "❌ הגעת לגבול השאלות היומי של ג׳מיני. נסו שוב מאוחר יותר.";

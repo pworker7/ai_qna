@@ -351,6 +351,8 @@ client.on("messageCreate", async (message) => {
     if (cleanContent) {
       console.log(`❓ User ${message.author.tag} asked Gemini: ${cleanContent}`);
       try {
+        await message.channel.send("🔍 מחפש תשובה לשאלה שלך, זה יכול לקחת כמה שניות...");
+
         const response = await askGemini(cleanContent, message.channel.id);
         // console.log("[Discord.send] chars:", (response || "").length, "preview:", (response || "").slice(0, 300).replace(/\n/g, " "));
 

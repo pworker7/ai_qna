@@ -147,7 +147,7 @@ client.once("ready", async () => {
     } catch (e) {
       console.error("Backfill failed:", e);
     }
-  
+
     console.log("✅ Backfill done; now listening for new messages.");
     if (botLogChannel) {
       await botLogChannel.send("🟢 חזרתי לפעילות, אני זמין, שלחו לי הודעה!");
@@ -181,9 +181,9 @@ client.on("interactionCreate", async (interaction) => {
   } catch (err) {
     console.error(err);
     if (interaction.deferred || interaction.replied) {
-      await interaction.followUp({ content: "❌ שגיאה בעיבוד הבקשה.", flags: 64 }).catch(() => {});
+      await interaction.followUp({ content: "❌ שגיאה בעיבוד הבקשה.", flags: 64 }).catch(() => { });
     } else {
-      await interaction.reply({ content: "❌ שגיאה בעיבוד הבקשה.", flags: 64 }).catch(() => {});
+      await interaction.reply({ content: "❌ שגיאה בעיבוד הבקשה.", flags: 64 }).catch(() => { });
     }
   }
 });
@@ -248,7 +248,7 @@ client.on("messageCreate", async (message) => {
           userInitials = userInitials.substring(0, 3);
         }
         console.log(`🔄 Reposting message from ${message.author.tag} in #${message.channel.name} as ${userInitials}`);
-        
+
         try {
           await deleteAndRepost(message, botLogChannel, userInitials);
           console.log(`🔄 Reposted message from ${message.author.tag} in #${message.channel.name}`);
@@ -291,7 +291,7 @@ client.on("messageCreate", async (message) => {
     // List all tickers
     if (otherMentions.size === 0 && (cleanContent === "כל הטיקרים" || cleanContent === "כל טיקרים")) {
       console.log(`📜 User ${message.author.tag} requested the full ticker list`);
-      await listAllTickers({ message, dbPath: DB_PATH});
+      await listAllTickers({ message, dbPath: DB_PATH });
       return;
     }
 
@@ -352,18 +352,28 @@ client.on("messageCreate", async (message) => {
       console.log(`❓ User ${message.author.tag} asked Gemini: ${cleanContent}`);
       try {
         const response = await askGemini(cleanContent, message.channel.id);
-        console.log("[Discord.send] chars:", (response || "").length, "preview:", (response || "").slice(0,300).replace(/\n/g," "));
+        console.log("[Discord.send] chars:", (response || "").length, "preview:", (response || "").slice(0, 300).replace(/\n/g, " "));
 
         const maxLen = 1500;
         let responseLines = response.split("\n").map(line => line.trim()).filter(line => line.length > 0);
         let chunk = "";
         for (const line of responseLines) {
           if ((chunk + line + "\n").length > maxLen) {
-	    console.log("[Discord.send] chars:", (chunk).length, "chunk:", chunk);
+            console.log("[Discord.send] chars:", (chunk).length, "chunk:", chunk);
             await message.channel.send(chunk);
             chunk = "";
           }
-          chunk += line + "\n";
+          // is line larger than maxLen, split it
+          if (line.length > maxLen) {
+            const parts = line.match(new RegExp(`.{1,${maxLen}}`, "g")) || [];
+            for (const part of parts) {
+              await message.channel.send(part);
+            }
+            continue;
+          }
+          else {
+            chunk += line + "\n";
+          }
         }
         await message.channel.send(chunk);
       } catch (err) {

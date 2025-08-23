@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-23T11:21:15.379Z",
+  "updated": "2025-08-23T11:51:10.691Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -4381,12 +4381,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408773076660785232",
       "timestamp": "2025-08-23T11:21:15.214Z",
       "content": "BROS"
+    },
+    {
+      "ticker": "VIRT",
+      "user": {
+        "id": "1033751148378726422",
+        "name": "קמחי"
+      },
+      "messageId": "1408780606577315943",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408780606577315943",
+      "timestamp": "2025-08-23T11:51:10.486Z",
+      "content": "VIRT"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1408766637703696425",
-      "lastProcessedAt": "2025-08-23T10:55:40.047Z"
+      "lastProcessedId": "1408773208043294740",
+      "lastProcessedAt": "2025-08-23T11:21:46.538Z"
     }
   }
 }

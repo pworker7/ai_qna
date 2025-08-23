@@ -353,7 +353,18 @@ client.on("messageCreate", async (message) => {
       try {
         const response = await askGemini(cleanContent, message.channel.id);
         console.log("[Discord.send] chars:", (response || "").length, "preview:", (response || "").slice(0,300).replace(/\n/g," "));
-        await message.channel.send(response || "❌ לא הצלחתי לעבד את השאלה, אנא נסה שוב.");
+
+        const maxLen = 1900;
+        let responseLines = response.split("\n").map(line => line.trim()).filter(line => line.length > 0);
+        let chunk = "";
+        for (const line of responseLines) {
+          if ((chunk + line + "\n").length > maxLen) {
+            await channel.send(chunk);
+            chunk = "";
+          }
+          chunk += line + "\n";
+        }
+        await channel.send(chunk);
       } catch (err) {
         console.error(`Failed to process Gemini question: ${cleanContent}`, err);
         await message.channel.send("❌ שגיאה בעיבוד השאלה, אנא נסה שוב.");

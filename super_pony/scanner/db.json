@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-23T18:18:51.481Z",
+  "updated": "2025-08-23T18:20:22.333Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -4719,12 +4719,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408878169615896636",
       "timestamp": "2025-08-23T18:18:51.327Z",
       "content": "LYV בקצה התעלה"
+    },
+    {
+      "ticker": "VRTX",
+      "user": {
+        "id": "1147127141524328579",
+        "name": "David Bakal"
+      },
+      "messageId": "1408878550140063976",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408878550140063976",
+      "timestamp": "2025-08-23T18:20:22.051Z",
+      "content": "VRTX  האם התנועה תקרה שוב"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1408877544073330789",
-      "lastProcessedAt": "2025-08-23T18:16:22.186Z"
+      "lastProcessedId": "1408878169615896636",
+      "lastProcessedAt": "2025-08-23T18:18:51.327Z"
     }
   }
 }

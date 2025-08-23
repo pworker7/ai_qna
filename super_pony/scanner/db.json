@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-23T17:01:24.870Z",
+  "updated": "2025-08-23T17:06:15.711Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -4667,6 +4667,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408851865134825643",
       "timestamp": "2025-08-23T16:34:19.850Z",
       "content": "TIGR"
+    },
+    {
+      "ticker": "SHOP",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1408859899382993120",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1408859899382993120",
+      "timestamp": "2025-08-23T17:06:15.364Z",
+      "content": "shop"
     }
   ],
   "checkpoints": {

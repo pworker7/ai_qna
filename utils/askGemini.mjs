@@ -66,7 +66,6 @@ async function callGemini(model, apiKey, prompt, { temperature = 0.4, maxOutputT
 
 // ========== Dates extraction via Gemini ==========
 async function extractDatesArrayWithGemini(model, apiKey, userPrompt, tz = "Asia/Jerusalem") {
-  // NEW: Validate userPrompt
   if (!userPrompt || typeof userPrompt !== "string") {
     glog("Invalid userPrompt for date extraction:", userPrompt);
     throw new Error("Invalid user prompt for date extraction");
@@ -110,7 +109,6 @@ async function extractDatesArrayWithGemini(model, apiKey, userPrompt, tz = "Asia
     throw new Error("Failed to parse Gemini date response");
   }
   const dates = Array.isArray(json?.dates) ? json.dates : [];
-  // MODIFIED: Safely handle fallback without relying on .includes()
   if (!dates.length) {
     glog("No dates returned by Gemini, checking for 'השבוע'");
     if (userPrompt.toLowerCase().includes("השבוע")) {
@@ -155,17 +153,12 @@ async function readLogsForDate(channelId, ymd) {
 }
 
 // ========== Main ==========
-export async function askGemini({ userPrompt, contextChannelId } = {}) {
+export async function askGemini(userPrompt) {
   try {
-    // NEW: Validate userPrompt at the start
+    // MODIFIED: Add contextChannelId to invalid prompt log
     if (!userPrompt || typeof userPrompt !== "string" || userPrompt.trim() === "") {
-      glog("Invalid or missing userPrompt:", userPrompt);
+      glog("Invalid or missing userPrompt:", userPrompt, "contextChannelId:", contextChannelId);
       return "❌ השאלה אינה תקינה. אנא ספק שאלה ברורה.";
-    }
-
-    const resolvedChannelId = await resolveContextChannelId(contextChannelId);
-    if (!resolvedChannelId) {
-      return "❌ לא נמצא ערוץ לקונטקסט: אין CONTEXT_CHANNEL_ID ולא זוהו קבצי לוג. ודא שקיים לפחות קובץ אחד בפורמט <channelId>_YYYY-MM-DD.jsonl.";
     }
 
     const dates = await extractDatesArrayWithGemini(GEMINI_MODEL, GEMINI_API_KEY, userPrompt, "Asia/Jerusalem");

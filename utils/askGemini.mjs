@@ -1,214 +1,187 @@
 import fetch from "node-fetch";
-import fs from "fs/promises";
-import path from "path";
+import { readLastNFromLatestFile } from "./liveLog.mjs"; // No need for LOG_DIR here
 
 /**
  * Env:
  *   - GEMINI_API_KEY (required)
- *   - GEMINI_MODEL (optional, default: gemini-2.5-flash-lite)
- *   - GEMINI_DEBUG (1/true)
- *   - LOG_DIR (optional; default below)
- *   - CONTEXT_CHANNEL_ID (optional; fallback if אין hint)
+ *   - GEMINI_MODEL (optional, default: gemini-2.5-flash)
+ *   - CHATROOM_IDS (space/newline/comma separated)
+ *   - CONTEXT_CHANNEL_ID (optional, overrides)
+ *   - GEMINI_DEBUG (1/true to enable verbose logs)
  */
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
-if (!GEMINI_API_KEY) throw new Error("GEMINI_API_KEY is not set");
+if (!GEMINI_API_KEY) { throw new Error("GEMINI_API_KEY is not set"); }
 
 const GEMINI_DEBUG = (process.env.GEMINI_DEBUG === "1" || (process.env.GEMINI_DEBUG || "").toLowerCase() === "true");
-const LOG_DIR = process.env.LOG_DIR || "/home/runner/work/ai_qna/ai_qna/data/logs";
+function glog(...a) { if (GEMINI_DEBUG) console.log("[askGemini]", ...a); }
 
 const CHATROOM_IDS = (process.env.CHATROOM_IDS || "").split(/[\s,]+/).filter(Boolean);
 const CONTEXT_CHANNEL_ID = process.env.CONTEXT_CHANNEL_ID || CHATROOM_IDS[0] || "";
+const CONTEXT_LAST_N = 400;
 
-function glog(...a) { if (GEMINI_DEBUG) console.log("[askGemini]", ...a); }
-
-// ========== Helpers to resolve context channel ==========
-async function inferLatestChannelIdFromLogs(dir = LOG_DIR) {
-  let files = [];
-  try { files = await fs.readdir(dir); } catch { return null; }
-  const items = [];
-  for (const f of files) {
-    const m = f.match(/^(\d+)_\d{4}-\d{2}-\d{2}\.jsonl$/);
-    if (!m) continue;
-    const full = path.join(dir, f);
-    let stat;
-    try { stat = await fs.stat(full); } catch { continue; }
-    items.push({ file: f, channelId: m[1], mtime: stat.mtimeMs, size: stat.size });
-  }
-  if (!items.length) return null;
-  items.sort((a,b) => b.mtime - a.mtime || b.size - a.size);
-  return items[0].channelId;
+// Israel-time formatter for prompt
+const IL_TZ = "Asia/Jerusalem";
+function israelFormatShort(iso) {
+    const d = typeof iso === "string" ? new Date(iso) : iso;
+    return new Intl.DateTimeFormat("he-IL", {
+        timeZone: IL_TZ, year: "2-digit", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", hour12: false
+    }).format(d);
 }
 
-// ========== Generic Gemini call ==========
-async function callGemini(model, apiKey, prompt, { temperature = 0.4, maxOutputTokens = 2048 } = {}) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
-  const body = { contents: [{ role: "user", parts: [{ text: prompt }]}], generationConfig: { temperature, maxOutputTokens } };
-  glog("Gemini request:", { url, prompt, temperature, maxOutputTokens });
-  const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-  if (!res.ok) {
-    const t = await res.text().catch(()=>"");
-    const e = new Error(`Gemini HTTP ${res.status}: ${t.slice(0,400)}`);
-    e.status = res.status;
-    glog("Gemini error response:", { status: res.status, text: t.slice(0,400) });
-    throw e;
-  }
-  const data = await res.json();
-  const text = data?.candidates?.[0]?.content?.parts?.map(p => p.text).join("") || "";
-  glog("Gemini response:", text);
-  return text.trim();
+function sanitizeContent(s, max = 700) {
+    return String(s || "")
+        .replace(/https?:\/\/\S+/g, "")
+        .replace(/<@[!&]?\d+>/g, "")
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, max);
 }
 
-// ========== Dates extraction via Gemini ==========
-async function extractDatesArrayWithGemini(model, apiKey, userPrompt, tz = "Asia/Jerusalem") {
-  if (!userPrompt || typeof userPrompt !== "string") {
-    glog("Invalid userPrompt for date extraction:", userPrompt);
-    throw new Error("Invalid user prompt for date extraction");
-  }
-
-  const systemInstr = [
-    "אתה ממפה פרומפט של משתמש לטווחי תאריכים מוחלטים בפורמט YYYY-MM-DD.",
-    "החזר JSON **בלבד** עם המפתח dates: רשימת מחרוזות תאריך (ללא טווחים או טקסט נוסף).",
-    "אם המשתמש ביקש 'השבוע', החזר את כל הימים מהיום הראשון של השבוע (יום ראשון) עד היום הנוכחי בשעון ישראל (Asia/Jerusalem).",
-    "לדוגמה, אם היום הוא 2025-08-23 (שבת), 'השבוע' מתייחס ל-2025-08-17 עד 2025-08-23.",
-    "אם המשתמש ציין תאריכים ספציפיים (למשל, '2025-08-20'), החזר אותם ישירות.",
-    "אם אין תאריכים ברורים, החזר רשימה ריקה.",
-    "דוגמה פלט חוקית: {\"dates\":[\"2025-08-17\",\"2025-08-18\",\"2025-08-19\",\"2025-08-20\",\"2025-08-21\",\"2025-08-22\",\"2025-08-23\"]}"
-  ].join("\n");
-
-  const prompt = `${systemInstr}\n\nפרומפט משתמש:\n${userPrompt}`;
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
-  const body = { contents: [{ role: "user", parts: [{ text: prompt }]}], generationConfig: { temperature: 0.0, maxOutputTokens: 256 } };
-  glog("Gemini date extraction request:", { url, prompt });
-
-  const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-  if (!res.ok) {
-    const t = await res.text().catch(()=>"");
-    glog("Gemini date extraction error:", { status: res.status, text: t.slice(0,400) });
-    throw new Error(`Gemini dates HTTP ${res.status}`);
-  }
-  const data = await res.json();
-  const txt = data?.candidates?.[0]?.content?.parts?.map(p => p.text).join("")?.trim() || "{}";
-  glog("Gemini date extraction response:", txt);
-
-  const jsonStart = txt.indexOf("{"), jsonEnd = txt.lastIndexOf("}");
-  if (jsonStart === -1 || jsonEnd === -1) {
-    glog("Invalid JSON response from Gemini for date extraction");
-    throw new Error("Invalid JSON response from Gemini");
-  }
-  let json;
-  try {
-    json = JSON.parse(txt.slice(jsonStart, jsonEnd + 1));
-  } catch (e) {
-    glog("Failed to parse Gemini date response:", e.message);
-    throw new Error("Failed to parse Gemini date response");
-  }
-  const dates = Array.isArray(json?.dates) ? json.dates : [];
-  if (!dates.length) {
-    glog("No dates returned by Gemini, checking for 'השבוע'");
-    if (userPrompt.toLowerCase().includes("השבוע")) {
-      glog("Applying fallback for 'השבוע'");
-      const now = new Date().toLocaleString("en-US", { timeZone: tz });
-      const today = new Date(now);
-      const dayOfWeek = today.getDay();
-      const startOfWeek = new Date(today);
-      startOfWeek.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1)); // Start from Sunday
-      const dates = [];
-      for (let d = new Date(startOfWeek); d <= today; d.setDate(d.getDate() + 1)) {
-        dates.push(d.toISOString().split("T")[0]);
-      }
-      glog("Fallback dates:", dates);
-      return dates;
-    }
-    glog("No valid dates returned by Gemini and no 'השבוע' in prompt");
-    throw new Error("No dates returned by Gemini");
-  }
-  glog("Extracted dates:", dates);
-  return dates;
+function buildContext(records) {
+    const arr = [...(records || [])];
+    return arr.map(r => `- ${israelFormatShort(r.createdAt)} | ${r.author}: ${sanitizeContent(r.content)}`).join("\n");
 }
 
-// ========== Read logs for a specific YYYY-MM-DD ==========
-async function readLogsForDate(channelId, ymd) {
-  const file = path.join(LOG_DIR, `${channelId}_${ymd}.jsonl`);
-  let out = [];
-  try {
-    const txt = await fs.readFile(file, "utf-8");
-    for (const line of txt.split(/\r?\n/)) {
-      if (!line.trim()) continue;
-      try {
-        const obj = JSON.parse(line);
-        const text = obj.content?.trim?.() || obj.text?.trim?.() || obj.message?.trim?.() || "";
-        if (!text) continue;
-        out.push({ ts: obj.timestamp || obj.ts || 0, author: obj.author || obj.user || "Unknown", text });
-      } catch {}
-    }
-  } catch {}
-  out.sort((a,b)=> (a.ts||0)-(b.ts||0));
-  return out;
-}
+function buildPrompt(userPrompt, context) {
+    const systemPrompt = [
+	  "אתה עוזר חכם המתמחה בניתוח שיחות ודאטה על שוק ההון בעברית.",
+	  "מטרה: תשובות קצרות, מקצועיות ומדויקות בהתבסס על ההקשר הנתון.",
+	  "הנחיות פלט:",
+	  "- הדגש TICKERS ב-**Bold** (למשל **TSLA**).",
+	  "- ציין חדשות/מאקרו/אירועים אם מופיעים.",
+	  "- סכם עמדות: מי תומך/מתנגד/נייטרלי, וציין משתמשים בסוגריים.",
+	  "- אם המידע חסר/סותר – אמור זאת במפורש.",
+	  "ענה בעברית בלבד, בנקודות קצרות וברורות."
+	].join("\n");
 
-// ========== Main ==========
-export async function askGemini(userPrompt) {
-  try {
-    const channelId = CONTEXT_CHANNEL_ID;
-    glog("contextChannel:", channelId);
 
-    if (!userPrompt || typeof userPrompt !== "string" || userPrompt.trim() === "") {
-      glog("Invalid or missing userPrompt:", userPrompt);
-      return "❌ השאלה אינה תקינה. אנא ספק שאלה ברורה.";
-    }
 
-    const dates = await extractDatesArrayWithGemini(GEMINI_MODEL, GEMINI_API_KEY, userPrompt, "Asia/Jerusalem");
-
-    const perDaySummaries = [];
-    for (const ymd of dates) {
-      const msgs = await readLogsForDate(channelId, ymd);
-      if (msgs.length === 0) continue;
-
-      const MAX = 15000;
-      let acc = [], sum = 0;
-      for (let i = msgs.length - 1; i >= 0; i--) {
-        const s = `${msgs[i].author}: ${msgs[i].text}\n`;
-        if (sum + s.length > MAX) break;
-        acc.push(s); sum += s.length;
-      }
-      acc = acc.reverse();
-
-      const dayPrompt = [
-        `הקשר משיחות בתאריך ${ymd} (שעון ישראל).`,
-        `ענה לשאלת המשתמש תוך סיכום נקודות חשובות, החלטות ומשימות, עם שמות/תאריכים/מספרים:`,
-        userPrompt,
+    const prompt = [
+        systemPrompt, "",
+        "### הקשר (הודעות אחרונות):",
+        context || "אין הקשר זמין",
         "",
-        "--- הקשר ---",
-        acc.join("")
-      ].join("\n");
-
-      const dayAnswer = await callGemini(GEMINI_MODEL, GEMINI_API_KEY, dayPrompt);
-      perDaySummaries.push({ ymd, text: dayAnswer || "" });
-    }
-
-    if (perDaySummaries.length === 0) {
-      return `לא נמצאו הודעות לתאריכים שביקשת (${dates.join(", ")})`;
-    }
-
-    const synthPrompt = [
-      "להלן סיכומי־יום לפי תאריך. סכם אותם לנקודות פעולה/החלטות/נושאים מרכזיים:",
-      ...perDaySummaries.map(d => `### ${d.ymd}\n${d.text}`),
-      "",
-      "תן תוצר נקודתי, עם כותרות משנה קצרות, בלי חזרה מיותרת."
+        `### שאלה: ${sanitizeContent(userPrompt, 300)}`,
+        "",
+        "נא להשיב בעברית קצר ותכליתי."
     ].join("\n");
 
-    const final = await callGemini(GEMINI_MODEL, GEMINI_API_KEY, synthPrompt);
-    return final || "לא התקבלה תשובת סיכום.";
-  } catch (error) {
-    console.error(`Error in askGemini:`, error);
-    if (error.message === "Invalid user prompt for date extraction" || error.message === "No dates returned by Gemini") {
-      return "❌ לא ניתן לזהות תאריכים מהבקשה. אנא נסח את השאלה מחדש או ציין תאריכים ספציפיים.";
+    glog("prompt.chars:", prompt.length);
+    return prompt;
+}
+
+async function getDateFromQuestion(userPrompt) {
+    const now = new Date().toISOString().split("T")[0]; // Current date: 2025-08-18
+    const datePrompt = [
+        "אתה עוזר חכם שמנתח שאלות של משתמשים.",
+        "בדוק את השאלה הבאה והחזר את התאריך המפורש או המרומז בה, בפורמט YYYY-MM-DD.",
+        "התאריך הנוכחי הוא " + now + ", והאזור הזמני הוא Israel Daylight Time (IDT, UTC+3).",
+        "אם יש מונחים יחסיים (כגון 'אתמול', 'לפני יומיים'), חשב את התאריך בהתבסס על התאריך הנוכחי (" + now + ") תוך שימוש באזור הזמני IDT.",
+        "אם אין תאריך מפורש או מרומז, השתמש בתאריך הנוכחי כברירת מחדל.",
+        "החזר רק את התאריך בפורמט YYYY-MM-DD.",
+        "",
+        `### שאלה: ${sanitizeContent(userPrompt, 300)}`
+    ].join("\n");
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(GEMINI_MODEL)}:generateContent?key=${GEMINI_API_KEY}`;
+    const body = {
+        contents: [{ role: "user", parts: [{ text: datePrompt }] }],
+        generationConfig: { temperature: 0.2, maxOutputTokens: 512 }
+    };
+    const bodyStr = JSON.stringify(body);
+
+    const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: bodyStr
+    });
+
+    if (res.ok) {
+        const json = await res.json();
+        const raw = json?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
+        glog("extracted date:", raw);
+        // Validate date format
+        const dateMatch = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (dateMatch) {
+            const extractedDate = new Date(raw);
+            const minDate = new Date("2025-08-01"); // Arbitrary min date, adjust as needed
+            const maxDate = new Date(); // Current date
+            if (extractedDate >= minDate && extractedDate <= maxDate) {
+                return raw; // Return valid date within range
+            } else {
+                glog("extracted date out of range, using current date:", now);
+                return now;
+            }
+        }
     }
-    if (error.status === 429) return "❌ הגעת לגבול השאלות היומי של ג׳מיני. נסו שוב מאוחר יותר.";
-    if (error.status === 400 && String(error.message).includes("maximum number of tokens")) {
-      return "❌ השאלה ארוכה מדי. נסו טווח קצר יותר.";
+    // Fallback to current date if extraction fails
+    glog("date extraction failed, using current date:", now);
+    return now;
+}
+
+export async function askGemini(userPrompt) {
+    try {
+        const channelId = CONTEXT_CHANNEL_ID;
+        glog("contextChannel:", channelId);
+
+        // Step 1: Extract date from question
+        const date = await getDateFromQuestion(userPrompt);
+
+        // Step 2: Read context using readLastNFromLatestFile with the date
+        const recentMessages = await readLastNFromLatestFile(channelId, CONTEXT_LAST_N, date);
+        glog("records:", recentMessages.length);
+        if (recentMessages[0]) glog("firstRec.ts:", recentMessages[0].createdAt);
+        if (recentMessages.at(-1)) glog("lastRec.ts:", recentMessages.at(-1).createdAt);
+
+        const prompt = buildPrompt(userPrompt, buildContext(recentMessages));
+
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(GEMINI_MODEL)}:generateContent?key=${GEMINI_API_KEY}`;
+        const body = {
+            contents: [{ role: "user", parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.2, maxOutputTokens: 1024 }
+        };
+        const bodyStr = JSON.stringify(body);
+        console.log("askGemini.body:", bodyStr);
+        glog("http.body.bytes:", Buffer.byteLength(bodyStr, "utf8"));
+
+        let finalText = "לא מצאתי תשובה רלוונטית לשאלה שלךת. נסו לשאול שאלה אחרת או לספק נתונים נוספים.";
+
+        try {
+            const res = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                body: bodyStr
+            });
+            glog("http.status:", res.status);
+
+            if (res.ok) {
+                const json = await res.json().catch(e => { glog("json.parse.error", e?.message); return null; });
+                glog("resp.hasCandidates:", !!json?.candidates, "resp.len.bytes:", Buffer.byteLength(JSON.stringify(json || {}), "utf8"));
+
+                const raw = json?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+                glog("raw.answer.chars:", raw.length, "preview:", raw);
+
+                finalText = (raw.trim() || "לא מצאתי מידע רלוונטי בשיחה שהתקיימה בחדר בזמן הזה, אולי צריך לשאול על שעות אחרות או יום אחר.");
+            } else {
+                const errText = await res.text();
+                glog("http.error:", res.status, errText);
+                throw Object.assign(new Error(`Gemini API error ${res.status}: ${errText}`), { status: res.status });
+            }
+        } catch (e) {
+            if (e.status === 429 || e.code === "RESOURCE_EXHAUSTED") {
+                finalText = "❌ הגעת לגבול השאלות היומי של ג'מיני. נסו שוב מאוחר יותר.";
+            }
+            if (e.status === 400 && String(e.message).includes("exceeds the maximum number of tokens")) {
+                finalText = "❌ השאלה ארוכה מדי. נסו לשאול שאלה קצרה יותר, או לשאול על פרק זמן קצר יותר (כמו השעה האחרונה, או היום האחרון).";
+            }
+        }
+
+        glog("finalText.chars:", finalText.length, "preview:", finalText.slice(0, 180).replace(/\n/g, " "));
+        return finalText;
+    } catch (error) {
+        console.error(`Error in askGemini for prompt "${userPrompt}":`, error.message);
+        return "❌ שגיאת Gemini.";
     }
-    return "❌ שגיאת Gemini.";
-  }
 }

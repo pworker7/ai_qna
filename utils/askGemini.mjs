@@ -17,6 +17,9 @@ if (!GEMINI_API_KEY) throw new Error("GEMINI_API_KEY is not set");
 const GEMINI_DEBUG = (process.env.GEMINI_DEBUG === "1" || (process.env.GEMINI_DEBUG || "").toLowerCase() === "true");
 const LOG_DIR = process.env.LOG_DIR || "/home/runner/work/ai_qna/ai_qna/data/logs";
 
+const CHATROOM_IDS = (process.env.CHATROOM_IDS || "").split(/[\s,]+/).filter(Boolean);
+const CONTEXT_CHANNEL_ID = process.env.CONTEXT_CHANNEL_ID || CHATROOM_IDS[0] || "";
+
 function glog(...a) { if (GEMINI_DEBUG) console.log("[askGemini]", ...a); }
 
 // ========== Helpers to resolve context channel ==========
@@ -35,14 +38,6 @@ async function inferLatestChannelIdFromLogs(dir = LOG_DIR) {
   if (!items.length) return null;
   items.sort((a,b) => b.mtime - a.mtime || b.size - a.size);
   return items[0].channelId;
-}
-
-async function resolveContextChannelId(hint) {
-  if (hint) return hint;
-  if (process.env.CONTEXT_CHANNEL_ID) return process.env.CONTEXT_CHANNEL_ID;
-  const inferred = await inferLatestChannelIdFromLogs();
-  glog("inferred contextChannelId:", inferred);
-  return inferred;
 }
 
 // ========== Generic Gemini call ==========
@@ -155,9 +150,11 @@ async function readLogsForDate(channelId, ymd) {
 // ========== Main ==========
 export async function askGemini(userPrompt) {
   try {
-    // MODIFIED: Add contextChannelId to invalid prompt log
+    const channelId = CONTEXT_CHANNEL_ID;
+    glog("contextChannel:", channelId);
+
     if (!userPrompt || typeof userPrompt !== "string" || userPrompt.trim() === "") {
-      glog("Invalid or missing userPrompt:", userPrompt, "contextChannelId:", contextChannelId);
+      glog("Invalid or missing userPrompt:", userPrompt);
       return "❌ השאלה אינה תקינה. אנא ספק שאלה ברורה.";
     }
 
@@ -165,7 +162,7 @@ export async function askGemini(userPrompt) {
 
     const perDaySummaries = [];
     for (const ymd of dates) {
-      const msgs = await readLogsForDate(resolvedChannelId, ymd);
+      const msgs = await readLogsForDate(channelId, ymd);
       if (msgs.length === 0) continue;
 
       const MAX = 15000;

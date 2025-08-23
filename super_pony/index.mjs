@@ -359,12 +359,12 @@ client.on("messageCreate", async (message) => {
         let chunk = "";
         for (const line of responseLines) {
           if ((chunk + line + "\n").length > maxLen) {
-            await channel.send(chunk);
+            await message.channel.send(chunk);
             chunk = "";
           }
           chunk += line + "\n";
         }
-        await channel.send(chunk);
+        await message.channel.send(chunk);
       } catch (err) {
         console.error(`Failed to process Gemini question: ${cleanContent}`, err);
         await message.channel.send("❌ שגיאה בעיבוד השאלה, אנא נסה שוב.");

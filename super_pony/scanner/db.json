@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-24T15:23:54.961Z",
+  "updated": "2025-08-24T15:27:40.699Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -4927,12 +4927,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1409196531575427114",
       "timestamp": "2025-08-24T15:23:54.733Z",
       "content": "plmr"
+    },
+    {
+      "ticker": "MTCH",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1409197478670110821",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1409197478670110821",
+      "timestamp": "2025-08-24T15:27:40.538Z",
+      "content": "MTCH bearish to bullish? תעקבו"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1409194752074711053",
-      "lastProcessedAt": "2025-08-24T15:16:50.467Z"
+      "lastProcessedId": "1409196531575427114",
+      "lastProcessedAt": "2025-08-24T15:23:54.733Z"
     }
   }
 }

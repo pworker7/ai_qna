@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-24T15:16:50.898Z",
+  "updated": "2025-08-24T15:23:54.961Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -4914,12 +4914,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1409194752074711053",
       "timestamp": "2025-08-24T15:16:50.467Z",
       "content": "ROKU - bearish to bullish הייתי עוקב מקרוב כאן"
+    },
+    {
+      "ticker": "PLMR",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1409196531575427114",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1409196531575427114",
+      "timestamp": "2025-08-24T15:23:54.733Z",
+      "content": "plmr"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1409184790992650240",
-      "lastProcessedAt": "2025-08-24T14:37:15.560Z"
+      "lastProcessedId": "1409194752074711053",
+      "lastProcessedAt": "2025-08-24T15:16:50.467Z"
     }
   }
 }

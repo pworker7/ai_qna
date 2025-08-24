@@ -231,12 +231,12 @@ client.on("messageCreate", async (message) => {
       }
     }
 
-    const trimmedMessage = (message.content || "").trim();
-    if (!trimmedMessage) return; // Ignore empty messages
+    const content = (message.content || "").trim();
+    if (!content) return; // Ignore empty messages
 
     // Handle messages in the graphs room
     if (inGraphsRoom) {
-      if (message.content?.trim()) {
+      if (content) {
         // Log user's message in the DB
         await handleGraphChannelMessage({
           message,

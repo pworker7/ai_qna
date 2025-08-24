@@ -32,9 +32,10 @@ const {
   DISCORD_TOKEN,
   FINNHUB_TOKEN,
   ANTICIPATED_CHANNEL_ID,
+  GRAPHS_CHANNEL_ID,
+  SCHEDULE_CHANNEL_ID,
   BOT_CHANNEL_ID,
   LOG_CHANNEL_ID,
-  GRAPHS_CHANNEL_ID,
   DISCORD_GUILD_ID,
   DISCORD_APPLICATION_ID,
   SHUTDOWN_SECRET,
@@ -213,6 +214,7 @@ client.on("messageCreate", async (message) => {
 
     const inBotRoom = message.channel.id === BOT_CHANNEL_ID;
     const inGraphsRoom = message.channel.id === GRAPHS_CHANNEL_ID;
+    const inScheduleRoom = message.channel.id === SCHEDULE_CHANNEL_ID;
     // Limit logging to certain channel IDs (line separated). If empty => log None.
     const chatRooms = (CHATROOM_IDS || "")
       .split(/[\n]+/)
@@ -228,6 +230,9 @@ client.on("messageCreate", async (message) => {
         console.error("Failed to log message: ", err);
       }
     }
+
+    const trimmedMessage = (message.content || "").trim();
+    if (!trimmedMessage) return; // Ignore empty messages
 
     // Handle messages in the graphs room
     if (inGraphsRoom) {
@@ -262,12 +267,6 @@ client.on("messageCreate", async (message) => {
       return;
     }
 
-    // Ignore messages not in the bot room
-    if (!inBotRoom) return;
-
-    // Check if the message mentions the bot
-    const content = message.content || "";
-    if (!content.trim()) return; // Ignore empty messages
     // Clean the content: remove mentions and normalize
     let cleanContent = content.replace(/<@!?[0-9]+>/g, "").trim().toLowerCase();
     // also remove "@superpony" and the bot's ID
@@ -275,8 +274,27 @@ client.on("messageCreate", async (message) => {
 
     // Check if the message mentions the bot or contains its ID
     const mentionsBot = (client.user?.id && message.mentions.users.has(client.user.id)) || content.includes("@superpony") || content.includes("1398710664079474789");
-
     if (!mentionsBot) return;
+
+    // If in schedule room, handle scheduled messages
+    if (inScheduleRoom) {
+      if (cleanContent === "ססמי המחק" || cleanContent === "ססמי מחק" || cleanContent === "ססמי תמחק") {
+        console.log(`🗑️ User ${message.author.tag} requested to delete the schedule room message`);
+        // delete all the messages in the schedule room from all users and bots
+        const deletableMessages = await message.channel.messages.fetch({ limit: 100 });
+        if (deletableMessages.size > 0) {
+          await message.channel.bulkDelete(deletableMessages);
+          console.log(`🗑️ Deleted ${deletableMessages.size} messages in the schedule room.`);
+        } else {
+          console.log("🗑️ No messages to delete in the schedule room.");
+        }
+      }
+      return; // Ignore other messages in the schedule room
+    }
+
+    // Ignore messages not in the bot room
+    if (!inBotRoom) return;
+
     console.log(`🔔 Message from: ${message.author.tag}, in channel: ${message.channel.name}, mentions: ${message.mentions.users}, content: `, content);
 
     const otherMentions = message.mentions.users.filter(u => u.id !== client.user.id);

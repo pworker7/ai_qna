@@ -42,6 +42,7 @@ jobs:
           ANTICIPATED_CHANNEL_ID: ${{ vars.X_EARNINGS_CAL_CHANNEL_ID }}
           TICKER_BLACKLIST:       ${{ vars.TICKER_BLACKLIST }}
           DISCORD_SHUTDOWN_WEBHOOK: ${{ vars.DISCORD_SHUTDOWN_WEBHOOK }}
+          SCHEDULE_CHANNEL_ID: ${{ vars.SCHEDULE_CHANNEL_ID }}
           SHUTDOWN_SECRET: ${{ vars.SHUTDOWN_SECRET }}
           CHATROOM_IDS: ${{ vars.CHATROOM_IDS }}
           GEMINI_API_KEY: ${{ vars.GEMINI_API_KEY }}

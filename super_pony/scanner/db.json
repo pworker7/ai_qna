@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-25T11:00:46.780Z",
+  "updated": "2025-08-25T13:49:38.824Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -4966,12 +4966,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1409230818991411252",
       "timestamp": "2025-08-24T17:40:09.490Z",
       "content": "HIPO"
+    },
+    {
+      "ticker": "BABA",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1409535195681656832",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1409535195681656832",
+      "timestamp": "2025-08-25T13:49:38.548Z",
+      "content": "נראת מצוין  BABA"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1409480620874399836",
-      "lastProcessedAt": "2025-08-25T10:12:46.900Z"
+      "lastProcessedId": "1409532287334486100",
+      "lastProcessedAt": "2025-08-25T13:38:05.144Z"
     }
   }
 }

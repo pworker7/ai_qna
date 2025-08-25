@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-25T15:29:06.303Z",
+  "updated": "2025-08-25T15:35:49.706Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -5005,12 +5005,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1409560226029633536",
       "timestamp": "2025-08-25T15:29:06.248Z",
       "content": "NU ששלחת"
+    },
+    {
+      "ticker": "BBAI",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1409561917672132669",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1409561917672132669",
+      "timestamp": "2025-08-25T15:35:49.567Z",
+      "content": "BBAI"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1409559999184896093",
-      "lastProcessedAt": "2025-08-25T15:28:12.164Z"
+      "lastProcessedId": "1409560226029633536",
+      "lastProcessedAt": "2025-08-25T15:29:06.248Z"
     }
   }
 }

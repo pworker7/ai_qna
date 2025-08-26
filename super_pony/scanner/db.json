@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-26T20:00:56.269Z",
+  "updated": "2025-08-26T21:00:58.584Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -5330,12 +5330,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1409988079552561182",
       "timestamp": "2025-08-26T19:49:14.477Z",
       "content": "SIMPLE MAN"
+    },
+    {
+      "ticker": "BTBT",
+      "user": {
+        "id": "1017366188361273345",
+        "name": "shay.(s.h)"
+      },
+      "messageId": "1409992100346597387",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1409992100346597387",
+      "timestamp": "2025-08-26T20:05:13.109Z",
+      "content": "זה הולך לעוף BTBT"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1409989510669926460",
-      "lastProcessedAt": "2025-08-26T19:54:55.682Z"
+      "lastProcessedId": "1409992100346597387",
+      "lastProcessedAt": "2025-08-26T20:05:13.109Z"
     }
   }
 }

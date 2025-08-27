@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-27T13:37:13.074Z",
+  "updated": "2025-08-27T13:53:28.281Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -5486,12 +5486,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1410256843854319798",
       "timestamp": "2025-08-27T13:37:12.880Z",
       "content": "ZETA"
+    },
+    {
+      "ticker": "RR",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1410260933913215131",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1410260933913215131",
+      "timestamp": "2025-08-27T13:53:28.026Z",
+      "content": "נפרוץ? RR"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1410256687582937219",
-      "lastProcessedAt": "2025-08-27T13:36:35.622Z"
+      "lastProcessedId": "1410256843854319798",
+      "lastProcessedAt": "2025-08-27T13:37:12.880Z"
     }
   }
 }

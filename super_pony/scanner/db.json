@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-26T23:00:48.452Z",
+  "updated": "2025-08-27T00:17:24.329Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -5343,12 +5343,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1409992100346597387",
       "timestamp": "2025-08-26T20:05:13.109Z",
       "content": "זה הולך לעוף BTBT"
+    },
+    {
+      "ticker": "PPTA",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1410055564536447027",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1410055564536447027",
+      "timestamp": "2025-08-27T00:17:24.151Z",
+      "content": "פרצה c&h PPTA"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1410024685286068234",
-      "lastProcessedAt": "2025-08-26T22:14:41.964Z"
+      "lastProcessedId": "1410055335187841077",
+      "lastProcessedAt": "2025-08-27T00:16:29.470Z"
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-28T14:28:04.098Z",
+  "updated": "2025-08-28T14:29:05.882Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -5629,12 +5629,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1410632028147290203",
       "timestamp": "2025-08-28T14:28:03.786Z",
       "content": "SNOW 24h"
+    },
+    {
+      "ticker": "OUT",
+      "user": {
+        "id": "1309511619138682943",
+        "name": "Omer"
+      },
+      "messageId": "1410632287690686619",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1410632287690686619",
+      "timestamp": "2025-08-28T14:29:05.666Z",
+      "content": "ZOOM OUT"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1410626129554968598",
-      "lastProcessedAt": "2025-08-28T14:04:37.452Z"
+      "lastProcessedId": "1410632028147290203",
+      "lastProcessedAt": "2025-08-28T14:28:03.786Z"
     }
   }
 }

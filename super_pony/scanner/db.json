@@ -1,5 +1,5 @@
 {
-  "updated": "2025-08-30T22:11:16.586Z",
+  "updated": "2025-08-30T22:12:04.387Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -6006,12 +6006,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1411473374408085586",
       "timestamp": "2025-08-30T22:11:16.366Z",
       "content": "SLV"
+    },
+    {
+      "ticker": "SLV",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1411473575528890438",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1411473575528890438",
+      "timestamp": "2025-08-30T22:12:04.317Z",
+      "content": "SLV ABOVE 36.5$"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1411404640980963539",
-      "lastProcessedAt": "2025-08-30T17:38:09.040Z"
+      "lastProcessedId": "1411473374408085586",
+      "lastProcessedAt": "2025-08-30T22:11:16.366Z"
     }
   }
 }

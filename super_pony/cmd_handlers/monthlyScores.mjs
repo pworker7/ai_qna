@@ -121,7 +121,7 @@ async function getScoreChannel(client) {
 
 async function postWindowAndPing(scoreChannel, nowTz) {
     const pKey = periodKey(nowTz);
-    await scoreChannel.send({ content: '@everyone please report your score' });
+    await scoreChannel.send({ content: '@every one please report your score' });
     const msg = await scoreChannel.send({ embeds: [scoreEmbed()], components: [scoreButtonRow()] });
     await writeJSON(stateFileForPeriod(pKey), { channelId: scoreChannel.id, messageId: msg.id, createdAt: new Date().toISOString() });
     return msg.id;
@@ -235,17 +235,8 @@ function registerWebhookTriggerListener(client) {
     client.on(Events.MessageCreate, async (msg) => {
         try {
             // Must arrive in the LOG channel from a webhook
-            console.log('[monthlyScoresWebhook] MessageCreate', { channelId: msg.channelId, authorId: msg.author?.id, webhookId: msg.webhookId, content: msg.content });
             if (msg.webhookId) {
-                console.log('[monthlyScoresWebhook] MessageCreate has webhookId');
                 if (msg.channel.id === LOG_CHANNEL_ID) {
-            // if (!LOG_CHANNEL_ID || msg.channelId !== LOG_CHANNEL_ID) return;
-            // console.log('[monthlyScoresWebhook] MessageCreate in LOG channel');
-            // if (msg.author?.bot) return;     // ignore bot/self
-            // console.log('[monthlyScoresWebhook] MessageCreate not from bot');
-            // if (!msg.webhookId) return;      // only accept webhook messages for triggers
-                    console.log('[monthlyScoresWebhook] MessageCreate from webhook');
-
                     const parsed = parseTriggerContent(msg.content);
                     console.log('[monthlyScoresWebhook] Parsed trigger:', parsed);
                     if (!parsed) return;
@@ -253,7 +244,6 @@ function registerWebhookTriggerListener(client) {
                         await msg.reply({ content: '❌ Invalid or missing token.', allowedMentions: { parse: [] } }).catch(() => { });
                         return;
                     }
-                    console.log('[monthlyScoresWebhook] Valid token');
 
                     const nowTz = dayjs().tz(TIMEZONE);
                     const pKey = parsed.args.period || periodKey(nowTz);
@@ -268,13 +258,13 @@ function registerWebhookTriggerListener(client) {
                         await postWindowAndPing(scoreChannel, nowTz);
                         await msg.react('✅').catch(() => { });
                     } else if (parsed.type === 'remind') {
-                        await scoreChannel.send({ content: '@everyone please remember to fill your score' });
+                        await scoreChannel.send({ content: '@every one please remember to fill your score' });
                         await msg.react('⏰').catch(() => { });
                     } else if (parsed.type === 'publish') {
                         const avg = await computeAverageForPeriod(pKey);
                         const text = (avg == null)
-                            ? '@everyone the group average score is: N/A (no submissions)'
-                            : `@everyone the group average score is: ${Number(avg.toFixed(2))}`;
+                            ? '@every one the group average score is: N/A (no submissions)'
+                            : `@every one the group average score is: ${Number(avg.toFixed(2))}`;
                         await scoreChannel.send({ content: text });
                         await deleteWindowIfExists(client, pKey);
                         await msg.react('📊').catch(() => { });

@@ -236,45 +236,49 @@ function registerWebhookTriggerListener(client) {
         try {
             // Must arrive in the LOG channel from a webhook
             console.log('[monthlyScoresWebhook] MessageCreate', { channelId: msg.channelId, authorId: msg.author?.id, webhookId: msg.webhookId, content: msg.content });
-            if (!LOG_CHANNEL_ID || msg.channelId !== LOG_CHANNEL_ID) return;
-            console.log('[monthlyScoresWebhook] MessageCreate in LOG channel');
-            if (msg.author?.bot) return;     // ignore bot/self
-            console.log('[monthlyScoresWebhook] MessageCreate not from bot');
-            if (!msg.webhookId) return;      // only accept webhook messages for triggers
-            console.log('[monthlyScoresWebhook] MessageCreate from webhook');
+            if (message.webhookId) {
+                if (message.channel.id === LOG_CHANNEL_ID) {
+            // if (!LOG_CHANNEL_ID || msg.channelId !== LOG_CHANNEL_ID) return;
+            // console.log('[monthlyScoresWebhook] MessageCreate in LOG channel');
+            // if (msg.author?.bot) return;     // ignore bot/self
+            // console.log('[monthlyScoresWebhook] MessageCreate not from bot');
+            // if (!msg.webhookId) return;      // only accept webhook messages for triggers
+                    console.log('[monthlyScoresWebhook] MessageCreate from webhook');
 
-            const parsed = parseTriggerContent(msg.content);
-            console.log('[monthlyScoresWebhook] Parsed trigger:', parsed);
-            if (!parsed) return;
-            if (!tokenIsValid(parsed.args)) {
-                await msg.reply({ content: '❌ Invalid or missing token.', allowedMentions: { parse: [] } }).catch(() => { });
-                return;
-            }
-            console.log('[monthlyScoresWebhook] Valid token');
+                    const parsed = parseTriggerContent(msg.content);
+                    console.log('[monthlyScoresWebhook] Parsed trigger:', parsed);
+                    if (!parsed) return;
+                    if (!tokenIsValid(parsed.args)) {
+                        await msg.reply({ content: '❌ Invalid or missing token.', allowedMentions: { parse: [] } }).catch(() => { });
+                        return;
+                    }
+                    console.log('[monthlyScoresWebhook] Valid token');
 
-            const nowTz = dayjs().tz(TIMEZONE);
-            const pKey = parsed.args.period || periodKey(nowTz);
+                    const nowTz = dayjs().tz(TIMEZONE);
+                    const pKey = parsed.args.period || periodKey(nowTz);
 
-            const scoreChannel = await getScoreChannel(client);
-            if (!scoreChannel) {
-                await msg.reply({ content: '⚠️ SCORE_CHANNEL_ID is not a valid text channel.', allowedMentions: { parse: [] } }).catch(() => { });
-                return;
-            }
+                    const scoreChannel = await getScoreChannel(client);
+                    if (!scoreChannel) {
+                        await msg.reply({ content: '⚠️ SCORE_CHANNEL_ID is not a valid text channel.', allowedMentions: { parse: [] } }).catch(() => { });
+                        return;
+                    }
 
-            if (parsed.type === 'start') {
-                await postWindowAndPing(scoreChannel, nowTz);
-                await msg.react('✅').catch(() => { });
-            } else if (parsed.type === 'remind') {
-                await scoreChannel.send({ content: '@everyone please remember to fill your score' });
-                await msg.react('⏰').catch(() => { });
-            } else if (parsed.type === 'publish') {
-                const avg = await computeAverageForPeriod(pKey);
-                const text = (avg == null)
-                    ? '@everyone the group average score is: N/A (no submissions)'
-                    : `@everyone the group average score is: ${Number(avg.toFixed(2))}`;
-                await scoreChannel.send({ content: text });
-                await deleteWindowIfExists(client, pKey);
-                await msg.react('📊').catch(() => { });
+                    if (parsed.type === 'start') {
+                        await postWindowAndPing(scoreChannel, nowTz);
+                        await msg.react('✅').catch(() => { });
+                    } else if (parsed.type === 'remind') {
+                        await scoreChannel.send({ content: '@everyone please remember to fill your score' });
+                        await msg.react('⏰').catch(() => { });
+                    } else if (parsed.type === 'publish') {
+                        const avg = await computeAverageForPeriod(pKey);
+                        const text = (avg == null)
+                            ? '@everyone the group average score is: N/A (no submissions)'
+                            : `@everyone the group average score is: ${Number(avg.toFixed(2))}`;
+                        await scoreChannel.send({ content: text });
+                        await deleteWindowIfExists(client, pKey);
+                        await msg.react('📊').catch(() => { });
+                    }
+                }
             }
         } catch {
             // no-op; avoid crashing the bot on webhook mishaps

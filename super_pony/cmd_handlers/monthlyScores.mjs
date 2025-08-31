@@ -212,7 +212,7 @@ function registerInteractionHandlers(client) {
                     await interaction.reply({ content: '❌ הערך שהזנתם אינו מספר תקין, אנא נסו שוב (לדוגמה:87.5 או 5.1-).', ephemeral: true });
                     return;
                 }
-                await interaction.reply({ content: '✅ הערך שהזנת נשמר באופן אנונימי ופרטי, תודה לך על השתתפותך בסקר\nבתום איסוף הנתונים יפורסם ממוצי התשואה בשרת לכולם', ephemeral: true });
+                await interaction.reply({ content: '✅ הערך שהזנת נשמר באופן אנונימי ופרטי, תודה לך על השתתפותך בסקר\nבתום איסוף הנתונים יפורסמו ממוצאי התשואה בשרת לכולם', ephemeral: true });
             }
         } catch(err) {
             console.error(`[ERROR] InteractionCreate failed for ${interaction.user.tag}:`, err);

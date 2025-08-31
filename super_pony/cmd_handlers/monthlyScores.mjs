@@ -28,6 +28,8 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
 
+import commitLogIfChanged from '../utils/liveLog.mjs';
+
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -69,17 +71,7 @@ async function readJSON(file, fallback) {
 async function writeJSON(file, data) {
     await fsp.mkdir(path.dirname(file), { recursive: true });
     await fsp.writeFile(file, JSON.stringify(data, null, 2), 'utf8');
-    if (GIT_COMMIT) tryGitCommit(file);
-}
-function tryGitCommit(filePath) {
-    try {
-        if (process.env.GIT_USER_NAME) execSync(`git config user.name "${process.env.GIT_USER_NAME}"`, { stdio: 'ignore' });
-        if (process.env.GIT_USER_EMAIL) execSync(`git config user.email "${process.env.GIT_USER_EMAIL}"`, { stdio: 'ignore' });
-        execSync(`git add "${filePath}"`, { stdio: 'ignore' });
-        const msg = `chore(scores): update ${path.relative(process.cwd(), filePath)} at ${new Date().toISOString()}`;
-        execSync(`git commit -m "${msg.replace(/"/g, '\\"')}"`, { stdio: 'ignore' });
-        try { execSync('git push', { stdio: 'ignore' }); } catch { }
-    } catch { }
+    await commitLogIfChanged(file);
 }
 
 function hashUserForPeriod(userId, pKey) {

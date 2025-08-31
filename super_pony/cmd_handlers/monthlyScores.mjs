@@ -23,7 +23,6 @@ import crypto from 'crypto';
 import fs from 'fs';
 import fsp from 'fs/promises';
 import path from 'path';
-import execSync from 'child_process';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
@@ -37,10 +36,9 @@ dayjs.extend(timezone);
 const TIMEZONE = process.env.TIMEZONE || 'Asia/Jerusalem';
 const SCORES_DIR = process.env.SCORES_DIR || path.join(process.cwd(), 'data', 'scores');
 const STATE_DIR = path.join(process.cwd(), 'data', 'state');
-const SECRET_SALT = process.env.SECRET_SALT || 'replace-me-with-a-very-long-random-secret';
+const SECRET_SALT = process.env.SECRET_SALT || 'mkld4Rfvl0BYjn4SF5lk9jF3WcY';
 const SCORE_CHANNEL_ID = process.env.SCORE_CHANNEL_ID;
 const LOG_CHANNEL_ID = process.env.LOG_CHANNEL_ID;
-const GIT_COMMIT = process.env.GIT_COMMIT === '1';
 const SCORES_TRIGGER_TOKEN = process.env.SCORES_TRIGGER_TOKEN || '';
 
 const IDS = {
@@ -82,21 +80,21 @@ function hashUserForPeriod(userId, pKey) {
 
 function scoreEmbed() {
     return new EmbedBuilder()
-        .setTitle('Monthly Anonymous Score')
-        .setDescription('Click **Submit Score** to enter your number anonymously.\n\nYou will get a private confirmation (ephemeral).')
-        .setColor(0x5865F2);
+        .setTitle('תשואה חודשית - סקר אנונימי')
+        .setDescription('לחצו **השתתפו בסקר** כדי שנחשב גם את התשואה שלכם בסקר.\n\nתקבלו חלונית הזנה פרטית שרק אתם רואים אותה, אף פרט אישי עליכם לא נשמר, גם לא בלוגים.\nאין דרך לדעת מי מגיש את התשואה, לא למפתח ולא לבוט וגם לא למנהלי השרת.')
+        .setColor(0x57F287);
 }
 function scoreButtonRow() {
     return new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId(IDS.BUTTON_OPEN_MODAL).setLabel('Submit Score').setStyle(ButtonStyle.Primary)
+        new ButtonBuilder().setCustomId(IDS.BUTTON_OPEN_MODAL).setLabel('השתתפו בסקר').setStyle(ButtonStyle.Success)
     );
 }
 function scoreModal() {
-    const modal = new ModalBuilder().setCustomId(IDS.MODAL_SUBMIT).setTitle('Submit Your Score');
+    const modal = new ModalBuilder().setCustomId(IDS.MODAL_SUBMIT).setTitle('הגישו את אחוז התשואה החודשית שלכם');
     const input = new TextInputBuilder()
         .setCustomId(IDS.INPUT_SCORE)
-        .setLabel('Enter a number (e.g., 87.5)')
-        .setPlaceholder('Your score')
+        .setLabel('הקלידו את אחוז התשואה החודשית בתיק שלכם כמספר בלבד\n(ללא סימן אחוז, ניתן לסמן פלוס או מינוס,))\nלדוגמה: 87.5 או 5.1-')
+        .setPlaceholder('אחוז התשואה שלי החודש')
         .setRequired(true)
         .setStyle(TextInputStyle.Short);
     return modal.addComponents(new ActionRowBuilder().addComponents(input));
@@ -113,7 +111,7 @@ async function getScoreChannel(client) {
 
 async function postWindowAndPing(scoreChannel, nowTz) {
     const pKey = periodKey(nowTz);
-    await scoreChannel.send({ content: '@every one please report your score' });
+    await scoreChannel.send({ content: '@every one הגיע הזמן הזה בחודש ... השתתפו בסקר התשואה האנונימי החודשי של השרת' });
     const msg = await scoreChannel.send({ embeds: [scoreEmbed()], components: [scoreButtonRow()] });
     await writeJSON(stateFileForPeriod(pKey), { channelId: scoreChannel.id, messageId: msg.id, createdAt: new Date().toISOString() });
     return msg.id;
@@ -137,8 +135,8 @@ async function deleteWindowIfExists(client, pKey) {
 async function addScore(userId, rawScore, nowTz = dayjs().tz(TIMEZONE)) {
     const pKey = periodKey(nowTz);
     const file = scoresFileForPeriod(pKey);
-    const scoreNum = Number(String(rawScore).replace(',', '.'));
-    if (!Number.isFinite(scoreNum)) throw new Error('Invalid number');
+    const scoreNum = Number(String(rawScore).replace(',', '.').replace('%', '').replace('+', '').trim());
+    if (!Number.isFinite(scoreNum)) throw new Error('הערך שהזנתם אינו מספר תקין, אנא נסו שוב');
 
     const data = await readJSON(file, { period: pKey, entries: [] });
     const fingerprint = hashUserForPeriod(userId, pKey);
@@ -206,17 +204,17 @@ function registerInteractionHandlers(client) {
                 try {
                     await addScore(interaction.user.id, value, dayjs().tz(TIMEZONE));
                 } catch {
-                    await interaction.reply({ content: '❌ Invalid number. Please try again (e.g., 87 or 87.5).', ephemeral: true });
+                    await interaction.reply({ content: '❌ הערך שהזנתם אינו מספר תקין, אנא נסו שוב (לדוגמה:87.5 או 5.1-).', ephemeral: true });
                     return;
                 }
-                await interaction.reply({ content: '✅ Your anonymous score has been recorded. Thank you!', ephemeral: true });
+                await interaction.reply({ content: '✅ הערך שהזנת נשמר באופן אנונימי ופרטי, תודה לך על השתתפוצך בסקר\nבתום איסוף הנתונים יפורסם ממוצי התשואה בשרת לכולם', ephemeral: true });
             }
         } catch {
             try {
                 if (interaction?.deferred || interaction?.replied) {
-                    await interaction.followUp({ content: '⚠️ Something went wrong. Please try again.', ephemeral: true });
+                    await interaction.followUp({ content: '⚠️ משהו השתבש, אנא נסו שוב.', ephemeral: true });
                 } else {
-                    await interaction.reply({ content: '⚠️ Something went wrong. Please try again.', ephemeral: true });
+                    await interaction.reply({ content: '⚠️ משהו השתבש, אנא נסו שוב.', ephemeral: true });
                 }
             } catch { }
         }
@@ -250,13 +248,13 @@ function registerWebhookTriggerListener(client) {
                         await postWindowAndPing(scoreChannel, nowTz);
                         await msg.react('✅').catch(() => { });
                     } else if (parsed.type === 'remind') {
-                        await scoreChannel.send({ content: '@every one please remember to fill your score' });
+                        await scoreChannel.send({ content: '@every one מזכיר לכם שהיום מתקיים סקר תשואה חודשית אנונימי, אתם מוזמנים להשתתף ולהגיש את המספר שלכם, הסקר אנונימי לחלוטין' });
                         await msg.react('⏰').catch(() => { });
                     } else if (parsed.type === 'publish') {
                         const avg = await computeAverageForPeriod(pKey);
                         const text = (avg == null)
-                            ? '@every one the group average score is: N/A (no submissions)'
-                            : `@every one the group average score is: ${Number(avg.toFixed(2))}`;
+                            ? '@every one התשואה הממוצעת לקבוצה שהשתתפה בסקר היא: 0% (אף אחד לא השתתף בסקר)'
+                            : `@every one התשואה הממוצעת לקבוצה שהשתתפה בסקר היא: ${Number(avg.toFixed(2))}`;
                         await scoreChannel.send({ content: text });
                         await deleteWindowIfExists(client, pKey);
                         await msg.react('📊').catch(() => { });

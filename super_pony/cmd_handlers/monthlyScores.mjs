@@ -86,17 +86,19 @@ function scoreEmbed() {
 }
 function scoreButtonRow() {
     return new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId(IDS.BUTTON_OPEN_MODAL).setLabel('השתתפו בסקר').setStyle(ButtonStyle.Primary)
+        new ButtonBuilder().setCustomId(IDS.BUTTON_OPEN_MODAL).setLabel('השתתפו בסקר').setStyle(ButtonStyle.Success)
     );
 }
 function scoreModal() {
     const modal = new ModalBuilder().setCustomId(IDS.MODAL_SUBMIT).setTitle('הגישו את אחוז התשואה החודשית שלכם');
+    console.log('[DEBUG] Creating modal with ID:', IDS.MODAL_SUBMIT);
     const input = new TextInputBuilder()
         .setCustomId(IDS.INPUT_SCORE)
         .setLabel('הקלידו את אחוז התשואה החודשית בתיק שלכם כמספר בלבד\n(ללא סימן אחוז, ניתן לסמן פלוס או מינוס)\nלדוגמה: 87.5 או 5.1-')
         .setPlaceholder('אחוז התשואה שלי החודש')
         .setRequired(true)
         .setStyle(TextInputStyle.Short);
+    console.log('[DEBUG] Created text input with ID:', IDS.INPUT_SCORE);
     return modal.addComponents(new ActionRowBuilder().addComponents(input));
 }
 
@@ -196,10 +198,13 @@ function registerInteractionHandlers(client) {
     client.on(Events.InteractionCreate, async (interaction) => {
         try {
             if (interaction.isButton() && interaction.customId === IDS.BUTTON_OPEN_MODAL) {
+                console.log(`[DEBUG] Button clicked by ${interaction.user.tag}, attempting to show modal`);                
                 await interaction.showModal(scoreModal());
+                console.log(`[DEBUG] Modal shown successfully for ${interaction.user.tag}`);
                 return;
             }
             if (interaction.isModalSubmit() && interaction.customId === IDS.MODAL_SUBMIT) {
+                console.log(`[DEBUG] Modal submitted by ${interaction.user.tag}`);                
                 const value = interaction.fields.getTextInputValue(IDS.INPUT_SCORE)?.trim();
                 try {
                     await addScore(interaction.user.id, value, dayjs().tz(TIMEZONE));
@@ -207,16 +212,19 @@ function registerInteractionHandlers(client) {
                     await interaction.reply({ content: '❌ הערך שהזנתם אינו מספר תקין, אנא נסו שוב (לדוגמה:87.5 או 5.1-).', ephemeral: true });
                     return;
                 }
-                await interaction.reply({ content: '✅ הערך שהזנת נשמר באופן אנונימי ופרטי, תודה לך על השתתפוצך בסקר\nבתום איסוף הנתונים יפורסם ממוצי התשואה בשרת לכולם', ephemeral: true });
+                await interaction.reply({ content: '✅ הערך שהזנת נשמר באופן אנונימי ופרטי, תודה לך על השתתפותך בסקר\nבתום איסוף הנתונים יפורסם ממוצי התשואה בשרת לכולם', ephemeral: true });
             }
         } catch {
+            console.error(`[ERROR] InteractionCreate failed for ${interaction.user.tag}:`, err);
             try {
                 if (interaction?.deferred || interaction?.replied) {
                     await interaction.followUp({ content: '⚠️ משהו השתבש, אנא נסו שוב.', ephemeral: true });
                 } else {
                     await interaction.reply({ content: '⚠️ משהו השתבש, אנא נסו שוב.', ephemeral: true });
                 }
-            } catch { }
+            } catch(followUpErr) {
+                console.error(`[ERROR] Failed to send follow-up/reply for ${interaction.user.tag}:`, followUpErr);                
+            }
         }
     });
 }

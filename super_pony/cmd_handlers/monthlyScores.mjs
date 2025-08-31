@@ -81,19 +81,19 @@ function hashUserForPeriod(userId, pKey) {
 function scoreEmbed() {
     return new EmbedBuilder()
         .setTitle('תשואה חודשית - סקר אנונימי')
-        .setDescription('לחצו **השתתפו בסקר** כדי שנחשב גם את התשואה שלכם בסקר.\n\nתקבלו חלונית הזנה פרטית שרק אתם רואים אותה, אף פרט אישי עליכם לא נשמר, גם לא בלוגים.\nאין דרך לדעת מי מגיש את התשואה, לא למפתח ולא לבוט וגם לא למנהלי השרת.')
+        .setDescription('לחצו "**השתתפו בסקר**" כדי שנחשב גם את התשואה שלכם בסקר.\n\nתקבלו חלונית הזנה פרטית שרק אתם רואים אותה,\nאף פרט אישי עליכם לא נשמר, גם לא בלוגים.\nאין דרך לדעת מי מגיש את התשואה, לא למפתח ולא לבוט וגם לא למנהלי השרת.')
         .setColor(0x57F287);
 }
 function scoreButtonRow() {
     return new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId(IDS.BUTTON_OPEN_MODAL).setLabel('השתתפו בסקר').setStyle(ButtonStyle.Success)
+        new ButtonBuilder().setCustomId(IDS.BUTTON_OPEN_MODAL).setLabel('השתתפו בסקר').setStyle(ButtonStyle.Primary)
     );
 }
 function scoreModal() {
     const modal = new ModalBuilder().setCustomId(IDS.MODAL_SUBMIT).setTitle('הגישו את אחוז התשואה החודשית שלכם');
     const input = new TextInputBuilder()
         .setCustomId(IDS.INPUT_SCORE)
-        .setLabel('הקלידו את אחוז התשואה החודשית בתיק שלכם כמספר בלבד\n(ללא סימן אחוז, ניתן לסמן פלוס או מינוס,))\nלדוגמה: 87.5 או 5.1-')
+        .setLabel('הקלידו את אחוז התשואה החודשית בתיק שלכם כמספר בלבד\n(ללא סימן אחוז, ניתן לסמן פלוס או מינוס)\nלדוגמה: 87.5 או 5.1-')
         .setPlaceholder('אחוז התשואה שלי החודש')
         .setRequired(true)
         .setStyle(TextInputStyle.Short);

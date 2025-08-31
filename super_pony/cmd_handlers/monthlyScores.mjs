@@ -214,7 +214,7 @@ function registerInteractionHandlers(client) {
                 }
                 await interaction.reply({ content: '✅ הערך שהזנת נשמר באופן אנונימי ופרטי, תודה לך על השתתפותך בסקר\nבתום איסוף הנתונים יפורסם ממוצי התשואה בשרת לכולם', ephemeral: true });
             }
-        } catch {
+        } catch(err) {
             console.error(`[ERROR] InteractionCreate failed for ${interaction.user.tag}:`, err);
             try {
                 if (interaction?.deferred || interaction?.replied) {

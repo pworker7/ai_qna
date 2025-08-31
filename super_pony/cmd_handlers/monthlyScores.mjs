@@ -7,7 +7,7 @@
 //
 // Security: requires message.webhookId (i.e., came from a webhook) AND a token match in content.
 
-const {
+import {
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
@@ -17,16 +17,16 @@ const {
     ModalBuilder,
     TextInputBuilder,
     TextInputStyle,
-} = require('discord.js');
+} from "discord.js";
 
-const crypto = require('crypto');
-const fs = require('fs');
-const fsp = require('fs/promises');
-const path = require('path');
-const { execSync } = require('child_process');
-const dayjs = require('dayjs');
-const utc = require('dayjs-plugin-utc');
-const timezone = require('dayjs-plugin-timezone');
+import crypto from 'crypto';
+import fs from 'fs';
+import fsp from 'fs/promises';
+import path from 'path';
+import { execSync } from 'child_process';
+import dayjs from 'dayjs';
+import utc from 'dayjs-plugin-utc';
+import timezone from 'dayjs-plugin-timezone';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

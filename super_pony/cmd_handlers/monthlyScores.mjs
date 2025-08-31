@@ -40,6 +40,7 @@ const SECRET_SALT = process.env.SECRET_SALT || 'mkld4Rfvl0BYjn4SF5lk9jF3WcY';
 const SCORE_CHANNEL_ID = process.env.SCORE_CHANNEL_ID;
 const LOG_CHANNEL_ID = process.env.LOG_CHANNEL_ID;
 const SCORES_TRIGGER_TOKEN = process.env.SCORES_TRIGGER_TOKEN || '';
+const FINNHUB_TOKEN = process.env.FINNHUB_TOKEN || '';
 
 const IDS = {
     BUTTON_OPEN_MODAL: 'monthly_scores_open_modal',
@@ -161,6 +162,41 @@ async function computeAverageForPeriod(pKey) {
     return sum / data.entries.length;
 }
 
+
+async function computeStatsForPeriod(pKey) {
+    const file = scoresFileForPeriod(pKey);
+    const data = await readJSON(file, null);
+    if (!data || !Array.isArray(data.entries) || data.entries.length === 0) {
+        return { average: null, count: 0, stdDev: null };
+    }
+    const count = data.entries.length;
+    const sum = data.entries.reduce((acc, e) => acc + Number(e.score || 0), 0);
+    const average = sum / count;
+
+    let stdDev = 0;
+    if (count >= 2) {
+        const sumSquares = data.entries.reduce((acc, e) => acc + (Number(e.score || 0) ** 2), 0);
+        const variance = (sumSquares - (sum ** 2 / count)) / (count - 1);
+        stdDev = Math.sqrt(variance);
+    }
+
+    return { average, count, stdDev };
+}
+
+async function getSPXMonthlyReturn(pKey, token) {
+    if (!token) throw new Error('No FINNHUB_TOKEN');
+    const start = dayjs(`${pKey}-01`).unix();
+    const end = dayjs(`${pKey}-01`).endOf('month').unix();
+    const url = `https://finnhub.io/api/v1/stock/candle?symbol=%5EGSPC&resolution=M&from=${start}&to=${end}&token=${token}`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Finnhub API error');
+    const data = await response.json();
+    if (data.s !== 'ok' || !data.c || data.c.length === 0) throw new Error('No SPX data');
+    const open = data.o[0];
+    const close = data.c[0];
+    return (close - open) / open * 100;
+}
+
 // ---- Trigger Parsing & Guards ------------------------------------------------
 
 function parseTriggerContent(contentRaw) {
@@ -259,11 +295,45 @@ function registerWebhookTriggerListener(client) {
                         await scoreChannel.send({ content: '@every one מזכיר לכם שהיום מתקיים סקר תשואה חודשית אנונימי, אתם מוזמנים להשתתף ולהגיש את המספר שלכם, הסקר אנונימי לחלוטין' });
                         await msg.react('⏰').catch(() => { });
                     } else if (parsed.type === 'publish') {
-                        const avg = await computeAverageForPeriod(pKey);
-                        const text = (avg == null)
-                            ? '@every one התשואה הממוצעת לקבוצה שהשתתפה בסקר היא: 0% (אף אחד לא השתתף בסקר)'
-                            : `@every one התשואה הממוצעת לקבוצה שהשתתפה בסקר היא: ${Number(avg.toFixed(2))}`;
-                        await scoreChannel.send({ content: text });
+                        // const avg = await computeAverageForPeriod(pKey);
+                        // const text = (avg == null)
+                        //     ? '@every one התשואה הממוצעת לקבוצה שהשתתפה בסקר היא: 0% (אף אחד לא השתתף בסקר)'
+                        //     : `@everyone התשואה הממוצעת לקבוצה שהשתתפה בסקר היא: ${stats.average.toFixed(2)}% (סטיית תקן: ${stats.stdDev.toFixed(2)}, מספר משתתפים: ${stats.count})${spxText}`;                            
+                        // await scoreChannel.send({ content: text });
+
+                        const stats = await computeStatsForPeriod(pKey);
+                        let spxText = '';
+                        try {
+                            const spxReturn = await getSPXMonthlyReturn(pKey, FINNHUB_TOKEN);
+                            spxText = `\nלשם השוואה, תשואת S&P 500 לחודש זה: ${spxReturn.toFixed(2)}%`;
+                        } catch {
+                            spxText = '\n(תשואת S&P 500 לא זמינה כרגע)';
+                        }
+
+                        let embed;
+                        if (stats.count === 0) {
+                            embed = new EmbedBuilder()
+                                .setColor(0xFF0000) // red if no data
+                                .setTitle('@everyone תוצאות הסקר')
+                                .setDescription('📊 **אף אחד לא השתתף בסקר**')
+                                .addFields({ name: 'תשואה ממוצעת', value: '0%', inline: true })
+                                .setTimestamp();
+                        } else {
+                            embed = new EmbedBuilder()
+                                .setColor(0x00FF00) // green if valid
+                                .setTitle('@everyone תוצאות הסקר')
+                                .setDescription('📊 **סיכום נתוני הקבוצה שהשתתפה בסקר**')
+                                .addFields(
+                                    { name: '👥 מספר משתתפים', value: `**${stats.count}**`, inline: true },
+                                    { name: '📈 תשואה ממוצעת', value: `**${stats.average.toFixed(2)}%**`, inline: true },
+                                    { name: '📊 סטיית תקן', value: `**${stats.stdDev.toFixed(2)}**`, inline: true },
+                                )
+                                .setFooter({ text: spxText || '' })
+                                .setTimestamp();
+                        }
+                        
+                        await scoreChannel.send({ embeds: [embed] });
+
                         await deleteWindowIfExists(client, pKey);
                         await msg.react('📊').catch(() => { });
                     }

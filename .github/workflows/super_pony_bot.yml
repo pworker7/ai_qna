@@ -46,6 +46,13 @@ jobs:
           SHUTDOWN_SECRET: ${{ vars.SHUTDOWN_SECRET }}
           CHATROOM_IDS: ${{ vars.CHATROOM_IDS }}
           GEMINI_API_KEY: ${{ vars.GEMINI_API_KEY }}
+          SCORE_CHANNEL_ID: ${{ vars.SCORE_CHANNEL_ID }}
+          TIMEZONE: ${{ vars.TIMEZONE }}
+          SCORES_DIR: ${{ vars.SCORES_DIR }}
+          SECRET_SALT: ${{ vars.SECRET_SALT }}
+          GIT_COMMIT: "1"
+          GIT_USER_NAME: "github-actions[bot]"
+          GIT_USER_EMAIL: "github-actions[bot]@users.noreply.github.com"
           GEMINI_DEBUG: "1"
           GEMINI_MODEL: "gemini-2.5-flash-lite" # "gemini-2.5-flash"
           

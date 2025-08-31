@@ -19,6 +19,8 @@ import { handleGraphChannelMessage, runBackfillOnce } from "./cmd_handlers/graph
 import { showTickersDashboard, handleDashboardInteraction } from "./cmd_handlers/tickersDashboard.mjs";
 import { deleteAndRepost } from "./cmd_handlers/deleteAndRepost.mjs";
 import { registerNewsCmdHandler } from "./cmd_handlers/newsRoleHandler.mjs";
+import { registerMonthlyScores } from "./cmd_handlers/monthlyScores.mjs";
+
 import { appendToLog, readRecent, backfillLastDayMessages } from "../utils/liveLog.mjs";
 import { askGemini } from "../utils/askGemini.mjs";
 
@@ -118,7 +120,8 @@ client.once("ready", async () => {
       console.warn("Bot channel not found, wont be able to respond to user commands.");
     }
 
-    registerNewsCmdHandler(client);    
+    registerNewsCmdHandler(client);
+    registerMonthlyScores(client);
 
     // Backfill messages from the last day for specified chat rooms
     const chatRooms = (CHATROOM_IDS || "")

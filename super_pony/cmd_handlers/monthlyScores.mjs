@@ -236,8 +236,9 @@ function registerWebhookTriggerListener(client) {
         try {
             // Must arrive in the LOG channel from a webhook
             console.log('[monthlyScoresWebhook] MessageCreate', { channelId: msg.channelId, authorId: msg.author?.id, webhookId: msg.webhookId, content: msg.content });
-            if (message.webhookId) {
-                if (message.channel.id === LOG_CHANNEL_ID) {
+            if (msg.webhookId) {
+                console.log('[monthlyScoresWebhook] MessageCreate has webhookId');
+                if (msg.channel.id === LOG_CHANNEL_ID) {
             // if (!LOG_CHANNEL_ID || msg.channelId !== LOG_CHANNEL_ID) return;
             // console.log('[monthlyScoresWebhook] MessageCreate in LOG channel');
             // if (msg.author?.bot) return;     // ignore bot/self

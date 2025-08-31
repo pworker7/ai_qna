@@ -1,6 +1,11 @@
-// cmd_handlers/monthlyScores.js
-// SuperPony: Monthly Anonymous Score Collector
-// Schedules: 29th @13:00 post window + @everyone; 14:00-17:00 hourly reminders; 18:00 publish average + delete window
+// cmd_handlers/monthlyScores_webhookTriggers.js
+// SuperPony: Monthly Anonymous Score Collector (Webhook-triggered, separate LOG channel)
+// Triggers (sent by a Discord channel webhook into LOG_CHANNEL_ID):
+//   - "sp:scores:start [period=YYYY-MM] token=XXXX"   -> posts @everyone + score window (in SCORE_CHANNEL_ID)
+//   - "sp:scores:remind token=XXXX"                   -> posts @everyone reminder (in SCORE_CHANNEL_ID)
+//   - "sp:scores:publish [period=YYYY-MM] token=XXXX" -> posts average + deletes window (in SCORE_CHANNEL_ID)
+//
+// Security: requires message.webhookId (i.e., came from a webhook) AND a token match in content.
 
 const {
     ActionRowBuilder,
@@ -10,13 +15,10 @@ const {
     EmbedBuilder,
     Events,
     ModalBuilder,
-    PermissionFlagsBits,
-    SlashCommandBuilder,
     TextInputBuilder,
-    TextInputStyle
+    TextInputStyle,
 } = require('discord.js');
 
-const cron = require('node-cron');
 const crypto = require('crypto');
 const fs = require('fs');
 const fsp = require('fs/promises');
@@ -33,8 +35,10 @@ const TIMEZONE = process.env.TIMEZONE || 'Asia/Jerusalem';
 const SCORES_DIR = process.env.SCORES_DIR || path.join(process.cwd(), 'data', 'scores');
 const STATE_DIR = path.join(process.cwd(), 'data', 'state');
 const SECRET_SALT = process.env.SECRET_SALT || 'replace-me-with-a-very-long-random-secret';
-const CHANNEL_ID = process.env.SCORE_CHANNEL_ID;
+const SCORE_CHANNEL_ID = process.env.SCORE_CHANNEL_ID;
+const LOG_CHANNEL_ID = process.env.LOG_CHANNEL_ID;
 const GIT_COMMIT = process.env.GIT_COMMIT === '1';
+const SCORES_TRIGGER_TOKEN = process.env.SCORES_TRIGGER_TOKEN || '';
 
 const IDS = {
     BUTTON_OPEN_MODAL: 'monthly_scores_open_modal',
@@ -42,22 +46,16 @@ const IDS = {
     INPUT_SCORE: 'monthly_scores_input',
 };
 
-function periodKey(date = dayjs().tz(TIMEZONE)) {
-    return date.format('YYYY-MM'); // e.g., 2025-08
-}
-
 function ensureDirs() {
     if (!fs.existsSync(SCORES_DIR)) fs.mkdirSync(SCORES_DIR, { recursive: true });
     if (!fs.existsSync(STATE_DIR)) fs.mkdirSync(STATE_DIR, { recursive: true });
 }
 
-function scoresFileForPeriod(key) {
-    return path.join(SCORES_DIR, `${key}.json`);
+function periodKey(date = dayjs().tz(TIMEZONE)) {
+    return date.format('YYYY-MM'); // e.g., 2025-08
 }
-
-function stateFileForPeriod(key) {
-    return path.join(STATE_DIR, `${key}.json`);
-}
+function scoresFileForPeriod(key) { return path.join(SCORES_DIR, `${key}.json`); }
+function stateFileForPeriod(key) { return path.join(STATE_DIR, `${key}.json`); }
 
 async function readJSON(file, fallback) {
     try {
@@ -67,33 +65,26 @@ async function readJSON(file, fallback) {
         return fallback;
     }
 }
-
 async function writeJSON(file, data) {
     await fsp.mkdir(path.dirname(file), { recursive: true });
     await fsp.writeFile(file, JSON.stringify(data, null, 2), 'utf8');
     if (GIT_COMMIT) tryGitCommit(file);
 }
-
 function tryGitCommit(filePath) {
     try {
-        // Configure identity (safe to run repeatedly)
         if (process.env.GIT_USER_NAME) execSync(`git config user.name "${process.env.GIT_USER_NAME}"`, { stdio: 'ignore' });
         if (process.env.GIT_USER_EMAIL) execSync(`git config user.email "${process.env.GIT_USER_EMAIL}"`, { stdio: 'ignore' });
-
         execSync(`git add "${filePath}"`, { stdio: 'ignore' });
         const msg = `chore(scores): update ${path.relative(process.cwd(), filePath)} at ${new Date().toISOString()}`;
         execSync(`git commit -m "${msg.replace(/"/g, '\\"')}"`, { stdio: 'ignore' });
-        // Optional: push if your repo expects it. Comment out if you prefer CI to push.
         try { execSync('git push', { stdio: 'ignore' }); } catch { }
-    } catch (err) {
-        // Silently ignore git errors to avoid crashing the bot
-    }
+    } catch { }
 }
 
 function hashUserForPeriod(userId, pKey) {
     const h = crypto.createHmac('sha256', SECRET_SALT);
     h.update(`${pKey}:${userId}`);
-    return h.digest('hex'); // anonymized, stable per period
+    return h.digest('hex');
 }
 
 function scoreEmbed() {
@@ -102,48 +93,36 @@ function scoreEmbed() {
         .setDescription('Click **Submit Score** to enter your number anonymously.\n\nYou will get a private confirmation (ephemeral).')
         .setColor(0x5865F2);
 }
-
 function scoreButtonRow() {
     return new ActionRowBuilder().addComponents(
-        new ButtonBuilder()
-            .setCustomId(IDS.BUTTON_OPEN_MODAL)
-            .setLabel('Submit Score')
-            .setStyle(ButtonStyle.Primary)
+        new ButtonBuilder().setCustomId(IDS.BUTTON_OPEN_MODAL).setLabel('Submit Score').setStyle(ButtonStyle.Primary)
     );
 }
-
 function scoreModal() {
-    const modal = new ModalBuilder()
-        .setCustomId(IDS.MODAL_SUBMIT)
-        .setTitle('Submit Your Score');
-
+    const modal = new ModalBuilder().setCustomId(IDS.MODAL_SUBMIT).setTitle('Submit Your Score');
     const input = new TextInputBuilder()
         .setCustomId(IDS.INPUT_SCORE)
         .setLabel('Enter a number (e.g., 87.5)')
         .setPlaceholder('Your score')
         .setRequired(true)
         .setStyle(TextInputStyle.Short);
-
     return modal.addComponents(new ActionRowBuilder().addComponents(input));
 }
 
-async function postWindowAndPing(channel) {
-    const pKey = periodKey();
-    // Post @everyone ping + window message with button
-    await channel.send({ content: '@everyone please report your score' });
+// --- Actions in SCORE CHANNEL -------------------------------------------------
 
-    const msg = await channel.send({
-        embeds: [scoreEmbed()],
-        components: [scoreButtonRow()],
-    });
+async function getScoreChannel(client) {
+    if (!SCORE_CHANNEL_ID) return null;
+    const channel = await client.channels.fetch(SCORE_CHANNEL_ID).catch(() => null);
+    if (!channel || channel.type !== ChannelType.GuildText) return null;
+    return channel;
+}
 
-    // Persist message id so we can delete it at 18:00
-    await writeJSON(stateFileForPeriod(pKey), {
-        channelId: channel.id,
-        messageId: msg.id,
-        createdAt: new Date().toISOString(),
-    });
-
+async function postWindowAndPing(scoreChannel, nowTz) {
+    const pKey = periodKey(nowTz);
+    await scoreChannel.send({ content: '@everyone please report your score' });
+    const msg = await scoreChannel.send({ embeds: [scoreEmbed()], components: [scoreButtonRow()] });
+    await writeJSON(stateFileForPeriod(pKey), { channelId: scoreChannel.id, messageId: msg.id, createdAt: new Date().toISOString() });
     return msg.id;
 }
 
@@ -151,7 +130,6 @@ async function deleteWindowIfExists(client, pKey) {
     const sfile = stateFileForPeriod(pKey);
     const state = await readJSON(sfile, null);
     if (!state) return;
-
     try {
         const channel = await client.channels.fetch(state.channelId);
         if (channel && channel.type === ChannelType.GuildText) {
@@ -159,37 +137,26 @@ async function deleteWindowIfExists(client, pKey) {
             if (message) await message.delete().catch(() => { });
         }
     } finally {
-        // Clear state regardless of delete success
-        await writeJSON(sfile, {});
+        await writeJSON(sfile, {}); // clear state
     }
 }
 
 async function addScore(userId, rawScore, nowTz = dayjs().tz(TIMEZONE)) {
     const pKey = periodKey(nowTz);
     const file = scoresFileForPeriod(pKey);
-
     const scoreNum = Number(String(rawScore).replace(',', '.'));
-    if (!Number.isFinite(scoreNum)) {
-        throw new Error('Invalid number');
-    }
+    if (!Number.isFinite(scoreNum)) throw new Error('Invalid number');
 
     const data = await readJSON(file, { period: pKey, entries: [] });
-
     const fingerprint = hashUserForPeriod(userId, pKey);
-    const already = data.entries.find(e => e.userHash === fingerprint);
+    const existing = data.entries.find(e => e.userHash === fingerprint);
 
-    if (already) {
-        // Overwrite their score for this period (lets user update if they re-open)
-        already.score = scoreNum;
-        already.updatedAt = new Date().toISOString();
+    if (existing) {
+        existing.score = scoreNum;
+        existing.updatedAt = new Date().toISOString();
     } else {
-        data.entries.push({
-            userHash: fingerprint,
-            score: scoreNum,
-            createdAt: new Date().toISOString(),
-        });
+        data.entries.push({ userHash: fingerprint, score: scoreNum, createdAt: new Date().toISOString() });
     }
-
     await writeJSON(file, data);
 }
 
@@ -201,94 +168,57 @@ async function computeAverageForPeriod(pKey) {
     return sum / data.entries.length;
 }
 
-function isTwentyNinth(dateTz) {
-    return dateTz.date() === 29;
+// ---- Trigger Parsing & Guards ------------------------------------------------
+
+function parseTriggerContent(contentRaw) {
+    // Accepts:
+    //   "sp:scores:start token=XYZ"
+    //   "sp:scores:start period=2025-08 token=XYZ"
+    //   "sp:scores:remind token=XYZ"
+    //   "sp:scores:publish token=XYZ"
+    const content = (contentRaw || '').trim();
+    const lower = content.toLowerCase();
+
+    let type = null;
+    if (lower.startsWith('sp:scores:start')) type = 'start';
+    else if (lower.startsWith('sp:scores:remind')) type = 'remind';
+    else if (lower.startsWith('sp:scores:publish')) type = 'publish';
+    else return null;
+
+    const args = {};
+    const parts = content.split(/\s+/);
+    for (let i = 1; i < parts.length; i++) {
+        const [k, v] = parts[i].split('=');
+        if (k && v) args[k.trim()] = v.trim();
+    }
+    return { type, args };
 }
 
-function registerSchedules(client) {
-    // 29th @13:00 — Post the window + ping
-    cron.schedule('0 13 29 * *', async () => {
-        try {
-            const now = dayjs().tz(TIMEZONE);
-            if (!CHANNEL_ID) return;
-            // guard for DST/timezone issues
-            if (!isTwentyNinth(now)) return;
-
-            const channel = await client.channels.fetch(CHANNEL_ID).catch(() => null);
-            if (!channel || channel.type !== ChannelType.GuildText) return;
-            ensureDirs();
-            await postWindowAndPing(channel);
-        } catch (e) {
-            // swallow errors to avoid crash
-        }
-    }, { timezone: TIMEZONE });
-
-    // 29th @ 14:00-17:00 — hourly reminders
-    cron.schedule('0 14-17 29 * *', async () => {
-        try {
-            const now = dayjs().tz(TIMEZONE);
-            if (!CHANNEL_ID) return;
-            if (!isTwentyNinth(now)) return;
-
-            const channel = await client.channels.fetch(CHANNEL_ID).catch(() => null);
-            if (!channel || channel.type !== ChannelType.GuildText) return;
-            await channel.send({ content: '@everyone please remember to fill your score' });
-        } catch { }
-    }, { timezone: TIMEZONE });
-
-    // 29th @18:00 — publish average + delete window
-    cron.schedule('0 18 29 * *', async () => {
-        try {
-            const now = dayjs().tz(TIMEZONE);
-            if (!CHANNEL_ID) return;
-            if (!isTwentyNinth(now)) return;
-
-            const channel = await client.channels.fetch(CHANNEL_ID).catch(() => null);
-            if (!channel || channel.type !== ChannelType.GuildText) return;
-
-            const pKey = periodKey(now);
-            const avg = await computeAverageForPeriod(pKey);
-            const text = (avg == null)
-                ? '@everyone the group average score is: N/A (no submissions)'
-                : `@everyone the group average score is: ${Number(avg.toFixed(2))}`;
-
-            await channel.send({ content: text });
-
-            // delete the window posted at 13:00 for this period
-            await deleteWindowIfExists(client, pKey);
-        } catch { }
-    }, { timezone: TIMEZONE });
+function tokenIsValid(args) {
+    if (!SCORES_TRIGGER_TOKEN) return false;
+    return (args?.token === SCORES_TRIGGER_TOKEN);
 }
+
+// ---- Registration ------------------------------------------------------------
 
 function registerInteractionHandlers(client) {
     client.on(Events.InteractionCreate, async (interaction) => {
         try {
-            // Button -> open modal
             if (interaction.isButton() && interaction.customId === IDS.BUTTON_OPEN_MODAL) {
                 await interaction.showModal(scoreModal());
                 return;
             }
-
-            // Modal submit -> validate & store score
             if (interaction.isModalSubmit() && interaction.customId === IDS.MODAL_SUBMIT) {
                 const value = interaction.fields.getTextInputValue(IDS.INPUT_SCORE)?.trim();
                 try {
                     await addScore(interaction.user.id, value, dayjs().tz(TIMEZONE));
-                } catch (err) {
-                    await interaction.reply({
-                        content: '❌ Invalid number. Please try again with a numeric value (e.g., 87 or 87.5).',
-                        ephemeral: true,
-                    });
+                } catch {
+                    await interaction.reply({ content: '❌ Invalid number. Please try again (e.g., 87 or 87.5).', ephemeral: true });
                     return;
                 }
-
-                await interaction.reply({
-                    content: '✅ Your anonymous score has been recorded. Thank you!',
-                    ephemeral: true,
-                });
-                return;
+                await interaction.reply({ content: '✅ Your anonymous score has been recorded. Thank you!', ephemeral: true });
             }
-        } catch (err) {
+        } catch {
             try {
                 if (interaction?.deferred || interaction?.replied) {
                     await interaction.followUp({ content: '⚠️ Something went wrong. Please try again.', ephemeral: true });
@@ -300,13 +230,66 @@ function registerInteractionHandlers(client) {
     });
 }
 
+function registerWebhookTriggerListener(client) {
+    client.on(Events.MessageCreate, async (msg) => {
+        try {
+            // Must arrive in the LOG channel from a webhook
+            if (!LOG_CHANNEL_ID || msg.channelId !== LOG_CHANNEL_ID) return;
+            if (msg.author?.bot) return;     // ignore bot/self
+            if (!msg.webhookId) return;      // only accept webhook messages for triggers
+
+            const parsed = parseTriggerContent(msg.content);
+            if (!parsed) return;
+            if (!tokenIsValid(parsed.args)) {
+                await msg.reply({ content: '❌ Invalid or missing token.', allowedMentions: { parse: [] } }).catch(() => { });
+                return;
+            }
+
+            const nowTz = dayjs().tz(TIMEZONE);
+            const pKey = parsed.args.period || periodKey(nowTz);
+
+            const scoreChannel = await getScoreChannel(client);
+            if (!scoreChannel) {
+                await msg.reply({ content: '⚠️ SCORE_CHANNEL_ID is not a valid text channel.', allowedMentions: { parse: [] } }).catch(() => { });
+                return;
+            }
+
+            if (parsed.type === 'start') {
+                await postWindowAndPing(scoreChannel, nowTz);
+                await msg.react('✅').catch(() => { });
+            } else if (parsed.type === 'remind') {
+                await scoreChannel.send({ content: '@everyone please remember to fill your score' });
+                await msg.react('⏰').catch(() => { });
+            } else if (parsed.type === 'publish') {
+                const avg = await computeAverageForPeriod(pKey);
+                const text = (avg == null)
+                    ? '@everyone the group average score is: N/A (no submissions)'
+                    : `@everyone the group average score is: ${Number(avg.toFixed(2))}`;
+                await scoreChannel.send({ content: text });
+                await deleteWindowIfExists(client, pKey);
+                await msg.react('📊').catch(() => { });
+            }
+        } catch {
+            // no-op; avoid crashing the bot on webhook mishaps
+        }
+    });
+}
+
 export function registerMonthlyScores(client) {
-    if (!CHANNEL_ID) {
-        console.warn('[monthlyScores] SCORE_CHANNEL_ID not set — handler disabled.');
+    if (!SCORE_CHANNEL_ID) {
+        console.warn('[monthlyScoresWebhook] SCORE_CHANNEL_ID not set — handler disabled.');
+        return;
+    }
+    if (!LOG_CHANNEL_ID) {
+        console.warn('[monthlyScoresWebhook] LOG_CHANNEL_ID not set — handler disabled.');
+        return;
+    }
+    if (!SCORES_TRIGGER_TOKEN) {
+        console.warn('[monthlyScoresWebhook] SCORES_TRIGGER_TOKEN not set — REFUSING to run for safety.');
         return;
     }
     ensureDirs();
-    registerSchedules(client);
     registerInteractionHandlers(client);
-    console.log('[monthlyScores] Registered monthly schedules and interaction handlers.');
+    registerWebhookTriggerListener(client);
+    console.log('[monthlyScoresWebhook] Registered webhook trigger listener (LOG channel) and interaction handlers.');
 }

@@ -37,7 +37,7 @@ async function ensureDir() {
 }
 
 /** Git commit helper (safe to call when nothing changed) */
-async function commitLogIfChanged(logPath) {
+export async function commitLogIfChanged(logPath) {
     try {
         await exec('git config user.name "github-actions[bot]"');
         await exec('git config user.email "github-actions[bot]@users.noreply.github.com"');

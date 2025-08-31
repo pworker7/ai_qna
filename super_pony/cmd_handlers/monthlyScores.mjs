@@ -23,10 +23,11 @@ import crypto from 'crypto';
 import fs from 'fs';
 import fsp from 'fs/promises';
 import path from 'path';
-import { execSync } from 'child_process';
-import dayjs from 'dayjs';
-import utc from 'dayjs-plugin-utc';
-import timezone from 'dayjs-plugin-timezone';
+import execSync from 'child_process';
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc.js";
+import timezone from "dayjs/plugin/timezone.js";
+
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

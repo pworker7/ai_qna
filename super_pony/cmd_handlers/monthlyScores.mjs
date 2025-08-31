@@ -94,8 +94,8 @@ function scoreModal() {
     console.log('[DEBUG] Creating modal with ID:', IDS.MODAL_SUBMIT);
     const input = new TextInputBuilder()
         .setCustomId(IDS.INPUT_SCORE)
-        .setLabel('הקלידו את אחוז התשואה החודשית בתיק שלכם כמספר בלבד\n(ללא סימן אחוז, ניתן לסמן פלוס או מינוס)\nלדוגמה: 87.5 או 5.1-')
-        .setPlaceholder('אחוז התשואה שלי החודש')
+        .setLabel('הקלידו את אחוז התשואה החודשית בתיק כמספר בלבד')
+        .setPlaceholder('לדוגמה: 87.5 או -5.1')
         .setRequired(true)
         .setStyle(TextInputStyle.Short);
     console.log('[DEBUG] Created text input with ID:', IDS.INPUT_SCORE);

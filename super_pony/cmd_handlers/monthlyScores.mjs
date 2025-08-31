@@ -235,16 +235,22 @@ function registerWebhookTriggerListener(client) {
     client.on(Events.MessageCreate, async (msg) => {
         try {
             // Must arrive in the LOG channel from a webhook
+            console.log('[monthlyScoresWebhook] MessageCreate', { channelId: msg.channelId, authorId: msg.author?.id, webhookId: msg.webhookId, content: msg.content });
             if (!LOG_CHANNEL_ID || msg.channelId !== LOG_CHANNEL_ID) return;
+            console.log('[monthlyScoresWebhook] MessageCreate in LOG channel');
             if (msg.author?.bot) return;     // ignore bot/self
+            console.log('[monthlyScoresWebhook] MessageCreate not from bot');
             if (!msg.webhookId) return;      // only accept webhook messages for triggers
+            console.log('[monthlyScoresWebhook] MessageCreate from webhook');
 
             const parsed = parseTriggerContent(msg.content);
+            console.log('[monthlyScoresWebhook] Parsed trigger:', parsed);
             if (!parsed) return;
             if (!tokenIsValid(parsed.args)) {
                 await msg.reply({ content: '❌ Invalid or missing token.', allowedMentions: { parse: [] } }).catch(() => { });
                 return;
             }
+            console.log('[monthlyScoresWebhook] Valid token');
 
             const nowTz = dayjs().tz(TIMEZONE);
             const pKey = parsed.args.period || periodKey(nowTz);

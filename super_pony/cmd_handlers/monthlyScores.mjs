@@ -314,19 +314,19 @@ function registerWebhookTriggerListener(client) {
                         if (stats.count === 0) {
                             embed = new EmbedBuilder()
                                 .setColor(0xFF0000) // red if no data
-                                .setTitle('@everyone תוצאות הסקר')
+                                .setTitle('@every one תוצאות הסקר')
                                 .setDescription('📊 **אף אחד לא השתתף בסקר**')
                                 .addFields({ name: 'תשואה ממוצעת', value: '0%', inline: true })
                                 .setTimestamp();
                         } else {
                             embed = new EmbedBuilder()
                                 .setColor(0x00FF00) // green if valid
-                                .setTitle('@everyone תוצאות הסקר')
+                                .setTitle('@every one תוצאות הסקר')
                                 .setDescription('📊 **סיכום נתוני הקבוצה שהשתתפה בסקר**')
                                 .addFields(
-                                    { name: '👥 מספר משתתפים', value: `**${stats.count}**`, inline: true },
-                                    { name: '📈 תשואה ממוצעת', value: `**${stats.average.toFixed(2)}%**`, inline: true },
-                                    { name: '📊 סטיית תקן', value: `**${stats.stdDev.toFixed(2)}**`, inline: true },
+                                    { name: '👥 מספר משתתפים', value: `**${stats.count}**`, inline: false },
+                                    { name: '📈 תשואה ממוצעת', value: `**${stats.average.toFixed(2)}%**`, inline: false },
+                                    { name: '📊 סטיית תקן', value: `**${stats.stdDev.toFixed(2)}**`, inline: false },
                                 )
                                 .setFooter({ text: spxText || '' })
                                 .setTimestamp();

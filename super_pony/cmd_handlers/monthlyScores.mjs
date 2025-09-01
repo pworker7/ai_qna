@@ -307,7 +307,7 @@ function registerWebhookTriggerListener(client) {
                         let spxText = '';
                         try {
                             const spxReturn = await getSPXMonthlyReturn();
-                            spxText = `\nלשם השוואה, תשואת S&P 500 לחודש זה: ${spxReturn}%`;
+                            spxText = `\nלשם השוואה, תשואת S&P 500 לחודש זה: ${spxReturn}`;
                         } catch(err) {
                             console.warn('[monthlyScoresWebhook] Failed to fetch SPX return:', err);
                             spxText = '\n(תשואת S&P 500 לא זמינה כרגע)';
@@ -330,7 +330,7 @@ function registerWebhookTriggerListener(client) {
                                     { name: `**${stats.count}** :מספר משתתפים 👥`, value: ` `, inline: false },
                                     { name: `**${stats.average.toFixed(2)}%** :תשואה ממוצעת 📈`, value: ` `, inline: false },
                                     { name: `**${stats.stdDev.toFixed(2)}** :סטיית תקן 🔀`, value: ` `, inline: false },
-                                    { name: `**${spxText}** 🔀`, value: ` `, inline: false },
+                                    { name: `**${spxText}** ✅`, value: ` `, inline: false },
                                 )
                                 .setFooter({ text: '=| ושיהיה לכם חודש ירוק |=' })
                                 .setTimestamp();

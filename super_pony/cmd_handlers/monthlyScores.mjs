@@ -284,11 +284,13 @@ function registerInteractionHandlers(client) {
 
                 if (commandName === 'survey_help') {
                     const helpMessage = `
-                        הנה הפקודות הזמינות לניהול סקר התשואה החודשי:
-                        - \`/start_survey\` - פותח חלון הזנה חדש בסקר התשואה החודשי
-                        - \`/remind_survey\` - שולח תזכורת למשתמשים להשתתף בסקר
-                        - \`/publish_survey\` - מסכם את התשואות שהתקבלו ומפרסם את התוצאות
-                        כל הפקודות הללו זמינות רק למשתמשים עם תפקיד "admin".
+הנה הפקודות הזמינות לניהול סקר התשואה החודשי:
+
+- \`/start_survey\` - פותח חלון הזנה חדש בסקר התשואה החודשי
+- \`/remind_survey\` - שולח תזכורת למשתמשים להשתתף בסקר
+- \`/publish_survey\` - מסכם את התשואות שהתקבלו ומפרסם את התוצאות
+
+כל הפקודות הללו זמינות רק למשתמשים עם תפקיד "admin".
                     `;
                     await interaction.reply({ content: helpMessage, ephemeral: true });
                 }

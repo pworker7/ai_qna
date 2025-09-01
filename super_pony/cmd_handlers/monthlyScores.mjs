@@ -324,9 +324,9 @@ function registerWebhookTriggerListener(client) {
                                 .setTitle('@every one תוצאות הסקר')
                                 .setDescription('📊 **סיכום נתוני הקבוצה שהשתתפה בסקר**')
                                 .addFields(
-                                    { name: '👥 מספר משתתפים', value: `**${stats.count}**`, inline: false },
-                                    { name: '📈 תשואה ממוצעת', value: `**${stats.average.toFixed(2)}%**`, inline: false },
-                                    { name: '📊 סטיית תקן', value: `**${stats.stdDev.toFixed(2)}**`, inline: false },
+                                    { name: `👥 מספר משתתפים: **${stats.count}**`, value: ` `, inline: false },
+                                    { name: `📈 תשואה ממוצעת: **${stats.average.toFixed(2)}%**`, value: ` `, inline: false },
+                                    { name: `📊 סטיית תקן: **${stats.stdDev.toFixed(2)}**`, value: ` `, inline: false },
                                 )
                                 .setFooter({ text: spxText || '' })
                                 .setTimestamp();

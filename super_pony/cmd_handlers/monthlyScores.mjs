@@ -344,7 +344,7 @@ async function publishSurveyResults(parsed, client) {
 
 function registerWebhookTriggerListener(client) {
     client.on(Events.MessageCreate, async (msg) => {
-        const mentionsBot = (client.user?.id && message.mentions.users.has(client.user.id)) || content.includes("@superpony") || content.includes("1398710664079474789");
+        const mentionsBot = (client.user?.id && msg.mentions.users.has(client.user.id)) || content.includes("@superpony") || content.includes("1398710664079474789");
 
         // if a user in admin group wrote at the bot room (BOT_CHANNEL_ID) "@SuperPony סקר התחל" -> start scores
         if (mentionsBot && msg.channelId === BOT_CHANNEL_ID && msg.content.toLowerCase().includes('סקר') && (msg.content.includes('התחל') || msg.content.includes('תתחיל')) && msg.member.roles.cache.some(role => role.name === 'admin')) {

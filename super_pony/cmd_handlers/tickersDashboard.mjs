@@ -8,8 +8,8 @@ import {
   ButtonStyle,
 } from "discord.js";
 
-/* ---------- per-message metric and month selection ---------- */
-const metricState = new Map(); // messageId -> { metric: "month_oc" | "month_cc" | "mention_oc" | "mention_cc", month: "YYYY-MM" }
+/* ---------- per-message and per-user metric and month selection ---------- */
+const metricState = new Map(); // `${messageId}:${userId}` -> { metric: "month_oc" | "month_cc" | "mention_oc" | "mention_cc", month: "YYYY-MM" }
 
 /* ======================== DB + time helpers ======================== */
 async function loadDb(dbPath) {
@@ -302,12 +302,12 @@ function buildDashboardComponents(userOptions, currentUserId, currentMetric = "m
   return components;
 }
 
-function getSelectedMetricForMessage(message) {
-  return metricState.get(message.id)?.metric || "month_oc";
+function getSelectedMetricForMessage(message, userId) {
+  return metricState.get(`${message.id}:${userId}`)?.metric || "month_oc";
 }
 
-function getSelectedMonthForMessage(message) {
-  return metricState.get(message.id)?.month || `${new Date().getUTCFullYear()}-${String(new Date().getUTCMonth() + 1).padStart(2, "0")}`;
+function getSelectedMonthForMessage(message, userId) {
+  return metricState.get(`${message.id}:${userId}`)?.month || `${new Date().getUTCFullYear()}-${String(new Date().getUTCMonth() + 1).padStart(2, "0")}`;
 }
 
 function metricToComputeOpts(metric) {
@@ -407,8 +407,8 @@ export async function showTickersDashboard({ message, dbPath }) {
     const sent = await message.channel.send({ embeds: [embed], components });
     console.log("Dashboard sent");
 
-    metricState.set(sent.id, { metric: "month_oc", month: currentMonth });
-    console.log("Metric and month state set");
+    metricState.set(`${sent.id}:${message.author.id}`, { metric: "month_oc", month: currentMonth });
+    console.log("Metric and month state set for user", message.author.id);
   } catch (e) {
     console.error("showTickersDashboard error:", e);
     await message.channel.send("תקלה בטעינת לוח הבקרה של הטיקרים.");
@@ -420,8 +420,9 @@ export async function handleDashboardInteraction({ interaction, dbPath }) {
   const cid = interaction.customId || "";
   if (!cid.startsWith("dash:")) return false;
 
+  const userId = interaction.user.id;
+  const selectedMonth = getSelectedMonthForMessage(interaction.message, userId);
   const { entries } = await loadDb(dbPath);
-  const selectedMonth = getSelectedMonthForMessage(interaction.message);
   const { byTicker } = buildMonthAgg(entries, selectedMonth);
   const mtd = [...byTicker.entries()].sort(
     (a, b) => b[1].countMTD - a[1].countMTD || a[0].localeCompare(b[0])
@@ -461,20 +462,20 @@ export async function handleDashboardInteraction({ interaction, dbPath }) {
   // Metric selection
   if (cid === "dash:metric" && interaction.isStringSelectMenu()) {
     const selected = interaction.values?.[0] || "month_oc";
-    metricState.set(interaction.message.id, { ...metricState.get(interaction.message.id), metric: selected });
+    metricState.set(`${interaction.message.id}:${userId}`, { ...metricState.get(`${interaction.message.id}:${userId}`), metric: selected });
     await interaction.deferUpdate();
     return true;
   }
 
   // Month selection
   if (cid === "dash:month" && interaction.isStringSelectMenu()) {
-    const selected = interaction.values?.[0] || getSelectedMonthForMessage(interaction.message);
-    metricState.set(interaction.message.id, { ...metricState.get(interaction.message.id), month: selected });
+    const selected = interaction.values?.[0] || getSelectedMonthForMessage(interaction.message, userId);
+    metricState.set(`${interaction.message.id}:${userId}`, { ...metricState.get(`${interaction.message.id}:${userId}`), month: selected });
     await interaction.deferUpdate();
     return true;
   }
 
-  const metric = getSelectedMetricForMessage(interaction.message);
+  const metric = getSelectedMetricForMessage(interaction.message, userId);
   const computeOpts = { ...metricToComputeOpts(metric), selectedMonth };
 
   // Hot5 / Hot10 / Hot20

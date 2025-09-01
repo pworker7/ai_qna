@@ -270,8 +270,10 @@ function metricToComputeOpts(metric) {
 /* ======================== Public: dashboard ======================== */
 export async function showTickersDashboard({ message, dbPath }) {
   const { entries } = await loadDb(dbPath);
+  console.log(`DB loaded: ${entries.length} entries`);
 
   const allUnique = new Set(entries.map((e) => (e.ticker || "").toUpperCase()).filter(Boolean)).size;
+  console.log(`All unique tickers: ${allUnique}`);
 
   const { byTicker, firstByUserCounts } = buildMonthAgg(entries);
   const mtdItems = [...byTicker.entries()];
@@ -281,12 +283,14 @@ export async function showTickersDashboard({ message, dbPath }) {
     .sort((a, b) => b[1].countMTD - a[1].countMTD || a[0].localeCompare(b[0]))
     .slice(0, 10)
     .map(([s]) => s);
+  console.log(`MTD unique tickers: ${mtdUnique}, top10: ${top10.join(", ")}`);
 
   const posters = [...firstByUserCounts.entries()]
     .map(([id, v]) => ({ id, name: v.name || "Unknown", count: v.count }))
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
     .slice(0, 3)
     .map((x) => x.name);
+  console.log(`Top posters: ${posters.map((p) => `${p}`).join(", ")}`);
 
   // quick preview of top gainers (month_oc)
   const quickInfos = mtdItems.map(([sym, v]) => ({
@@ -304,6 +308,7 @@ export async function showTickersDashboard({ message, dbPath }) {
       mode: "oc",
     });
     topGainersSyms = gainers.slice(0, 3).map((g) => g.symbol);
+    console.log(`Top gainers: ${topGainersSyms.join(", ")}`);
   } catch {
     topGainersSyms = [];
   }
@@ -312,6 +317,7 @@ export async function showTickersDashboard({ message, dbPath }) {
     .sort((a, b) => b[1].count - a[1].count || (a[1].name || "").localeCompare(b[1].name || ""))
     .slice(0, 25)
     .map(([id, v]) => ({ label: `${v.name || "Unknown"} (${v.count})`, value: id }));
+  console.log(`User options: ${userOptions.map((u) => u.label).join(", ")}`);
 
   const lines = [];
   lines.push(`Total Tracked: **${allUnique}** Tickers`);
@@ -320,16 +326,22 @@ export async function showTickersDashboard({ message, dbPath }) {
   if (posters.length)     lines.push(`Top 3 Posters: ${posters.join(", ")}`);
   if (topGainersSyms.length)
     lines.push(`Top Gainers: ${topGainersSyms.map((s) => `\`${s}\``).join(", ")}`);
+  console.log("Lines:", lines);
 
   const embed = new EmbedBuilder()
     .setColor(0x00b7ff)
     .setTitle("📈 Tickers — Dashboard (MTD)")
     .setDescription(lines.join("\n"));
+  console.log("Embed built");
 
   const components = buildDashboardComponents(userOptions, message.author.id, "month_oc");
+  console.log("Components built");
+
   const sent = await message.channel.send({ embeds: [embed], components });
+  console.log("Dashboard sent");
 
   metricState.set(sent.id, "month_oc");
+  console.log("Metric state set");
 }
 
 /* ======================== Public: interactions ======================== */

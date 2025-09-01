@@ -40,6 +40,7 @@ const STATE_DIR = path.join(process.cwd(), 'data', 'state');
 const SECRET_SALT = process.env.SECRET_SALT || 'mkld4Rfvl0BYjn4SF5lk9jF3WcY';
 const SCORE_CHANNEL_ID = process.env.SCORE_CHANNEL_ID;
 const LOG_CHANNEL_ID = process.env.LOG_CHANNEL_ID;
+const BOT_CHANNEL_ID = process.env.BOT_CHANNEL_ID;
 const SCORES_TRIGGER_TOKEN = process.env.SCORES_TRIGGER_TOKEN || '';
 
 const IDS = {
@@ -273,8 +274,113 @@ function registerInteractionHandlers(client) {
     });
 }
 
+async function startSurvey(client) {
+    const nowTz = dayjs().tz(TIMEZONE);
+
+    const scoreChannel = await getScoreChannel(client);
+    if (!scoreChannel) {
+        await msg.reply({ content: '⚠️ SCORE_CHANNEL_ID is not a valid text channel.', allowedMentions: { parse: [] } }).catch(() => { });
+        return;
+    }
+    await postWindowAndPing(scoreChannel, nowTz);
+}
+
+async function remindSurvey(client) {
+    const scoreChannel = await getScoreChannel(client);
+    if (!scoreChannel) {
+        await msg.reply({ content: '⚠️ SCORE_CHANNEL_ID is not a valid text channel.', allowedMentions: { parse: [] } }).catch(() => { });
+        return;
+    }
+    await scoreChannel.send({ content: '@everyone\nמזכיר לכם שהיום מתקיים סקר תשואה חודשית אנונימי, אתם מוזמנים להשתתף ולהגיש את המספר שלכם, הסקר אנונימי לחלוטין' });
+}
+
+async function publishSurveyResults(parsed, client) {
+    const nowTz = dayjs().tz(TIMEZONE);
+    const pKey = parsed.args.period || periodKey(nowTz);
+    const scoreChannel = await getScoreChannel(client);
+    if (!scoreChannel) {
+        await msg.reply({ content: '⚠️ SCORE_CHANNEL_ID is not a valid text channel.', allowedMentions: { parse: [] } }).catch(() => { });
+        return;
+    }
+
+    const stats = await computeStatsForPeriod(pKey);
+    let spxText = '';
+    try {
+        const spxReturn = await getSPXMonthlyReturn();
+        spxText = `\nלשם השוואה, תשואת S&P 500 לחודש זה: ${spxReturn}`;
+    } catch(err) {
+        console.warn('[monthlyScoresWebhook] Failed to fetch SPX return:', err);
+        spxText = '\n(תשואת S&P 500 לא זמינה כרגע)';
+    }
+
+    let embed;
+    if (stats.count === 0) {
+        embed = new EmbedBuilder()
+            .setColor(0xFF0000) // red if no data
+            .setTitle('תוצאות הסקר')
+            .setDescription('**אף אחד לא השתתף בסקר** 📊')
+            .addFields({ name: 'תשואה ממוצעת', value: '0%', inline: true })
+            .setTimestamp();
+    } else {
+        embed = new EmbedBuilder()
+            .setColor(0x00FF00) // green if valid
+            .setTitle('תוצאות הסקר')
+            .setDescription('**סיכום נתוני הקבוצה שהשתתפה בסקר** 📊')
+            .addFields(
+                { name: `**${stats.count}** :מספר משתתפים 👥`, value: ` `, inline: false },
+                { name: `**${stats.average.toFixed(2)}%** :תשואה ממוצעת 📈`, value: ` `, inline: false },
+                { name: `**${stats.stdDev.toFixed(2)}** :סטיית תקן 🔀`, value: ` `, inline: false },
+                { name: `**${spxText}** ✅`, value: ` `, inline: false },
+            )
+            .setFooter({ text: '=| ושיהיה לכם חודש ירוק |=' })
+            .setTimestamp();
+    }
+    
+    await scoreChannel.send({ embeds: [embed] });
+
+    await deleteWindowIfExists(client, pKey);
+    await scoreChannel.send({ content: '@everyone\nחלון ההזנה נסגר, תודה לכל המשתתפים! נפגש שוב בחודש הבא 🗑️' });
+}
+
 function registerWebhookTriggerListener(client) {
     client.on(Events.MessageCreate, async (msg) => {
+        const mentionsBot = (client.user?.id && message.mentions.users.has(client.user.id)) || content.includes("@superpony") || content.includes("1398710664079474789");
+
+        // if a user in admin group wrote at the bot room (BOT_CHANNEL_ID) "@SuperPony סקר התחל" -> start scores
+        if (mentionsBot && msg.channelId === BOT_CHANNEL_ID && msg.content.toLowerCase().includes('סקר') && (msg.content.includes('התחל') || msg.content.includes('תתחיל')) && msg.member.roles.cache.some(role => role.name === 'admin')) {
+            await startSurvey(client);
+            await msg.reply({ content: '✅ Posted score window.', allowedMentions: { parse: [] } }).catch(() => { });
+            return;
+        }
+
+        // if a user in admin group wrote at the bot room (BOT_CHANNEL_ID) "@SuperPony סקר תזכורת" -> remind scores
+        if (mentionsBot && msg.channelId === BOT_CHANNEL_ID && msg.content.toLowerCase().includes('סקר') && (msg.content.includes('תזכורת') || msg.content.includes('תזכיר')) && msg.member.roles.cache.some(role => role.name === 'admin')) {
+            await remindSurvey(client);
+            await msg.reply({ content: '✅ Posted reminder.', allowedMentions: { parse: [] } }).catch(() => { });
+            return;
+        }
+
+        // if a user in admin group wrote at the bot room (BOT_CHANNEL_ID) "@SuperPony סקר פרסם" -> publish scores
+        if (mentionsBot && msg.channelId === BOT_CHANNEL_ID && msg.content.toLowerCase().includes('סקר') && (msg.content.includes('פרסם') || msg.content.includes('פרסום')) && msg.member.roles.cache.some(role => role.name === 'admin')) {
+            const parsed = { type: 'publish', args: { period: periodKey(), token: SCORES_TRIGGER_TOKEN } };
+            await publishSurveyResults(parsed, client);
+            await msg.reply({ content: '✅ Published results.', allowedMentions: { parse: [] } }).catch(() => { });
+            return;
+        }
+
+        // if a user in admin group wrote at the bot room (BOT_CHANNEL_ID) "@SuperPony סקר" show help message explaining the commands that can be used for survey
+        if (mentionsBot && msg.channelId === BOT_CHANNEL_ID && msg.content.toLowerCase().includes('סקר') && msg.member.roles.cache.some(role => role.name === 'admin')) {
+            const helpMessage = `
+הנה הפקודות הזמינות לניהול סקר התשואה החודשי:
+- \`@SuperPony סקר התחל\` - פותח חלון הזנה חדש בסקר התשואה החודשי
+- \`@SuperPony סקר תזכורת\` - שולח תזכורת למשתמשים להשתתף בסקר
+- \`@SuperPony סקר פרסם\` - מסכם את התשואות שהתקבלו ומפרסם את התוצאות
+כל הפקודות הללו זמינות רק למשתמשים עם תפקיד "admin".
+            `;
+            await msg.reply({ content: helpMessage, allowedMentions: { parse: [] } }).catch(() => { });
+            return;
+        }
+
         try {
             // Must arrive in the LOG channel from a webhook
             if (msg.webhookId) {
@@ -287,59 +393,14 @@ function registerWebhookTriggerListener(client) {
                         return;
                     }
 
-                    const nowTz = dayjs().tz(TIMEZONE);
-                    const pKey = parsed.args.period || periodKey(nowTz);
-
-                    const scoreChannel = await getScoreChannel(client);
-                    if (!scoreChannel) {
-                        await msg.reply({ content: '⚠️ SCORE_CHANNEL_ID is not a valid text channel.', allowedMentions: { parse: [] } }).catch(() => { });
-                        return;
-                    }
-
                     if (parsed.type === 'start') {
-                        await postWindowAndPing(scoreChannel, nowTz);
+                        await startSurvey(client);
                         await msg.react('✅').catch(() => { });
                     } else if (parsed.type === 'remind') {
-                        await scoreChannel.send({ content: '@every one מזכיר לכם שהיום מתקיים סקר תשואה חודשית אנונימי, אתם מוזמנים להשתתף ולהגיש את המספר שלכם, הסקר אנונימי לחלוטין' });
+                        await remindSurvey(client);
                         await msg.react('⏰').catch(() => { });
                     } else if (parsed.type === 'publish') {
-                        const stats = await computeStatsForPeriod(pKey);
-                        let spxText = '';
-                        try {
-                            const spxReturn = await getSPXMonthlyReturn();
-                            spxText = `\nלשם השוואה, תשואת S&P 500 לחודש זה: ${spxReturn}`;
-                        } catch(err) {
-                            console.warn('[monthlyScoresWebhook] Failed to fetch SPX return:', err);
-                            spxText = '\n(תשואת S&P 500 לא זמינה כרגע)';
-                        }
-
-                        let embed;
-                        if (stats.count === 0) {
-                            embed = new EmbedBuilder()
-                                .setColor(0xFF0000) // red if no data
-                                .setTitle('תוצאות הסקר')
-                                .setDescription('**אף אחד לא השתתף בסקר** 📊')
-                                .addFields({ name: 'תשואה ממוצעת', value: '0%', inline: true })
-                                .setTimestamp();
-                        } else {
-                            embed = new EmbedBuilder()
-                                .setColor(0x00FF00) // green if valid
-                                .setTitle('תוצאות הסקר')
-                                .setDescription('**סיכום נתוני הקבוצה שהשתתפה בסקר** 📊')
-                                .addFields(
-                                    { name: `**${stats.count}** :מספר משתתפים 👥`, value: ` `, inline: false },
-                                    { name: `**${stats.average.toFixed(2)}%** :תשואה ממוצעת 📈`, value: ` `, inline: false },
-                                    { name: `**${stats.stdDev.toFixed(2)}** :סטיית תקן 🔀`, value: ` `, inline: false },
-                                    { name: `**${spxText}** ✅`, value: ` `, inline: false },
-                                )
-                                .setFooter({ text: '=| ושיהיה לכם חודש ירוק |=' })
-                                .setTimestamp();
-                        }
-                        
-                        await scoreChannel.send({ embeds: [embed] });
-
-                        await deleteWindowIfExists(client, pKey);
-                        await scoreChannel.send({ content: '@every one\nחלון ההזנה נסגר, תודה לכל המשתתפים! נפגש שוב בחודש הבא 🗑️' });
+                        await publishSurveyResults(parsed, client);
                         await msg.react('📊').catch(() => { });
                     }
                 }

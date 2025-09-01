@@ -242,11 +242,18 @@ function buildDashboardComponents(userOptions, currentUserId, currentMetric = "m
     new ButtonBuilder().setCustomId("dash:all").setStyle(ButtonStyle.Secondary).setLabel("All"),
   );
 
-  const menuUsers = new StringSelectMenuBuilder()
-    .setCustomId("dash:user")
-    .setPlaceholder("Users")
-    .addOptions(userOptions.slice(0, 25));
-  const row2 = new ActionRowBuilder().addComponents(menuUsers);
+  const components = [row1];
+
+  if (userOptions.length > 0) {
+    const menuUsers = new StringSelectMenuBuilder()
+      .setCustomId("dash:user")
+      .setPlaceholder("Users")
+      .addOptions(userOptions.slice(0, 25));
+    const row2 = new ActionRowBuilder().addComponents(menuUsers);
+    components.push(row2);
+  } else {
+    console.log("No user options available, skipping users dropdown");
+  }
 
   const menuMetric = new StringSelectMenuBuilder()
     .setCustomId("dash:metric")
@@ -259,8 +266,9 @@ function buildDashboardComponents(userOptions, currentUserId, currentMetric = "m
       }))
     );
   const row3 = new ActionRowBuilder().addComponents(menuMetric);
+  components.push(row3);
 
-  return [row1, row2, row3];
+  return components;
 }
 
 function getSelectedMetricForMessage(message) {

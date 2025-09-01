@@ -296,18 +296,22 @@ export async function showTickersDashboard({ message, dbPath }) {
     // quick preview of top gainers (month_oc)
     let topGainersSyms = [];
     try {
+      console.log("Computing gainers...");
       const quickInfos = mtdItems.map(([sym, v]) => ({
         symbol: sym,
         firstTs: v.firstTs,
         firstUserName: v.firstUserName,
         firstLink: v.firstLink,
       }));
+      console.log(`Quick infos: ${quickInfos.length} items`);
+
       const gainers = await computeGainers(quickInfos, {
         limitTickers: 25,
         concurrency: 3,
         anchor: "month",
         mode: "oc",
       });
+      console.log(`Gainers computed: ${gainers.length} items`);
       topGainersSyms = gainers.slice(0, 3).map((g) => g.symbol);
       console.log(`Top gainers: ${topGainersSyms.join(", ")}`);
     } catch {
@@ -315,6 +319,7 @@ export async function showTickersDashboard({ message, dbPath }) {
       topGainersSyms = [];
     }
 
+    console.log(`First by user counts: ${[...firstByUserCounts.entries()].length} users`);
     const userOptions = [...firstByUserCounts.entries()]
       .sort((a, b) => b[1].count - a[1].count || (a[1].name || "").localeCompare(b[1].name || ""))
       .slice(0, 25)

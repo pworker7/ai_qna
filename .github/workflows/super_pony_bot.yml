@@ -51,7 +51,6 @@ jobs:
           SCORES_DIR: ${{ vars.SCORES_DIR }}
           SECRET_SALT: ${{ vars.SECRET_SALT }}
           SCORES_TRIGGER_TOKEN: ${{ vars.SCORES_TRIGGER_TOKEN }}
-          FINNHUB_TOKEN2: ${{ vars.FINNHUB_TOKEN }}
           GEMINI_DEBUG: "1"
           GEMINI_MODEL: "gemini-2.5-flash-lite" # "gemini-2.5-flash"
           

@@ -26,6 +26,7 @@ import path from 'path';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
+import axios from 'axios';
 
 import { commitLogIfChanged } from '../../utils/liveLog.mjs';
 
@@ -40,7 +41,6 @@ const SECRET_SALT = process.env.SECRET_SALT || 'mkld4Rfvl0BYjn4SF5lk9jF3WcY';
 const SCORE_CHANNEL_ID = process.env.SCORE_CHANNEL_ID;
 const LOG_CHANNEL_ID = process.env.LOG_CHANNEL_ID;
 const SCORES_TRIGGER_TOKEN = process.env.SCORES_TRIGGER_TOKEN || '';
-const FINNHUB_TOKEN = process.env.FINNHUB_TOKEN || '';
 
 const IDS = {
     BUTTON_OPEN_MODAL: 'monthly_scores_open_modal',
@@ -183,19 +183,27 @@ async function computeStatsForPeriod(pKey) {
     return { average, count, stdDev };
 }
 
-async function getSPXMonthlyReturn(pKey, token) {
-    if (!token) throw new Error('No FINNHUB_TOKEN');
-    const start = dayjs(`${pKey}-01`).unix();
-    const end = dayjs(`${pKey}-01`).endOf('month').unix();
-    const url = `https://finnhub.io/api/v1/stock/candle?symbol=%5EGSPC&resolution=M&from=${start}&to=${end}&token=${token}`;
-    const response = await fetch(url);
-    if (!response.ok) throw new Error('Finnhub API error');
-    const data = await response.json();
-    if (data.s !== 'ok' || !data.c || data.c.length === 0) throw new Error('No SPX data');
-    const open = data.o[0];
-    const close = data.c[0];
-    return (close - open) / open * 100;
+async function getSPXMonthlyReturn() {
+    try {
+        const symbol = '%5EGSPC';
+        const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1mo`;
+        
+        const response = await axios.get(url);
+        const result = response.data.chart.result[0];
+        const prices = result.indicators.quote[0].close.filter(price => price !== null);
+        
+        const monthStartPrice = prices[0];
+        const currentPrice = prices[prices.length - 1];
+        const mtdReturn = ((currentPrice - monthStartPrice) / monthStartPrice) * 100;
+        
+        return `${mtdReturn >= 0 ? '+' : ''}${mtdReturn.toFixed(2)}%`;
+        
+    } catch (error) {
+        console.error('Error fetching S&P 500 MTD:', error.message);
+        return 'Error fetching data';
+    }
 }
+
 
 // ---- Trigger Parsing & Guards ------------------------------------------------
 
@@ -298,7 +306,7 @@ function registerWebhookTriggerListener(client) {
                         const stats = await computeStatsForPeriod(pKey);
                         let spxText = '';
                         try {
-                            const spxReturn = await getSPXMonthlyReturn(pKey, FINNHUB_TOKEN);
+                            const spxReturn = await getSPXMonthlyReturn();
                             spxText = `\nלשם השוואה, תשואת S&P 500 לחודש זה: ${spxReturn.toFixed(2)}%`;
                         } catch(err) {
                             console.warn('[monthlyScoresWebhook] Failed to fetch SPX return:', err);
@@ -321,7 +329,7 @@ function registerWebhookTriggerListener(client) {
                                 .addFields(
                                     { name: `**${stats.count}** :מספר משתתפים 👥`, value: ` `, inline: false },
                                     { name: `**${stats.average.toFixed(2)}%** :תשואה ממוצעת 📈`, value: ` `, inline: false },
-                                    { name: `**${stats.stdDev.toFixed(2)}** :סטיית תקן 📊`, value: ` `, inline: false },
+                                    { name: `**${stats.stdDev.toFixed(2)}** :סטיית תקן 🔀`, value: ` `, inline: false },
                                 )
                                 .setFooter({ text: spxText || '' })
                                 .setTimestamp();

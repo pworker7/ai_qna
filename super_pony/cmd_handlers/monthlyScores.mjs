@@ -344,9 +344,9 @@ async function publishSurveyResults(parsed, client) {
 
 function registerWebhookTriggerListener(client) {
     client.on(Events.MessageCreate, async (msg) => {
-        const content = (message.content || "").trim();
+        const content = (msg.content || "").trim();
         if (!content) return; // Ignore empty messages
-        
+
         const mentionsBot = (client.user?.id && msg.mentions.users.has(client.user.id)) || content.includes("@superpony") || content.includes("1398710664079474789");
 
         // if a user in admin group wrote at the bot room (BOT_CHANNEL_ID) "@SuperPony סקר התחל" -> start scores

@@ -203,7 +203,15 @@ async function mapLimit(items, limit, worker) {
 
 /** rank by gain */
 async function computeGainers(items, { limitTickers = 50, concurrency = 3, anchor = "month", mode = "oc" } = {}) {
+  console.log(`Computing gainers for ${items.length} items, limit ${limitTickers}, concurrency ${concurrency}, anchor ${anchor}, mode ${mode}`);
+  if (!Array.isArray(items) || !items.length) return [];
+  if (limitTickers <= 0) limitTickers = 50;
+  if (concurrency <= 0) concurrency = 3;
+  if (concurrency > 10) concurrency = 10;
+
   const subset = items.slice(0, limitTickers);
+  console.log(`Processing subset of ${subset.length} items`);
+
   const out = await mapLimit(subset, concurrency, async (info) => {
     try {
       const { basis, latest } = await fetchBasisAndLatest(info.symbol, info.firstTs, { anchor, mode });
@@ -213,6 +221,7 @@ async function computeGainers(items, { limitTickers = 50, concurrency = 3, ancho
       return null;
     }
   });
+  console.log(`Gainers computed, got ${out.filter(Boolean).length} valid results`);
   return out.filter(Boolean).sort((a, b) => b.pct - a.pct);
 }
 

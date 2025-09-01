@@ -264,7 +264,7 @@ function registerInteractionHandlers(client) {
 
             const { commandName } = interaction;
 
-            if (interaction.member.roles.cache.some(role => role.name === 'admin')) {
+            if (interaction.member.roles.cache.some(role => role.name.toLowerCase() === 'admin')) {
 
                 if (commandName === 'start_survey') {
                     await startSurvey(client);

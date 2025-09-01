@@ -259,6 +259,42 @@ function registerInteractionHandlers(client) {
                 }
                 await interaction.reply({ content: '✅ הערך שהזנת נשמר באופן אנונימי ופרטי, תודה לך על השתתפותך בסקר\nבתום איסוף הנתונים יפורסמו ממוצאי התשואה בשרת לכולם', ephemeral: true });
             }
+
+            if (!interaction.isChatInputCommand()) return;
+
+            const { commandName } = interaction;
+
+            if (interaction.member.roles.cache.some(role => role.name === 'admin')) {
+
+                if (commandName === 'start_survey') {
+                    await startSurvey(client);
+                    await interaction.reply({ content: '✅ פרסמתי את הסקר.', ephemeral: true });
+                }
+
+                if (commandName === 'remind_survey') {
+                    await remindSurvey(client);
+                    await interaction.reply({ content: '✅ פרסמתי לכולם תזכורת לגבי הסקר', ephemeral: true });
+                }
+
+                if (commandName === 'publish_survey') {
+                    const parsed = { type: 'publish', args: { period: periodKey(), token: SCORES_TRIGGER_TOKEN } };
+                    await publishSurveyResults(parsed, client);
+                    await interaction.reply({ content: '✅ סגרתי את הסקר ופרסמתי את התוצאות', ephemeral: true });
+                }
+
+                if (commandName === 'survey_help') {
+                    const helpMessage = `
+                        הנה הפקודות הזמינות לניהול סקר התשואה החודשי:
+                        - \`/start_survey\` - פותח חלון הזנה חדש בסקר התשואה החודשי
+                        - \`/remind_survey\` - שולח תזכורת למשתמשים להשתתף בסקר
+                        - \`/publish_survey\` - מסכם את התשואות שהתקבלו ומפרסם את התוצאות
+                        כל הפקודות הללו זמינות רק למשתמשים עם תפקיד "admin".
+                    `;
+                    await interaction.reply({ content: helpMessage, ephemeral: true });
+                }
+            } else {
+                await interaction.reply({ content: '❌ אין לך הרשאה להריץ את הפקודה הזו', ephemeral: true });
+            }
         } catch(err) {
             console.error(`[ERROR] InteractionCreate failed for ${interaction.user.tag}:`, err);
             try {
@@ -271,6 +307,36 @@ function registerInteractionHandlers(client) {
                 console.error(`[ERROR] Failed to send follow-up/reply for ${interaction.user.tag}:`, followUpErr);                
             }
         }
+    });
+
+    // Register slash commands
+    client.once(Events.ClientReady, async () => {
+        const guild = client.guilds.cache.get(process.env.GUILD_ID);
+        if (!guild) {
+            console.warn('GUILD_ID is not valid or bot is not in the guild.');
+            return;
+        }
+
+        await guild.commands.set([
+            {
+                name: 'start_survey',
+                description: 'פותח חלון הזנה חדש בסקר התשואה החודשי',
+            },
+            {
+                name: 'remind_survey',
+                description: 'שולח תזכורת למשתמשים להשתתף בסקר',
+            },
+            {
+                name: 'publish_survey',
+                description: 'מסכם את התשואות שהתקבלו ומפרסם את התוצאות',
+            },
+            {
+                name: 'survey_help',
+                description: 'מציג עזרה לגבי הפקודות הזמינות לניהול סקר התשואה החודשי',
+            },
+        ]);
+
+        console.log('Slash commands registered successfully.');
     });
 }
 
@@ -344,46 +410,6 @@ async function publishSurveyResults(parsed, client) {
 
 function registerWebhookTriggerListener(client) {
     client.on(Events.MessageCreate, async (msg) => {
-        const content = (msg.content || "").trim();
-        if (!content) return; // Ignore empty messages
-
-        const mentionsBot = (client.user?.id && msg.mentions.users.has(client.user.id)) || content.includes("@superpony") || content.includes("1398710664079474789");
-
-        // if a user in admin group wrote at the bot room (BOT_CHANNEL_ID) "@SuperPony סקר התחל" -> start scores
-        if (mentionsBot && msg.channelId === BOT_CHANNEL_ID && msg.content.toLowerCase().includes('סקר') && (msg.content.includes('התחל') || msg.content.includes('תתחיל')) && msg.member.roles.cache.some(role => role.name === 'admin')) {
-            await startSurvey(client);
-            await msg.reply({ content: '✅ Posted score window.', allowedMentions: { parse: [] } }).catch(() => { });
-            return;
-        }
-
-        // if a user in admin group wrote at the bot room (BOT_CHANNEL_ID) "@SuperPony סקר תזכורת" -> remind scores
-        if (mentionsBot && msg.channelId === BOT_CHANNEL_ID && msg.content.toLowerCase().includes('סקר') && (msg.content.includes('תזכורת') || msg.content.includes('תזכיר')) && msg.member.roles.cache.some(role => role.name === 'admin')) {
-            await remindSurvey(client);
-            await msg.reply({ content: '✅ Posted reminder.', allowedMentions: { parse: [] } }).catch(() => { });
-            return;
-        }
-
-        // if a user in admin group wrote at the bot room (BOT_CHANNEL_ID) "@SuperPony סקר פרסם" -> publish scores
-        if (mentionsBot && msg.channelId === BOT_CHANNEL_ID && msg.content.toLowerCase().includes('סקר') && (msg.content.includes('פרסם') || msg.content.includes('פרסום')) && msg.member.roles.cache.some(role => role.name === 'admin')) {
-            const parsed = { type: 'publish', args: { period: periodKey(), token: SCORES_TRIGGER_TOKEN } };
-            await publishSurveyResults(parsed, client);
-            await msg.reply({ content: '✅ Published results.', allowedMentions: { parse: [] } }).catch(() => { });
-            return;
-        }
-
-        // if a user in admin group wrote at the bot room (BOT_CHANNEL_ID) "@SuperPony סקר" show help message explaining the commands that can be used for survey
-        if (mentionsBot && msg.channelId === BOT_CHANNEL_ID && msg.content.toLowerCase().includes('סקר') && msg.member.roles.cache.some(role => role.name === 'admin')) {
-            const helpMessage = `
-הנה הפקודות הזמינות לניהול סקר התשואה החודשי:
-- \`@SuperPony סקר התחל\` - פותח חלון הזנה חדש בסקר התשואה החודשי
-- \`@SuperPony סקר תזכורת\` - שולח תזכורת למשתמשים להשתתף בסקר
-- \`@SuperPony סקר פרסם\` - מסכם את התשואות שהתקבלו ומפרסם את התוצאות
-כל הפקודות הללו זמינות רק למשתמשים עם תפקיד "admin".
-            `;
-            await msg.reply({ content: helpMessage, allowedMentions: { parse: [] } }).catch(() => { });
-            return;
-        }
-
         try {
             // Must arrive in the LOG channel from a webhook
             if (msg.webhookId) {

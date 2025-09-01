@@ -293,14 +293,14 @@ export async function showTickersDashboard({ message, dbPath }) {
   console.log(`Top posters: ${posters.map((p) => `${p}`).join(", ")}`);
 
   // quick preview of top gainers (month_oc)
-  const quickInfos = mtdItems.map(([sym, v]) => ({
-    symbol: sym,
-    firstTs: v.firstTs,
-    firstUserName: v.firstUserName,
-    firstLink: v.firstLink,
-  }));
   let topGainersSyms = [];
   try {
+    const quickInfos = mtdItems.map(([sym, v]) => ({
+      symbol: sym,
+      firstTs: v.firstTs,
+      firstUserName: v.firstUserName,
+      firstLink: v.firstLink,
+    }));
     const gainers = await computeGainers(quickInfos, {
       limitTickers: 25,
       concurrency: 3,
@@ -310,6 +310,7 @@ export async function showTickersDashboard({ message, dbPath }) {
     topGainersSyms = gainers.slice(0, 3).map((g) => g.symbol);
     console.log(`Top gainers: ${topGainersSyms.join(", ")}`);
   } catch {
+    console.error("Failed to compute gainers");
     topGainersSyms = [];
   }
 

@@ -295,18 +295,13 @@ function registerWebhookTriggerListener(client) {
                         await scoreChannel.send({ content: '@every one מזכיר לכם שהיום מתקיים סקר תשואה חודשית אנונימי, אתם מוזמנים להשתתף ולהגיש את המספר שלכם, הסקר אנונימי לחלוטין' });
                         await msg.react('⏰').catch(() => { });
                     } else if (parsed.type === 'publish') {
-                        // const avg = await computeAverageForPeriod(pKey);
-                        // const text = (avg == null)
-                        //     ? '@every one התשואה הממוצעת לקבוצה שהשתתפה בסקר היא: 0% (אף אחד לא השתתף בסקר)'
-                        //     : `@everyone התשואה הממוצעת לקבוצה שהשתתפה בסקר היא: ${stats.average.toFixed(2)}% (סטיית תקן: ${stats.stdDev.toFixed(2)}, מספר משתתפים: ${stats.count})${spxText}`;                            
-                        // await scoreChannel.send({ content: text });
-
                         const stats = await computeStatsForPeriod(pKey);
                         let spxText = '';
                         try {
                             const spxReturn = await getSPXMonthlyReturn(pKey, FINNHUB_TOKEN);
                             spxText = `\nלשם השוואה, תשואת S&P 500 לחודש זה: ${spxReturn.toFixed(2)}%`;
-                        } catch {
+                        } catch(err) {
+                            console.warn('[monthlyScoresWebhook] Failed to fetch SPX return:', err);
                             spxText = '\n(תשואת S&P 500 לא זמינה כרגע)';
                         }
 
@@ -314,19 +309,19 @@ function registerWebhookTriggerListener(client) {
                         if (stats.count === 0) {
                             embed = new EmbedBuilder()
                                 .setColor(0xFF0000) // red if no data
-                                .setTitle('@every one תוצאות הסקר')
-                                .setDescription('📊 **אף אחד לא השתתף בסקר**')
+                                .setTitle('תוצאות הסקר')
+                                .setDescription('**אף אחד לא השתתף בסקר** 📊')
                                 .addFields({ name: 'תשואה ממוצעת', value: '0%', inline: true })
                                 .setTimestamp();
                         } else {
                             embed = new EmbedBuilder()
                                 .setColor(0x00FF00) // green if valid
-                                .setTitle('@every one תוצאות הסקר')
-                                .setDescription('📊 **סיכום נתוני הקבוצה שהשתתפה בסקר**')
+                                .setTitle('תוצאות הסקר')
+                                .setDescription('**סיכום נתוני הקבוצה שהשתתפה בסקר** 📊')
                                 .addFields(
-                                    { name: `👥 מספר משתתפים: **${stats.count}**`, value: ` `, inline: false },
-                                    { name: `📈 תשואה ממוצעת: **${stats.average.toFixed(2)}%**`, value: ` `, inline: false },
-                                    { name: `📊 סטיית תקן: **${stats.stdDev.toFixed(2)}**`, value: ` `, inline: false },
+                                    { name: `**${stats.count}** :מספר משתתפים 👥`, value: ` `, inline: false },
+                                    { name: `**${stats.average.toFixed(2)}%** :תשואה ממוצעת 📈`, value: ` `, inline: false },
+                                    { name: `**${stats.stdDev.toFixed(2)}** :סטיית תקן 📊`, value: ` `, inline: false },
                                 )
                                 .setFooter({ text: spxText || '' })
                                 .setTimestamp();
@@ -335,6 +330,7 @@ function registerWebhookTriggerListener(client) {
                         await scoreChannel.send({ embeds: [embed] });
 
                         await deleteWindowIfExists(client, pKey);
+                        await scoreChannel.send({ content: '@every one\nחלון ההזנה נסגר, תודה לכל המשתתפים! נפגש שוב בחודש הבא 🗑️' });
                         await msg.react('📊').catch(() => { });
                     }
                 }

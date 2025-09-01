@@ -243,13 +243,10 @@ function registerInteractionHandlers(client) {
     client.on(Events.InteractionCreate, async (interaction) => {
         try {
             if (interaction.isButton() && interaction.customId === IDS.BUTTON_OPEN_MODAL) {
-                console.log(`[DEBUG] Button clicked by ${interaction.user.tag}, attempting to show modal`);                
                 await interaction.showModal(scoreModal());
-                console.log(`[DEBUG] Modal shown successfully for ${interaction.user.tag}`);
                 return;
             }
             if (interaction.isModalSubmit() && interaction.customId === IDS.MODAL_SUBMIT) {
-                console.log(`[DEBUG] Modal submitted by ${interaction.user.tag}`);                
                 const value = interaction.fields.getTextInputValue(IDS.INPUT_SCORE)?.trim();
                 try {
                     await addScore(interaction.user.id, value, dayjs().tz(TIMEZONE));
@@ -298,7 +295,7 @@ function registerInteractionHandlers(client) {
                 await interaction.reply({ content: '❌ אין לך הרשאה להריץ את הפקודה הזו', ephemeral: true });
             }
         } catch(err) {
-            console.error(`[ERROR] InteractionCreate failed for ${interaction.user.tag}:`, err);
+            console.error(`[ERROR] InteractionCreate failed:`, err);
             try {
                 if (interaction?.deferred || interaction?.replied) {
                     await interaction.followUp({ content: '⚠️ משהו השתבש, אנא נסו שוב.', ephemeral: true });
@@ -306,7 +303,7 @@ function registerInteractionHandlers(client) {
                     await interaction.reply({ content: '⚠️ משהו השתבש, אנא נסו שוב.', ephemeral: true });
                 }
             } catch(followUpErr) {
-                console.error(`[ERROR] Failed to send follow-up/reply for ${interaction.user.tag}:`, followUpErr);                
+                console.error(`[ERROR] Failed to send follow-up/reply:`, followUpErr);                
             }
         }
     });

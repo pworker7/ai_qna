@@ -308,36 +308,6 @@ function registerInteractionHandlers(client) {
             }
         }
     });
-
-    // Register slash commands
-    client.once(Events.ClientReady, async () => {
-        const guild = client.guilds.cache.get(process.env.GUILD_ID);
-        if (!guild) {
-            console.warn('GUILD_ID is not valid or bot is not in the guild.');
-            return;
-        }
-
-        await guild.commands.set([
-            {
-                name: 'start_survey',
-                description: 'פותח חלון הזנה חדש בסקר התשואה החודשי',
-            },
-            {
-                name: 'remind_survey',
-                description: 'שולח תזכורת למשתמשים להשתתף בסקר',
-            },
-            {
-                name: 'publish_survey',
-                description: 'מסכם את התשואות שהתקבלו ומפרסם את התוצאות',
-            },
-            {
-                name: 'survey_help',
-                description: 'מציג עזרה לגבי הפקודות הזמינות לניהול סקר התשואה החודשי',
-            },
-        ]);
-
-        console.log('Slash commands registered successfully.');
-    });
 }
 
 async function startSurvey(client) {

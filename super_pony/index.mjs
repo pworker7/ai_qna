@@ -86,6 +86,22 @@ const commands = [
         .setMinValue(1)
         .setRequired(false)
     ),
+
+  new SlashCommandBuilder()
+    .setName("start_survey")
+    .setDescription("פותח חלון הזנה חדש בסקר התשואה החודשי"),
+
+  new SlashCommandBuilder()
+    .setName("remind_survey")
+    .setDescription("שולח תזכורת למשתמשים להשתתף בסקר"),
+
+  new SlashCommandBuilder()
+    .setName("publish_survey")
+    .setDescription("מסכם את התשואות שהתקבלו ומפרסם את התוצאות"),
+    
+  new SlashCommandBuilder()
+    .setName("survey_help")
+    .setDescription("מציג עזרה לגבי הפקודות הזמינות לניהול סקר התשואה החודשי"),
 ].map((c) => c.toJSON());
 
 async function registerSlashCommands() {

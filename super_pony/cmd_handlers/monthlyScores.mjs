@@ -115,7 +115,7 @@ async function getScoreChannel(client) {
 
 async function postWindowAndPing(scoreChannel, nowTz) {
     const pKey = periodKey(nowTz);
-    await scoreChannel.send({ content: '@every one הגיע הזמן הזה בחודש ... השתתפו בסקר התשואה האנונימי החודשי של השרת' });
+    await scoreChannel.send({ content: '@everyone\nהגיע הזמן הזה בחודש ... השתתפו בסקר התשואה האנונימי החודשי של השרת' });
     const msg = await scoreChannel.send({ embeds: [scoreEmbed()], components: [scoreButtonRow()] });
     await writeJSON(stateFileForPeriod(pKey), { channelId: scoreChannel.id, messageId: msg.id, createdAt: new Date().toISOString() });
     return msg.id;

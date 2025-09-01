@@ -8,8 +8,8 @@ import {
   ButtonStyle,
 } from "discord.js";
 
-/* ---------- per-message metric selection ---------- */
-const metricState = new Map(); // messageId -> "month_oc" | "month_cc" | "mention_oc" | "mention_cc"
+/* ---------- per-message metric and month selection ---------- */
+const metricState = new Map(); // messageId -> { metric: "month_oc" | "month_cc" | "mention_oc" | "mention_cc", month: "YYYY-MM" }
 
 /* ======================== DB + time helpers ======================== */
 async function loadDb(dbPath) {
@@ -22,14 +22,16 @@ async function loadDb(dbPath) {
   }
 }
 
-function startOfMonthUTC(d = new Date()) {
-  return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1, 0, 0, 0, 0);
+function startOfMonthUTC(year, month) {
+  return Date.UTC(year, month - 1, 1, 0, 0, 0, 0);
 }
+
 function isInMonth(tsMs, monthStartMs) {
   const d = new Date(tsMs);
   const m0 = new Date(monthStartMs);
   return d.getUTCFullYear() === m0.getUTCFullYear() && d.getUTCMonth() === m0.getUTCMonth();
 }
+
 function shortDate(isoOrMs) {
   const d = new Date(isoOrMs);
   const dd = String(d.getUTCDate()).padStart(2, "0");
@@ -38,9 +40,21 @@ function shortDate(isoOrMs) {
   return `${dd}/${mm}/${yy}`;
 }
 
+function getAvailableMonths(entries) {
+  const months = new Set();
+  for (const e of entries) {
+    const d = new Date(Date.parse(e.timestamp));
+    const year = d.getUTCFullYear();
+    const month = String(d.getUTCMonth() + 1).padStart(2, "0");
+    months.add(`${year}-${month}`);
+  }
+  return [...months].sort((a, b) => b.localeCompare(a)); // Sort descending (newest first)
+}
+
 /* ======================== MTD aggregation ======================== */
-function buildMonthAgg(entries) {
-  const monthStart = startOfMonthUTC();
+function buildMonthAgg(entries, selectedMonth) {
+  const [year, month] = selectedMonth.split("-").map(Number);
+  const monthStart = startOfMonthUTC(year, month);
   const mtd = entries.filter((e) => isInMonth(Date.parse(e.timestamp), monthStart));
 
   const byTicker = new Map();
@@ -129,19 +143,22 @@ function localYMD(ts, tz) {
   });
   return fmt.format(new Date(ts)); // "YYYY-MM-DD"
 }
-function monthFirstYMD(tz) {
+
+function monthFirstYMD(tz, year, month) {
   const parts = new Intl.DateTimeFormat("en-CA", {
     timeZone: tz,
     year: "numeric",
     month: "2-digit",
-  }).formatToParts(new Date());
-  const year = parts.find((p) => p.type === "year")?.value || "1970";
-  const month = parts.find((p) => p.type === "month")?.value || "01";
-  return `${year}-${month}-01`;
+  }).formatToParts(new Date(startOfMonthUTC(year, month)));
+  const y = parts.find((p) => p.type === "year")?.value || year;
+  const m = parts.find((p) => p.type === "month")?.value || month;
+  return `${y}-${m}-01`;
 }
-function pickStartIndex(ch, anchor, mentionTs) {
+
+function pickStartIndex(ch, anchor, mentionTs, selectedMonth) {
   const tz = ch.tz || "America/New_York";
-  const targetYMD = anchor === "month" ? monthFirstYMD(tz) : localYMD(mentionTs, tz);
+  const [year, month] = selectedMonth.split("-").map(Number);
+  const targetYMD = anchor === "month" ? monthFirstYMD(tz, year, month) : localYMD(mentionTs, tz);
   let idx = -1;
   for (let i = 0; i < ch.timestamps.length; i++) {
     const ymd = localYMD(ch.timestamps[i], tz);
@@ -152,10 +169,11 @@ function pickStartIndex(ch, anchor, mentionTs) {
 }
 
 /** opts: { anchor:"mention"|"month", mode:"oc"|"cc" } */
-async function fetchBasisAndLatest(symbol, mentionTs, opts) {
+async function fetchBasisAndLatest(symbol, mentionTs, opts, selectedMonth) {
   const { anchor = "mention", mode = "oc" } = opts || {};
-  const ch = await getYahooChart(symbol, anchor === "month" ? startOfMonthUTC() : mentionTs);
-  const idx = pickStartIndex(ch, anchor, mentionTs);
+  const [year, month] = selectedMonth.split("-").map(Number);
+  const ch = await getYahooChart(symbol, anchor === "month" ? startOfMonthUTC(year, month) : mentionTs);
+  const idx = pickStartIndex(ch, anchor, mentionTs, selectedMonth);
 
   let startOpen = ch.opens[idx];
   let startClose = ch.closes[idx];
@@ -202,8 +220,8 @@ async function mapLimit(items, limit, worker) {
 }
 
 /** rank by gain */
-async function computeGainers(items, { limitTickers = 50, concurrency = 3, anchor = "month", mode = "oc" } = {}) {
-  console.log(`Computing gainers for ${items.length} items, limit ${limitTickers}, concurrency ${concurrency}, anchor ${anchor}, mode ${mode}`);
+async function computeGainers(items, { limitTickers = 50, concurrency = 3, anchor = "month", mode = "oc", selectedMonth } = {}) {
+  console.log(`Computing gainers for ${items.length} items, limit ${limitTickers}, concurrency ${concurrency}, anchor ${anchor}, mode ${mode}, month ${selectedMonth}`);
   if (!Array.isArray(items) || !items.length) return [];
   if (limitTickers <= 0) limitTickers = 50;
   if (concurrency <= 0) concurrency = 3;
@@ -214,7 +232,7 @@ async function computeGainers(items, { limitTickers = 50, concurrency = 3, ancho
 
   const out = await mapLimit(subset, concurrency, async (info) => {
     try {
-      const { basis, latest } = await fetchBasisAndLatest(info.symbol, info.firstTs, { anchor, mode });
+      const { basis, latest } = await fetchBasisAndLatest(info.symbol, info.firstTs, { anchor, mode }, selectedMonth);
       const pct = ((latest - basis) / basis) * 100;
       return { ...info, basis, latest, pct };
     } catch {
@@ -233,11 +251,11 @@ const METRIC_CHOICES = [
   { label: "Close→Close (Since Mention)",  value: "mention_cc" },
 ];
 
-function buildDashboardComponents(userOptions, currentUserId, currentMetric = "month_oc") {
+function buildDashboardComponents(userOptions, currentUserId, currentMetric = "month_oc", availableMonths, selectedMonth) {
   const row1 = new ActionRowBuilder().addComponents(
     new ButtonBuilder().setCustomId("dash:hot5").setStyle(ButtonStyle.Primary).setLabel("Hot5"),
     new ButtonBuilder().setCustomId("dash:hot10").setStyle(ButtonStyle.Primary).setLabel("Hot10"),
-    new ButtonBuilder().setCustomId("dash:hot20").setStyle(ButtonStyle.Primary).setLabel("Hot20"), // NEW
+    new ButtonBuilder().setCustomId("dash:hot20").setStyle(ButtonStyle.Primary).setLabel("Hot20"),
     new ButtonBuilder().setCustomId(`dash:mine:${currentUserId}`).setStyle(ButtonStyle.Secondary).setLabel("Mine"),
     new ButtonBuilder().setCustomId("dash:all").setStyle(ButtonStyle.Secondary).setLabel("All"),
   );
@@ -268,12 +286,30 @@ function buildDashboardComponents(userOptions, currentUserId, currentMetric = "m
   const row3 = new ActionRowBuilder().addComponents(menuMetric);
   components.push(row3);
 
+  const menuMonth = new StringSelectMenuBuilder()
+    .setCustomId("dash:month")
+    .setPlaceholder("Select Month")
+    .addOptions(
+      availableMonths.map((m) => ({
+        label: m.split("-").reverse().join("."),
+        value: m,
+        default: m === selectedMonth,
+      }))
+    );
+  const row4 = new ActionRowBuilder().addComponents(menuMonth);
+  components.push(row4);
+
   return components;
 }
 
 function getSelectedMetricForMessage(message) {
-  return metricState.get(message.id) || "month_oc";
+  return metricState.get(message.id)?.metric || "month_oc";
 }
+
+function getSelectedMonthForMessage(message) {
+  return metricState.get(message.id)?.month || `${new Date().getUTCFullYear()}-${String(new Date().getUTCMonth() + 1).padStart(2, "0")}`;
+}
+
 function metricToComputeOpts(metric) {
   switch (metric) {
     case "month_cc":   return { anchor: "month",   mode: "cc" };
@@ -293,7 +329,11 @@ export async function showTickersDashboard({ message, dbPath }) {
     const allUnique = new Set(entries.map((e) => (e.ticker || "").toUpperCase()).filter(Boolean)).size;
     console.log(`All unique tickers: ${allUnique}`);
 
-    const { byTicker, firstByUserCounts } = buildMonthAgg(entries);
+    const availableMonths = getAvailableMonths(entries);
+    console.log(`Available months: ${availableMonths.join(", ")}`);
+
+    const currentMonth = `${new Date().getUTCFullYear()}-${String(new Date().getUTCMonth() + 1).padStart(2, "0")}`;
+    const { byTicker, firstByUserCounts } = buildMonthAgg(entries, currentMonth);
     const mtdItems = [...byTicker.entries()];
     const mtdUnique = mtdItems.length;
 
@@ -327,6 +367,7 @@ export async function showTickersDashboard({ message, dbPath }) {
         concurrency: 3,
         anchor: "month",
         mode: "oc",
+        selectedMonth: currentMonth,
       });
       console.log(`Gainers computed: ${gainers.length} items`);
       topGainersSyms = gainers.slice(0, 3).map((g) => g.symbol);
@@ -345,29 +386,30 @@ export async function showTickersDashboard({ message, dbPath }) {
 
     const lines = [];
     lines.push(`Total Tracked: **${allUnique}** Tickers`);
-    lines.push(`This month: **${mtdUnique}** Tickers`);
+    lines.push(`This month (${currentMonth.split("-").reverse().join(".")}): **${mtdUnique}** Tickers`);
     if (top10.length)       lines.push(`Top 10 Tickers: ${top10.map((s) => `\`${s}\``).join(", ")}`);
     if (posters.length)     lines.push(`Top 3 Posters: ${posters.join(", ")}`);
     if (topGainersSyms.length)
       lines.push(`Top Gainers: ${topGainersSyms.map((s) => `\`${s}\``).join(", ")}`);
+    else
+      lines.push(`Top Gainers: None (insufficient data)`);
     console.log("Lines:", lines);
 
     const embed = new EmbedBuilder()
       .setColor(0x00b7ff)
-      .setTitle("📈 Tickers — Dashboard (MTD)")
+      .setTitle(`📈 Tickers — Dashboard (${currentMonth.split("-").reverse().join(".")})`)
       .setDescription(lines.join("\n"));
     console.log("Embed built");
 
-    const components = buildDashboardComponents(userOptions, message.author.id, "month_oc");
+    const components = buildDashboardComponents(userOptions, message.author.id, "month_oc", availableMonths, currentMonth);
     console.log("Components built");
 
     const sent = await message.channel.send({ embeds: [embed], components });
     console.log("Dashboard sent");
 
-    metricState.set(sent.id, "month_oc");
-    console.log("Metric state set");
-  }
-  catch (e) {
+    metricState.set(sent.id, { metric: "month_oc", month: currentMonth });
+    console.log("Metric and month state set");
+  } catch (e) {
     console.error("showTickersDashboard error:", e);
     await message.channel.send("תקלה בטעינת לוח הבקרה של הטיקרים.");
   }
@@ -379,7 +421,8 @@ export async function handleDashboardInteraction({ interaction, dbPath }) {
   if (!cid.startsWith("dash:")) return false;
 
   const { entries } = await loadDb(dbPath);
-  const { byTicker } = buildMonthAgg(entries);
+  const selectedMonth = getSelectedMonthForMessage(interaction.message);
+  const { byTicker } = buildMonthAgg(entries, selectedMonth);
   const mtd = [...byTicker.entries()].sort(
     (a, b) => b[1].countMTD - a[1].countMTD || a[0].localeCompare(b[0])
   );
@@ -418,15 +461,23 @@ export async function handleDashboardInteraction({ interaction, dbPath }) {
   // Metric selection
   if (cid === "dash:metric" && interaction.isStringSelectMenu()) {
     const selected = interaction.values?.[0] || "month_oc";
-    metricState.set(interaction.message.id, selected);
+    metricState.set(interaction.message.id, { ...metricState.get(interaction.message.id), metric: selected });
+    await interaction.deferUpdate();
+    return true;
+  }
+
+  // Month selection
+  if (cid === "dash:month" && interaction.isStringSelectMenu()) {
+    const selected = interaction.values?.[0] || getSelectedMonthForMessage(interaction.message);
+    metricState.set(interaction.message.id, { ...metricState.get(interaction.message.id), month: selected });
     await interaction.deferUpdate();
     return true;
   }
 
   const metric = getSelectedMetricForMessage(interaction.message);
-  const computeOpts = metricToComputeOpts(metric);
+  const computeOpts = { ...metricToComputeOpts(metric), selectedMonth };
 
-  // Hot5 / Hot10 / Hot20  <<< UPDATED
+  // Hot5 / Hot10 / Hot20
   if (cid === "dash:hot5" || cid === "dash:hot10" || cid === "dash:hot20") {
     const topN = cid === "dash:hot5" ? 5 : cid === "dash:hot10" ? 10 : 20;
     await interaction.deferReply({ flags: 64 });
@@ -438,7 +489,7 @@ export async function handleDashboardInteraction({ interaction, dbPath }) {
         const pct = r.pct.toFixed(1);
         return `${i + 1}. \`${r.symbol}\`: **${pct}%**, [${who}](${r.firstLink || "#"})`;
       });
-      await sendPaged(topN === 5 ? "🔥 Hot 5" : topN === 10 ? "🔥 Hot 10" : "🔥 Hot 20", lines);
+      await sendPaged(topN === 5 ? `🔥 Hot 5 (${selectedMonth.split("-").reverse().join(".")})` : topN === 10 ? `🔥 Hot 10 (${selectedMonth.split("-").reverse().join(".")})` : `🔥 Hot 20 (${selectedMonth.split("-").reverse().join(".")})`, lines);
     } catch (e) {
       console.error("dash:hot error:", e);
       await interaction.editReply("לא הצלחתי לחשב תשואות כרגע.");
@@ -452,7 +503,7 @@ export async function handleDashboardInteraction({ interaction, dbPath }) {
     await interaction.deferReply({ flags: 64 });
     const mine = infos.filter((v) => v.firstUserId === uid);
     if (!mine.length) {
-      await interaction.editReply("אין טיקרים שהוזכרו ראשונים על ידך החודש.");
+      await interaction.editReply(`אין טיקרים שהוזכרו ראשונים על ידך ב-${selectedMonth.split("-").reverse().join(".")}.`);
       return true;
     }
     try {
@@ -462,7 +513,7 @@ export async function handleDashboardInteraction({ interaction, dbPath }) {
         const who = r.firstUserName || "you";
         return `${i + 1}. \`${r.symbol}\`: **${pct}%**, [${who}](${r.firstLink || "#"})`;
       });
-      await sendPaged("🎯 Mine (first mentions this month)", lines);
+      await sendPaged(`🎯 Mine (first mentions in ${selectedMonth.split("-").reverse().join(".")})`, lines);
     } catch (e) {
       console.error("dash:mine error:", e);
       await interaction.editReply("תקלה בחישוב תשואות.");
@@ -480,7 +531,7 @@ export async function handleDashboardInteraction({ interaction, dbPath }) {
       const who = v.firstUserName ? ` (${v.firstUserName})` : "";
       return `• [\`${v.symbol}\`](${firstUrl}) — **${v.countMTD}**${who} — [${lastStr}](${lastUrl})`;
     });
-    await sendPaged("📋 All (this month)", lines);
+    await sendPaged(`📋 All (${selectedMonth.split("-").reverse().join(".")})`, lines);
     return true;
   }
 
@@ -496,7 +547,7 @@ export async function handleDashboardInteraction({ interaction, dbPath }) {
       const userFirst = infos.filter((v) => v.firstUserId === targetId);
       if (!userFirst.length) {
         await interaction.deferReply({ flags: 64 });
-        await interaction.editReply("אין טיקרים למשתמש זה החודש.");
+        await interaction.editReply(`אין טיקרים למשתמש זה ב-${selectedMonth.split("-").reverse().join(".")}.`);
         return true;
       }
       const ranked = await computeGainers(userFirst, { limitTickers: 200, concurrency: 4, ...computeOpts });
@@ -505,7 +556,7 @@ export async function handleDashboardInteraction({ interaction, dbPath }) {
         const who = r.firstUserName || "user";
         return `${i + 1}. \`${r.symbol}\`: **${pct}%**, [${who}](${r.firstLink || "#"})`;
       });
-      await sendPaged("👤 User's first mentions (MTD)", lines);
+      await sendPaged(`👤 User's first mentions (${selectedMonth.split("-").reverse().join(".")})`, lines);
     } catch (e) {
       console.error("dash:user error:", e);
       if (!interaction.deferred && !interaction.replied) {

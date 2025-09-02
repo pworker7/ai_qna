@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-02T06:00:30.983Z",
+  "updated": "2025-09-02T12:23:24.512Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -6097,6 +6097,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1412301664794316900",
       "timestamp": "2025-09-02T05:02:36.183Z",
       "content": "https://x.com/chenhofit13/status/1962556621911138763?s=46"
+    },
+    {
+      "ticker": "BABA",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1412412592554512475",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1412412592554512475",
+      "timestamp": "2025-09-02T12:23:23.422Z",
+      "content": "baba בדרך ל148"
     }
   ],
   "checkpoints": {

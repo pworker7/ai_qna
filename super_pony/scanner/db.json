@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-02T14:16:12.343Z",
+  "updated": "2025-09-02T14:23:03.459Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -6123,12 +6123,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1412440982464630875",
       "timestamp": "2025-09-02T14:16:12.104Z",
       "content": "ASND"
+    },
+    {
+      "ticker": "KEY",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1412442706549932092",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1412442706549932092",
+      "timestamp": "2025-09-02T14:23:03.158Z",
+      "content": "KEY"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1412438900965900361",
-      "lastProcessedAt": "2025-09-02T14:07:55.836Z"
+      "lastProcessedId": "1412440982464630875",
+      "lastProcessedAt": "2025-09-02T14:16:12.104Z"
     }
   }
 }

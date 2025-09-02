@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-02T14:23:49.940Z",
+  "updated": "2025-09-02T14:26:11.671Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -6149,12 +6149,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1412442901685997569",
       "timestamp": "2025-09-02T14:23:49.682Z",
       "content": "AMBA"
+    },
+    {
+      "ticker": "RSP",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1412443496497025047",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1412443496497025047",
+      "timestamp": "2025-09-02T14:26:11.496Z",
+      "content": "RSP"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1412442706549932092",
-      "lastProcessedAt": "2025-09-02T14:23:03.158Z"
+      "lastProcessedId": "1412443062205943849",
+      "lastProcessedAt": "2025-09-02T14:24:27.953Z"
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-03T13:38:59.102Z",
+  "updated": "2025-09-03T13:42:37.713Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -6474,12 +6474,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1412794002939449504",
       "timestamp": "2025-09-03T13:38:58.744Z",
       "content": "מצאה תמיכה GOOG"
+    },
+    {
+      "ticker": "TER",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1412794920791445684",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1412794920791445684",
+      "timestamp": "2025-09-03T13:42:37.577Z",
+      "content": "ter"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1412792812637917185",
-      "lastProcessedAt": "2025-09-03T13:34:14.954Z"
+      "lastProcessedId": "1412794002939449504",
+      "lastProcessedAt": "2025-09-03T13:38:58.744Z"
     }
   }
 }

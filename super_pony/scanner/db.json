@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-03T14:01:45.461Z",
+  "updated": "2025-09-03T14:08:06.128Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -6526,12 +6526,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1412799734342488168",
       "timestamp": "2025-09-03T14:01:45.217Z",
       "content": "BMNR above 47"
+    },
+    {
+      "ticker": "HIMS",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1412801330824609853",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1412801330824609853",
+      "timestamp": "2025-09-03T14:08:05.848Z",
+      "content": "HIMS above 46.35"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1412796481655673004",
-      "lastProcessedAt": "2025-09-03T13:48:49.716Z"
+      "lastProcessedId": "1412799734342488168",
+      "lastProcessedAt": "2025-09-03T14:01:45.217Z"
     }
   }
 }

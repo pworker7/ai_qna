@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-03T16:12:52.415Z",
+  "updated": "2025-09-03T16:25:55.295Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -6604,12 +6604,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1412832730743574549",
       "timestamp": "2025-09-03T16:12:52.172Z",
       "content": "BMNR"
+    },
+    {
+      "ticker": "GRRR",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1412836014753452074",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1412836014753452074",
+      "timestamp": "2025-09-03T16:25:55.141Z",
+      "content": "GRRR - לחכות לקונים!!!"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1412832486798655518",
-      "lastProcessedAt": "2025-09-03T16:11:54.011Z"
+      "lastProcessedId": "1412832730743574549",
+      "lastProcessedAt": "2025-09-03T16:12:52.172Z"
     }
   }
 }

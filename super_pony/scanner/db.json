@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-03T13:42:37.713Z",
+  "updated": "2025-09-03T13:48:34.470Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -6487,12 +6487,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1412794920791445684",
       "timestamp": "2025-09-03T13:42:37.577Z",
       "content": "ter"
+    },
+    {
+      "ticker": "TMDX",
+      "user": {
+        "id": "1339671554371485789",
+        "name": "MrKnowAll"
+      },
+      "messageId": "1412796417096945786",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1412796417096945786",
+      "timestamp": "2025-09-03T13:48:34.324Z",
+      "content": "TMDX\nבאזור מעניין"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1412794002939449504",
-      "lastProcessedAt": "2025-09-03T13:38:58.744Z"
+      "lastProcessedId": "1412794920791445684",
+      "lastProcessedAt": "2025-09-03T13:42:37.577Z"
     }
   }
 }

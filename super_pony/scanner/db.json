@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-04T09:00:35.812Z",
+  "updated": "2025-09-04T12:15:58.010Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -6643,6 +6643,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1412881353279672363",
       "timestamp": "2025-09-03T19:26:04.688Z",
       "content": "https://x.com/chenhofit13/status/1963316613161124088?s=46"
+    },
+    {
+      "ticker": "OLN",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1413135499190861835",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1413135499190861835",
+      "timestamp": "2025-09-04T12:15:57.795Z",
+      "content": "OLN פורצך"
     }
   ],
   "checkpoints": {

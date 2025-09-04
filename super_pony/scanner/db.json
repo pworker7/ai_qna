@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-04T12:15:58.010Z",
+  "updated": "2025-09-04T12:32:12.786Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -6656,12 +6656,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1413135499190861835",
       "timestamp": "2025-09-04T12:15:57.795Z",
       "content": "OLN פורצך"
+    },
+    {
+      "ticker": "OSCR",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1413139587852669039",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1413139587852669039",
+      "timestamp": "2025-09-04T12:32:12.608Z",
+      "content": "oscr נכנסה לגאפ"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1413077165842632845",
-      "lastProcessedAt": "2025-09-04T08:24:10.041Z"
+      "lastProcessedId": "1413135499190861835",
+      "lastProcessedAt": "2025-09-04T12:15:57.795Z"
     }
   }
 }

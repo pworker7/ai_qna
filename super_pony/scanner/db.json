@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-04T18:05:49.503Z",
+  "updated": "2025-09-04T18:10:07.821Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -6734,12 +6734,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1413223544057237564",
       "timestamp": "2025-09-04T18:05:49.327Z",
       "content": "up start"
+    },
+    {
+      "ticker": "DKNG",
+      "user": {
+        "id": "1363501652505661750",
+        "name": "elad zeira"
+      },
+      "messageId": "1413224627077124178",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1413224627077124178",
+      "timestamp": "2025-09-04T18:10:07.539Z",
+      "content": "DKNG\nלדעתי בנקודה מעניינת"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1413223457659031552",
-      "lastProcessedAt": "2025-09-04T18:05:28.728Z"
+      "lastProcessedId": "1413223544057237564",
+      "lastProcessedAt": "2025-09-04T18:05:49.327Z"
     }
   }
 }

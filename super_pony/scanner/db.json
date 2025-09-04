@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-04T18:00:31.574Z",
+  "updated": "2025-09-04T18:05:28.838Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -6708,6 +6708,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1413215207215464594",
       "timestamp": "2025-09-04T17:32:41.669Z",
       "content": "TOL"
+    },
+    {
+      "ticker": "SOUN",
+      "user": {
+        "id": "1339671554371485789",
+        "name": "MrKnowAll"
+      },
+      "messageId": "1413223457659031552",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1413223457659031552",
+      "timestamp": "2025-09-04T18:05:28.728Z",
+      "content": "SOUN above 13.4"
     }
   ],
   "checkpoints": {

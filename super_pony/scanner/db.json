@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-08T14:27:19.452Z",
+  "updated": "2025-09-08T14:37:24.680Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -7124,12 +7124,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1414618108491993098",
       "timestamp": "2025-09-08T14:27:19.398Z",
       "content": "looking good"
+    },
+    {
+      "ticker": "CRWV",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1414620646603882600",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1414620646603882600",
+      "timestamp": "2025-09-08T14:37:24.531Z",
+      "content": "crwv תכניסו לרשימת מעקב"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1414616262721540187",
-      "lastProcessedAt": "2025-09-08T14:19:59.332Z"
+      "lastProcessedId": "1414618108491993098",
+      "lastProcessedAt": "2025-09-08T14:27:19.398Z"
     }
   }
 }

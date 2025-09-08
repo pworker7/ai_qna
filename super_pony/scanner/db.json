@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-08T14:00:39.576Z",
+  "updated": "2025-09-08T14:05:20.509Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -7085,12 +7085,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1414608439161786561",
       "timestamp": "2025-09-08T13:48:54.050Z",
       "content": "serv"
+    },
+    {
+      "ticker": "ROOT",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1414612576461127842",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1414612576461127842",
+      "timestamp": "2025-09-08T14:05:20.459Z",
+      "content": "root- סטופ בפריצה"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1414608439161786561",
-      "lastProcessedAt": "2025-09-08T13:48:54.050Z"
+      "lastProcessedId": "1414612538057949194",
+      "lastProcessedAt": "2025-09-08T14:05:11.303Z"
     }
   }
 }

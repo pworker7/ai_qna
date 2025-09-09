@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-09T16:00:37.017Z",
+  "updated": "2025-09-09T16:16:29.109Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -7358,12 +7358,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1414992993055801496",
       "timestamp": "2025-09-09T15:16:58.843Z",
       "content": "OCTO FIB 🔞"
+    },
+    {
+      "ticker": "ADUR",
+      "user": {
+        "id": "1339671554371485789",
+        "name": "MrKnowAll"
+      },
+      "messageId": "1415007966826070216",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415007966826070216",
+      "timestamp": "2025-09-09T16:16:28.868Z",
+      "content": "ADUR\nשל חן למי שמעוניין\nהבנתי אותך"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1414992993055801496",
-      "lastProcessedAt": "2025-09-09T15:16:58.843Z"
+      "lastProcessedId": "1415007566550929439",
+      "lastProcessedAt": "2025-09-09T16:14:53.435Z"
     }
   }
 }

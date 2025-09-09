@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-09T19:03:18.651Z",
+  "updated": "2025-09-09T19:15:19.144Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -7527,12 +7527,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415049950676652075",
       "timestamp": "2025-09-09T19:03:18.598Z",
       "content": "תפסנו היום תחתית בnbis האם נתפוס גם בocto?"
+    },
+    {
+      "ticker": "BY",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1415052972244598795",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415052972244598795",
+      "timestamp": "2025-09-09T19:15:18.996Z",
+      "content": "על 61.8 , by the book"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1415049774515884273",
-      "lastProcessedAt": "2025-09-09T19:02:36.598Z"
+      "lastProcessedId": "1415052778790846494",
+      "lastProcessedAt": "2025-09-09T19:14:32.873Z"
     }
   }
 }

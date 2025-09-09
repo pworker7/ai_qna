@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-09T18:00:39.761Z",
+  "updated": "2025-09-09T18:44:48.441Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -7384,12 +7384,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415011122985177263",
       "timestamp": "2025-09-09T16:29:01.355Z",
       "content": "COIN above 316"
+    },
+    {
+      "ticker": "LITE",
+      "user": {
+        "id": "1147127141524328579",
+        "name": "David Bakal"
+      },
+      "messageId": "1415045294101499984",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415045294101499984",
+      "timestamp": "2025-09-09T18:44:48.384Z",
+      "content": "Lite העלתי אותה מספר פעמים"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1415019781857349744",
-      "lastProcessedAt": "2025-09-09T17:03:25.791Z"
+      "lastProcessedId": "1415042962483708027",
+      "lastProcessedAt": "2025-09-09T18:35:32.483Z"
     }
   }
 }

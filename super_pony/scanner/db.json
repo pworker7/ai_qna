@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-09T19:00:54.511Z",
+  "updated": "2025-09-09T19:02:10.188Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -7449,12 +7449,51 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415048582951600150",
       "timestamp": "2025-09-09T18:57:52.507Z",
       "content": "SMR"
+    },
+    {
+      "ticker": "YOU",
+      "user": {
+        "id": "1033751148378726422",
+        "name": "קמחי"
+      },
+      "messageId": "1415049663114907772",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415049663114907772",
+      "timestamp": "2025-09-09T19:02:10.038Z",
+      "content": "https://tenor.com/view/you-pulled-it-off-like-the-master-you-are-charles-haden-savage-steve-martin-only-murders-in-the-building-s209-gif-26547791"
+    },
+    {
+      "ticker": "IT",
+      "user": {
+        "id": "1033751148378726422",
+        "name": "קמחי"
+      },
+      "messageId": "1415049663114907772",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415049663114907772",
+      "timestamp": "2025-09-09T19:02:10.038Z",
+      "content": "https://tenor.com/view/you-pulled-it-off-like-the-master-you-are-charles-haden-savage-steve-martin-only-murders-in-the-building-s209-gif-26547791"
+    },
+    {
+      "ticker": "ARE",
+      "user": {
+        "id": "1033751148378726422",
+        "name": "קמחי"
+      },
+      "messageId": "1415049663114907772",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415049663114907772",
+      "timestamp": "2025-09-09T19:02:10.038Z",
+      "content": "https://tenor.com/view/you-pulled-it-off-like-the-master-you-are-charles-haden-savage-steve-martin-only-murders-in-the-building-s209-gif-26547791"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1415048969951641791",
-      "lastProcessedAt": "2025-09-09T18:59:24.775Z"
+      "lastProcessedId": "1415049560568365147",
+      "lastProcessedAt": "2025-09-09T19:01:45.589Z"
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-09T19:02:10.188Z",
+  "updated": "2025-09-09T19:02:36.874Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -7488,12 +7488,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415049663114907772",
       "timestamp": "2025-09-09T19:02:10.038Z",
       "content": "https://tenor.com/view/you-pulled-it-off-like-the-master-you-are-charles-haden-savage-steve-martin-only-murders-in-the-building-s209-gif-26547791"
+    },
+    {
+      "ticker": "DCTH",
+      "user": {
+        "id": "1306341288420966504",
+        "name": "CHEN HOFIT"
+      },
+      "messageId": "1415049774515884273",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415049774515884273",
+      "timestamp": "2025-09-09T19:02:36.598Z",
+      "content": "DCTH נכנסץי"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1415049560568365147",
-      "lastProcessedAt": "2025-09-09T19:01:45.589Z"
+      "lastProcessedId": "1415049663114907772",
+      "lastProcessedAt": "2025-09-09T19:02:10.038Z"
     }
   }
 }

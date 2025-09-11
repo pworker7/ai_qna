@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-11T13:10:48.904Z",
+  "updated": "2025-09-11T13:31:44.242Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -7787,12 +7787,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415686017192820777",
       "timestamp": "2025-09-11T13:10:48.673Z",
       "content": "CELH"
+    },
+    {
+      "ticker": "KC",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1415691282289786892",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415691282289786892",
+      "timestamp": "2025-09-11T13:31:43.970Z",
+      "content": "kc"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1415685160007106724",
-      "lastProcessedAt": "2025-09-11T13:07:24.304Z"
+      "lastProcessedId": "1415686307182542951",
+      "lastProcessedAt": "2025-09-11T13:11:57.812Z"
     }
   }
 }

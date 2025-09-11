@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-11T23:26:24.096Z",
+  "updated": "2025-09-11T23:29:16.650Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -8359,12 +8359,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415840935157170239",
       "timestamp": "2025-09-11T23:26:23.994Z",
       "content": "https://tenor.com/view/marmot-marmot-scream-dave-dave-knees-dave-energy-gif-20123407"
+    },
+    {
+      "ticker": "RCAT",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1415841658192400477",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415841658192400477",
+      "timestamp": "2025-09-11T23:29:16.379Z",
+      "content": "RCAT- שימו לב לווליום החריג"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1415840902001463317",
-      "lastProcessedAt": "2025-09-11T23:26:16.089Z"
+      "lastProcessedId": "1415840935157170239",
+      "lastProcessedAt": "2025-09-11T23:26:23.994Z"
     }
   }
 }

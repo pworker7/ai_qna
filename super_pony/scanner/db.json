@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-11T23:26:16.268Z",
+  "updated": "2025-09-11T23:26:24.096Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -8346,12 +8346,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415840902001463317",
       "timestamp": "2025-09-11T23:26:16.089Z",
       "content": "DAVE"
+    },
+    {
+      "ticker": "DAVE",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1415840935157170239",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415840935157170239",
+      "timestamp": "2025-09-11T23:26:23.994Z",
+      "content": "https://tenor.com/view/marmot-marmot-scream-dave-dave-knees-dave-energy-gif-20123407"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1415840535683272824",
-      "lastProcessedAt": "2025-09-11T23:24:48.752Z"
+      "lastProcessedId": "1415840902001463317",
+      "lastProcessedAt": "2025-09-11T23:26:16.089Z"
     }
   }
 }

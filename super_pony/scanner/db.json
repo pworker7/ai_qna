@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-11T16:01:48.266Z",
+  "updated": "2025-09-11T16:16:59.507Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -7995,12 +7995,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415729048310648943",
       "timestamp": "2025-09-11T16:01:48.091Z",
       "content": "ZETA פורצת"
+    },
+    {
+      "ticker": "GME",
+      "user": {
+        "id": "1147127141524328579",
+        "name": "David Bakal"
+      },
+      "messageId": "1415732870550392875",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415732870550392875",
+      "timestamp": "2025-09-11T16:16:59.384Z",
+      "content": "אתה בGme?"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1415727103382655098",
-      "lastProcessedAt": "2025-09-11T15:54:04.384Z"
+      "lastProcessedId": "1415732833653231629",
+      "lastProcessedAt": "2025-09-11T16:16:50.587Z"
     }
   }
 }

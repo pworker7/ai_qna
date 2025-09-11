@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-11T13:37:56.963Z",
+  "updated": "2025-09-11T13:41:53.655Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -7826,12 +7826,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415692846190559392",
       "timestamp": "2025-09-11T13:37:56.833Z",
       "content": "NIO"
+    },
+    {
+      "ticker": "BABA",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1415693838722400339",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415693838722400339",
+      "timestamp": "2025-09-11T13:41:53.471Z",
+      "content": "BABA פורצת"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1415691819936645203",
-      "lastProcessedAt": "2025-09-11T13:33:52.155Z"
+      "lastProcessedId": "1415692846190559392",
+      "lastProcessedAt": "2025-09-11T13:37:56.833Z"
     }
   }
 }

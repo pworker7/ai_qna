@@ -83,7 +83,13 @@ export async function appendToLog(msg) {
         existing = await data.text();
     } catch {}
     const payload = existing + JSON.stringify(rec) + "\n";
-    await supabase.storage.from(SUPABASE_BUCKET).upload(fileName, payload, { upsert: true, contentType: "application/jsonl" });
+    const { error } = await supabase.storage
+        .from(SUPABASE_BUCKET)
+        .upload(fileName, Buffer.from(payload), { upsert: true, contentType: "application/jsonl" });
+    if (error) {
+        console.error("Failed to upload log file", fileName, error);
+        throw error;
+    }
 }
 
 export async function readRecent(channelId, minutes = 60, maxLines = 4000) {
@@ -315,7 +321,13 @@ export async function backfillLastDayMessages(client, channelId) {
     for (const { file: f, existingText, records } of dayBuckets.values()) {
         if (records.length === 0) continue;
         const logData = existingText + records.map(r => JSON.stringify(r)).join("\n") + "\n";
-        await supabase.storage.from(SUPABASE_BUCKET).upload(f, logData, { upsert: true, contentType: "application/jsonl" });
+        const { error } = await supabase.storage
+            .from(SUPABASE_BUCKET)
+            .upload(f, Buffer.from(logData), { upsert: true, contentType: "application/jsonl" });
+        if (error) {
+            console.error("Failed to upload log file", f, error);
+            throw error;
+        }
         total += records.length;
     }
 

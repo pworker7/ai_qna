@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-12T00:00:52.109Z",
+  "updated": "2025-09-12T03:11:26.154Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -8398,12 +8398,38 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415844070491947090",
       "timestamp": "2025-09-11T23:38:51.516Z",
       "content": "EPR -ממשיכים"
+    },
+    {
+      "ticker": "TSLA",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1415896168700973137",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415896168700973137",
+      "timestamp": "2025-09-12T03:05:52.697Z",
+      "content": "TSLA 1D"
+    },
+    {
+      "ticker": "TSLA",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1415896236828921896",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1415896236828921896",
+      "timestamp": "2025-09-12T03:06:08.940Z",
+      "content": "TSLA 1MIN"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1415844070491947090",
-      "lastProcessedAt": "2025-09-11T23:38:51.516Z"
+      "lastProcessedId": "1415896236828921896",
+      "lastProcessedAt": "2025-09-12T03:06:08.940Z"
     }
   }
 }

@@ -8,42 +8,43 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
 }
 
 /**
- * Custom fetch that logs details when a request fails.
- * Ensures all Supabase requests, including storage, continue as normal while
- * exposing diagnostic information.
+ * Custom fetch that logs details when a request fails (including XML bodies).
  * @param {RequestInfo | URL} input
  * @param {RequestInit} [init]
  * @returns {Promise<Response>}
  */
 const fetchWithLogging = async (input, init) => {
   const res = await fetch(input, init);
-
   if (!res.ok) {
     try {
-      const clone = res.clone();
-      const headers = Object.fromEntries(clone.headers.entries());
-      const contentType = clone.headers.get('content-type') || '';
-      let body;
-      if (contentType.includes('html')) {
-        body = await clone.text();
-      }
-
+      const headers = Object.fromEntries(res.headers.entries());
       console.error('Supabase request failed', {
-        status: clone.status,
+        status: res.status,
         headers,
-        ...(body ? { body } : {}),
       });
+      const ct = (res.headers.get('content-type') || '').toLowerCase();
+      if (
+        ct.includes('text/html') ||
+        ct.includes('application/xml') ||
+        ct.includes('text/xml') ||
+        ct.startsWith('text/')
+      ) {
+        const body = await res.text();
+        console.error('Supabase error URL:', res.url);
+        console.error('Supabase error body:', body);
+      }
     } catch (e) {
-      // Logging shouldn't interfere with normal flow.
       console.error('Failed to log Supabase error response', e);
     }
   }
-
   return res;
 };
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
-  global: { fetch: fetchWithLogging },
+  global: {
+    fetch: fetchWithLogging,
+    headers: { Accept: 'application/json' },
+  },
 });
 
 export default supabase;

@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { supabase } from "./supabaseClient.mjs";
+import { logStorageError } from "./storageErrorLogger.mjs";
 
 const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET;
 if (!SUPABASE_BUCKET) throw new Error("SUPABASE_BUCKET is not set");
@@ -145,7 +146,9 @@ async function readLogsForDate(channelId, ymd) {
         out.push({ ts: obj.timestamp || obj.ts || 0, author: obj.author || obj.user || "Unknown", text });
       } catch {}
     }
-  } catch {}
+  } catch (error) {
+    await logStorageError(error);
+  }
   out.sort((a,b)=> (a.ts||0)-(b.ts||0));
   return out;
 }

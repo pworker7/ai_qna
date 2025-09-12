@@ -1,4 +1,5 @@
 import { supabase } from "./supabaseClient.mjs";
+import { logStorageError } from "./storageErrorLogger.mjs";
 
 const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET;
 if (!SUPABASE_BUCKET) throw new Error("SUPABASE_BUCKET is not set");
@@ -81,12 +82,15 @@ export async function appendToLog(msg) {
     try {
         const { data } = await supabase.storage.from(SUPABASE_BUCKET).download(fileName);
         existing = await data.text();
-    } catch {}
+    } catch (error) {
+        await logStorageError(error);
+    }
     const payload = existing + JSON.stringify(rec) + "\n";
     const { error } = await supabase.storage
         .from(SUPABASE_BUCKET)
         .upload(fileName, Buffer.from(payload), { upsert: true, contentType: "application/jsonl" });
     if (error) {
+        await logStorageError(error);
         console.error("Failed to upload log file", fileName, error);
         throw error;
     }
@@ -120,7 +124,8 @@ export async function readRecent(channelId, minutes = 60, maxLines = 4000) {
             const { data } = await supabase.storage.from(SUPABASE_BUCKET).download(f);
             raw = await data.text();
             dlog("  → downloaded", f, `size=${raw.length}`);
-        } catch {
+        } catch (error) {
+            await logStorageError(error);
             dlog("  → not found", f);
             continue; // missing file is fine
         }
@@ -195,7 +200,8 @@ export async function readLastNFromLatestFile(channelId, n = 400, date = null) {
     try {
         const { data } = await supabase.storage.from(SUPABASE_BUCKET).download(chosen);
         raw = await data.text();
-    } catch {
+    } catch (error) {
+        await logStorageError(error);
         return [];
     }
 
@@ -261,7 +267,9 @@ export async function backfillLastDayMessages(client, channelId) {
                     if (msgId) bucket.existingIds.add(msgId);
                 } catch { }
             }
-        } catch { }
+        } catch (error) {
+            await logStorageError(error);
+        }
 
         dayBuckets.set(key, bucket);
         return bucket;
@@ -325,6 +333,7 @@ export async function backfillLastDayMessages(client, channelId) {
             .from(SUPABASE_BUCKET)
             .upload(f, Buffer.from(logData), { upsert: true, contentType: "application/jsonl" });
         if (error) {
+            await logStorageError(error);
             console.error("Failed to upload log file", f, error);
             throw error;
         }

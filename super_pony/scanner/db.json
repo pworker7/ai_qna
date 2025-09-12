@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-12T14:17:35.099Z",
+  "updated": "2025-09-12T14:17:53.810Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -8580,12 +8580,38 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416065208442556457",
       "timestamp": "2025-09-12T14:17:34.912Z",
       "content": "SERV זו רק ההתחלה"
+    },
+    {
+      "ticker": "SERV",
+      "user": {
+        "id": "1339671554371485789",
+        "name": "MrKnowAll"
+      },
+      "messageId": "1416065287559844063",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416065287559844063",
+      "timestamp": "2025-09-12T14:17:53.775Z",
+      "content": "SERV / RR / both?"
+    },
+    {
+      "ticker": "RR",
+      "user": {
+        "id": "1339671554371485789",
+        "name": "MrKnowAll"
+      },
+      "messageId": "1416065287559844063",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416065287559844063",
+      "timestamp": "2025-09-12T14:17:53.775Z",
+      "content": "SERV / RR / both?"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1416057432660115476",
-      "lastProcessedAt": "2025-09-12T13:46:41.021Z"
+      "lastProcessedId": "1416065208442556457",
+      "lastProcessedAt": "2025-09-12T14:17:34.912Z"
     }
   }
 }

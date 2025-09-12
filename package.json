@@ -19,6 +19,7 @@
     "sql.js": "^1.13.0",
     "tesseract.js": "^6.0.1",
     "tough-cookie": "^4.1.4",
-    "@supabase/supabase-js": "^2.45.4"
+    "@supabase/supabase-js": "^2.45.4",
+    "@supabase/functions-js": "^2.4.6"
   }
 }

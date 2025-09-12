@@ -81,11 +81,20 @@ export async function appendToLog(msg) {
     let existing = "";
     try {
         const { data } = await supabase.storage.from(SUPABASE_BUCKET).download(fileName);
+        console.log("  → downloaded existing log file:", fileName);
+        console.log("content:", data);
+
         existing = await data.text();
+        console.log("data text:", existing);
+
     } catch (error) {
+        console.warn("Failed to fetch log file: ", fileName, error.message || error);
         await logStorageError(error);
     }
+
+    // Append new record
     const payload = existing + JSON.stringify(rec) + "\n";
+
     const { error } = await supabase.storage
         .from(SUPABASE_BUCKET)
         .upload(fileName, Buffer.from(payload), { upsert: true, contentType: "application/jsonl" });

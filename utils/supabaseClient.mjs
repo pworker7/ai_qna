@@ -8,30 +8,47 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
 }
 
 /**
- * Custom fetch that logs details when a request fails (including XML bodies).
- * @param {RequestInfo | URL} input
- * @param {RequestInit} [init]
- * @returns {Promise<Response>}
+ * Custom fetch that logs details when a request fails (JSON/XML/text),
+ * without consuming the original response body (uses res.clone()).
  */
 const fetchWithLogging = async (input, init) => {
+  const method =
+    (init && init.method) ||
+    (typeof input === 'object' && input?.method) ||
+    'GET';
+  const url =
+    (typeof input === 'string' && input) ||
+    (typeof input === 'object' && input?.url) ||
+    String(input);
+
   const res = await fetch(input, init);
   if (!res.ok) {
     try {
       const headers = Object.fromEntries(res.headers.entries());
+      const ct = (res.headers.get('content-type') || '').toLowerCase();
+      const resClone = res.clone();
+
       console.error('Supabase request failed', {
+        method,
+        url,
         status: res.status,
         headers,
       });
-      const ct = (res.headers.get('content-type') || '').toLowerCase();
+
       if (
-        ct.includes('text/html') ||
-        ct.includes('application/xml') ||
-        ct.includes('text/xml') ||
-        ct.startsWith('text/')
+        ct.includes('application/json') ||
+        ct.includes('text/') ||
+        ct.includes('xml')
       ) {
-        const body = await res.text();
-        console.error('Supabase error URL:', res.url);
-        console.error('Supabase error body:', body);
+        let bodyText = '';
+        try {
+          bodyText = await resClone.text();
+        } catch {}
+        if (bodyText) {
+          const max = 4000;
+          if (bodyText.length > max) bodyText = bodyText.slice(0, max) + '…[truncated]';
+          console.error('Supabase error body:', bodyText);
+        }
       }
     } catch (e) {
       console.error('Failed to log Supabase error response', e);

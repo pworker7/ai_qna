@@ -6,10 +6,15 @@ const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
   throw new Error('Supabase credentials are not set');
 }
+if (/\bstorage\.supabase\.co\b/.test(SUPABASE_URL) || /\/storage\/v1\b/.test(SUPABASE_URL)) {
+  throw new Error(
+    `Invalid SUPABASE_URL: ${SUPABASE_URL}\n` +
+    `Use the project base URL (e.g., https://<ref>.supabase.co), not the storage subdomain or /storage/v1.`
+  );
+}
 
 /**
- * Custom fetch that logs details when a request fails (JSON/XML/text),
- * without consuming the original response body (uses res.clone()).
+ * Fetch with error logging (safe: uses res.clone()).
  */
 const fetchWithLogging = async (input, init) => {
   const method =
@@ -28,22 +33,11 @@ const fetchWithLogging = async (input, init) => {
       const ct = (res.headers.get('content-type') || '').toLowerCase();
       const resClone = res.clone();
 
-      console.error('Supabase request failed', {
-        method,
-        url,
-        status: res.status,
-        headers,
-      });
+      console.error('Supabase request failed', { method, url, status: res.status, headers });
 
-      if (
-        ct.includes('application/json') ||
-        ct.includes('text/') ||
-        ct.includes('xml')
-      ) {
+      if (ct.includes('application/json') || ct.includes('text/') || ct.includes('xml')) {
         let bodyText = '';
-        try {
-          bodyText = await resClone.text();
-        } catch {}
+        try { bodyText = await resClone.text(); } catch {}
         if (bodyText) {
           const max = 4000;
           if (bodyText.length > max) bodyText = bodyText.slice(0, max) + '…[truncated]';

@@ -28,7 +28,7 @@ import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
 import axios from 'axios';
 
-import { commitLogIfChanged } from '../../utils/liveLog.mjs';
+import { commitLogIfChanged } from '../../utils/gitCommit.mjs';
 
 
 dayjs.extend(utc);

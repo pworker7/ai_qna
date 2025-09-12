@@ -21,6 +21,7 @@
     "tough-cookie": "^4.1.4",
     "@supabase/supabase-js": "^2.45.4",
     "@supabase/functions-js": "^2.4.6",
-	"@supabase/postgrest-js": "^0.19.1"
+	"@supabase/postgrest-js": "^0.19.1",
+	"@supabase/realtime-js": "^2.15.5"
   }
 }

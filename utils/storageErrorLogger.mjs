@@ -15,9 +15,15 @@ export async function logStorageError(error) {
       if (headers) {
         const headerObj = Object.fromEntries(headers.entries());
         console.error('StorageUnknownError headers:', headerObj);
-        const contentType = headers.get('content-type');
-        if (contentType && contentType.includes('text/html')) {
+        const contentType = headers.get('content-type') || '';
+        if (
+          contentType.includes('text/html') ||
+          contentType.includes('application/xml') ||
+          contentType.includes('text/xml') ||
+          contentType.startsWith('text/')
+        ) {
           const body = await res.text();
+          console.error('StorageUnknownError url:', res.url);
           console.error('StorageUnknownError body:', body);
         }
       }

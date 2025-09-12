@@ -1,13 +1,14 @@
 import fetch from "node-fetch";
-import fs from "fs/promises";
-import path from "path";
+import { supabase } from "./supabaseClient.mjs";
+
+const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET;
+if (!SUPABASE_BUCKET) throw new Error("SUPABASE_BUCKET is not set");
 
 /**
  * Env:
  *   - GEMINI_API_KEY (required)
  *   - GEMINI_MODEL (optional, default: gemini-2.5-flash-lite)
  *   - GEMINI_DEBUG (1/true)
- *   - LOG_DIR (optional; default below)
  *   - CONTEXT_CHANNEL_ID (optional; fallback if אין hint)
  */
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -15,7 +16,6 @@ const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
 if (!GEMINI_API_KEY) throw new Error("GEMINI_API_KEY is not set");
 
 const GEMINI_DEBUG = (process.env.GEMINI_DEBUG === "1" || (process.env.GEMINI_DEBUG || "").toLowerCase() === "true");
-const LOG_DIR = process.env.LOG_DIR || "/home/runner/work/ai_qna/ai_qna/data/logs";
 
 const CHATROOM_IDS = (process.env.CHATROOM_IDS || "").split(/[\s,]+/).filter(Boolean);
 const CONTEXT_CHANNEL_ID = process.env.CONTEXT_CHANNEL_ID || CHATROOM_IDS[0] || "";
@@ -23,20 +23,19 @@ const CONTEXT_CHANNEL_ID = process.env.CONTEXT_CHANNEL_ID || CHATROOM_IDS[0] || 
 function glog(...a) { if (GEMINI_DEBUG) console.log("[askGemini]", ...a); }
 
 // ========== Helpers to resolve context channel ==========
-async function inferLatestChannelIdFromLogs(dir = LOG_DIR) {
-  let files = [];
-  try { files = await fs.readdir(dir); } catch { return null; }
+async function inferLatestChannelIdFromLogs() {
+  const { data, error } = await supabase.storage.from(SUPABASE_BUCKET).list();
+  if (error || !data) return null;
   const items = [];
-  for (const f of files) {
-    const m = f.match(/^(\d+)_\d{4}-\d{2}-\d{2}\.jsonl$/);
+  for (const f of data) {
+    const m = f.name.match(/^(\d+)_\d{4}-\d{2}-\d{2}\.jsonl$/);
     if (!m) continue;
-    const full = path.join(dir, f);
-    let stat;
-    try { stat = await fs.stat(full); } catch { continue; }
-    items.push({ file: f, channelId: m[1], mtime: stat.mtimeMs, size: stat.size });
+    const updated = new Date(f.updated_at || 0).getTime();
+    const size = f.size || f.metadata?.size || 0;
+    items.push({ channelId: m[1], updated, size });
   }
   if (!items.length) return null;
-  items.sort((a,b) => b.mtime - a.mtime || b.size - a.size);
+  items.sort((a,b) => b.updated - a.updated || b.size - a.size);
   return items[0].channelId;
 }
 
@@ -132,10 +131,11 @@ async function extractDatesArrayWithGemini(model, apiKey, userPrompt, tz = "Asia
 
 // ========== Read logs for a specific YYYY-MM-DD ==========
 async function readLogsForDate(channelId, ymd) {
-  const file = path.join(LOG_DIR, `${channelId}_${ymd}.jsonl`);
+  const file = `${channelId}_${ymd}.jsonl`;
   let out = [];
   try {
-    const txt = await fs.readFile(file, "utf-8");
+    const { data } = await supabase.storage.from(SUPABASE_BUCKET).download(file);
+    const txt = await data.text();
     for (const line of txt.split(/\r?\n/)) {
       if (!line.trim()) continue;
       try {

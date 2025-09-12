@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-12T14:19:31.511Z",
+  "updated": "2025-09-12T14:20:07.674Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -8619,12 +8619,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416065696395165846",
       "timestamp": "2025-09-12T14:19:31.249Z",
       "content": "RGTI"
+    },
+    {
+      "ticker": "GRAB",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1416065847671390332",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416065847671390332",
+      "timestamp": "2025-09-12T14:20:07.316Z",
+      "content": "GRAB פרצה"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1416065363824742522",
-      "lastProcessedAt": "2025-09-12T14:18:11.958Z"
+      "lastProcessedId": "1416065696395165846",
+      "lastProcessedAt": "2025-09-12T14:19:31.249Z"
     }
   }
 }

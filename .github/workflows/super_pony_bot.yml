@@ -53,5 +53,9 @@ jobs:
           SCORES_TRIGGER_TOKEN: ${{ vars.SCORES_TRIGGER_TOKEN }}
           GEMINI_DEBUG: "1"
           GEMINI_MODEL: "gemini-2.5-flash-lite" # "gemini-2.5-flash"
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ vars.SUPABASE_SERVICE_KEY }}
+          SUPABASE_BUCKET: ${{ vars.SUPABASE_BUCKET }}
+
           
         run: node super_pony/index.mjs

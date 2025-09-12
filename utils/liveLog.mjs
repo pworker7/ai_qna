@@ -1,13 +1,7 @@
-import fs from "fs/promises";
-import path from "path";
-import { promisify } from "util";
-import { exec as execCb } from "child_process";
-import { fileURLToPath } from "url";
+import { supabase } from "./supabaseClient.mjs";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const LOG_DIR = path.resolve(__dirname, "../data/logs");  // repo-anchored
-
-const exec = promisify(execCb);
+const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET;
+if (!SUPABASE_BUCKET) throw new Error("SUPABASE_BUCKET is not set");
 
 // ===== debug + Israel timezone helpers (no deps) =====
 const LOG_DEBUG = true; // keep your explicit always-on logs
@@ -32,45 +26,13 @@ function israelFormat(isoOrDate) {
     }).format(d);
 }
 
-async function ensureDir() {
-    try { await fs.mkdir(LOG_DIR, { recursive: true }); } catch { }
-}
-
-/** Git commit helper (safe to call when nothing changed) */
-export async function commitLogIfChanged(logPath) {
-    try {
-        await exec('git config user.name "github-actions[bot]"');
-        await exec('git config user.email "github-actions[bot]@users.noreply.github.com"');
-
-        await exec(`git add "${logPath}"`);
-        try {
-            await exec("git diff --cached --quiet");
-            return false; // nothing to commit
-        } catch { }
-        await exec('git commit -m "chore(scanner): update channel log json [skip ci]"');
-        try {
-            await exec("git push");
-        } catch {
-            try {
-                await exec("git pull --rebase --autostash");
-                await exec("git push");
-            } catch { }
-        }
-        console.log("✅ Pushed channel log json changes.");
-        return true;
-    } catch (e) {
-        console.error("git commit/push failed:", e?.message || e);
-        return false;
-    }
-}
-
-function getDailyLogPath(channelId, date) {
+function getDailyLogFile(channelId, date) {
     const formattedDate = israelDateString(date); // YYYY-MM-DD in Israel time
-    return path.join(LOG_DIR, `${channelId}_${formattedDate}.jsonl`);
+    return `${channelId}_${formattedDate}.jsonl`;
 }
 
-function channelLogPath(channelId) {
-    return getDailyLogPath(channelId, new Date());
+function channelLogFile(channelId) {
+    return getDailyLogFile(channelId, new Date());
 }
 
 function shouldLogMessage(msg) {
@@ -89,8 +51,6 @@ function shouldLogMessage(msg) {
 
 export async function appendToLog(msg) {
     if (!shouldLogMessage(msg)) return; // Skip if no text or only emojis/GIF
-
-    await ensureDir();
 
     // let userInitials = msg.author.username.replace(/[aeiou\.]/g, "").toLowerCase() || "pny"; // default to "pny" if empty
     // if (userInitials.length > 3) {
@@ -114,52 +74,51 @@ export async function appendToLog(msg) {
         attachments: [...(msg.attachments?.values?.() || [])].map(a => ({ url: a.url, name: a.name })),
     };
 
-    const logPath = channelLogPath(msg.channelId);
+    const fileName = channelLogFile(msg.channelId);
     // 🔵 keep your explicit log
-    console.log("Appending to log:", logPath, "record:", rec);
-    await fs.appendFile(logPath, JSON.stringify(rec) + "\n", "utf-8");
-    await commitLogIfChanged(logPath);
+    console.log("Appending to log:", fileName, "record:", rec);
+    let existing = "";
+    try {
+        const { data } = await supabase.storage.from(SUPABASE_BUCKET).download(fileName);
+        existing = await data.text();
+    } catch {}
+    const payload = existing + JSON.stringify(rec) + "\n";
+    await supabase.storage.from(SUPABASE_BUCKET).upload(fileName, payload, { upsert: true, contentType: "application/jsonl" });
 }
 
 export async function readRecent(channelId, minutes = 60, maxLines = 4000) {
     const now = new Date();
     const cutoffMs = Date.now() - minutes * 60 * 1000;
-    const todayPath = getDailyLogPath(channelId, now);
+    const todayFile = getDailyLogFile(channelId, now);
 
     // 🔵 keep your explicit logs
     console.log("Reading recent messages for channel:", channelId, "from", minutes, "minutes ago");
 
     const y = new Date(now);
     y.setDate(y.getDate() - 1);
-    const yesterdayPath = getDailyLogPath(channelId, y);
-    console.log("Yesterday's log path:", yesterdayPath);
+    const yesterdayFile = getDailyLogFile(channelId, y);
+    console.log("Yesterday's log file:", yesterdayFile);
 
     dlog("channelId:", channelId);
     dlog("IL now:", israelFormat(now), "| window(min):", minutes);
     dlog("Cutoff >= ", israelFormat(new Date(cutoffMs)));
-    dlog("Today file:", todayPath);
-    dlog("Yesterday file:", yesterdayPath);
+    dlog("Today file:", todayFile);
+    dlog("Yesterday file:", yesterdayFile);
 
     const items = [];
-    const files = [todayPath, yesterdayPath];
+    const files = [todayFile, yesterdayFile];
 
-    for (const p of files) {
-        let statOk = false;
-        try {
-            const st = await fs.stat(p);
-            statOk = st.isFile();
-            dlog("  → stat", p, statOk ? `OK, size=${st.size}` : "not a file");
-        } catch {
-            dlog("  → stat", p, "not found");
-        }
-
+    for (const f of files) {
         let raw = "";
         try {
-            raw = await fs.readFile(p, "utf-8");
+            const { data } = await supabase.storage.from(SUPABASE_BUCKET).download(f);
+            raw = await data.text();
+            dlog("  → downloaded", f, `size=${raw.length}`);
         } catch {
+            dlog("  → not found", f);
             continue; // missing file is fine
         }
-        if (!raw.trim()) { dlog("  → empty file", p); continue; }
+        if (!raw.trim()) { dlog("  → empty file", f); continue; }
 
         const lines = raw.split(/\r?\n/).filter(Boolean);
         const start = Math.max(0, lines.length - maxLines);
@@ -182,10 +141,10 @@ export async function readRecent(channelId, minutes = 60, maxLines = 4000) {
             }
         }
 
-        dlog("  → file summary:", p,
+        dlog("  → file summary:", f,
             `lines=${lines.length}, parsed=${parsed}, kept>=cutoff=${kept}, malformed=${malformed}`,
             firstTs ? `first=${israelFormat(new Date(firstTs))}` : "first=–",
-            lastTs ? `last=${israelFormat(new Date(lastTs))}` : "last=–"
+            lastTs ? `last=${israelFormat(new Date(lastTs))}` : "last=–",
         );
     }
 
@@ -201,65 +160,62 @@ export async function readRecent(channelId, minutes = 60, maxLines = 4000) {
 // 🔶 NEW: last-N lines from the newest (today/yesterday) file
 export async function readLastNFromLatestFile(channelId, n = 400, date = null) {
     const now = new Date();
-    const todayPath = getDailyLogPath(channelId, now);
+    const todayFile = getDailyLogFile(channelId, now);
     const y = new Date(now); y.setDate(y.getDate() - 1);
-    const yesterdayPath = getDailyLogPath(channelId, y);
-  
-    const candidates = [];
+    const yesterdayFile = getDailyLogFile(channelId, y);
+
+    let chosen;
     if (date) {
-      const targetPath = getDailyLogPath(channelId, new Date(date));
-      try {
-        const st = await fs.stat(targetPath);
-        if (st.isFile()) candidates.push({ p: targetPath, mtime: st.mtimeMs, size: st.size });
-      } catch {}
+        chosen = getDailyLogFile(channelId, new Date(date));
     } else {
-      for (const p of [todayPath, yesterdayPath]) {
-        try {
-          const st = await fs.stat(p);
-          if (st.isFile()) candidates.push({ p, mtime: st.mtimeMs, size: st.size });
-        } catch {}
-      }
+        const { data: list } = await supabase.storage.from(SUPABASE_BUCKET).list('', { search: `${channelId}_` });
+        const candidates = [];
+        for (const item of list || []) {
+            if (item.name === todayFile || item.name === yesterdayFile) {
+                candidates.push(item);
+            }
+        }
+        if (candidates.length === 0) {
+            dlog("readLastNFromLatestFile: no files for channel", channelId);
+            return [];
+        }
+        candidates.sort((a, b) => new Date(b.updated_at || 0) - new Date(a.updated_at || 0));
+        chosen = candidates[0].name;
     }
-    if (candidates.length === 0) {
-      dlog("readLastNFromLatestFile: no files for channel", channelId);
-      return [];
-    }
-    candidates.sort((a, b) => b.mtime - a.mtime);
-    const chosen = candidates[0].p;
-  
+
     dlog("readLastNFromLatestFile: chosen file:", chosen);
-  
+
     let raw = "";
     try {
-      raw = await fs.readFile(chosen, "utf-8");
+        const { data } = await supabase.storage.from(SUPABASE_BUCKET).download(chosen);
+        raw = await data.text();
     } catch {
-      return [];
+        return [];
     }
-    
+
     let rawLines = raw.split(/\r?\n/).filter(Boolean);
     const startIndex = Math.max(0, rawLines.length - n);
     const lines = rawLines.slice(startIndex);
-  
+
     let parsed = 0, malformed = 0;
     const out = [];
     for (const line of lines) {
-      try {
-        out.push(JSON.parse(line));
-        parsed++;
-      } catch {
-        malformed++;
-      }
+        try {
+            out.push(JSON.parse(line));
+            parsed++;
+        } catch {
+            malformed++;
+        }
     }
     dlog("readLastNFromLatestFile: lines:", lines.length, "taking last:", lines.length, "parsed:", parsed, "malformed:", malformed);
-  
+
     out.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
     if (out[0] && out.at(-1)) {
-      dlog("readLastNFromLatestFile: range:", israelFormat(out[0].createdAt), "→", israelFormat(out.at(-1).createdAt));
+        dlog("readLastNFromLatestFile: range:", israelFormat(out[0].createdAt), "→", israelFormat(out.at(-1).createdAt));
     }
     return out;
-  }
+}
 export async function backfillLastDayMessages(client, channelId) {
-    await ensureDir();
     const channel = client.channels.cache.get(channelId);
     if (!channel) {
         console.warn(`Channel ${channelId} not found for backfill.`);
@@ -279,16 +235,18 @@ export async function backfillLastDayMessages(client, channelId) {
     async function ensureBucketFor(dateObj) {
         const key = yyyy_mm_dd_IL(dateObj);
         if (dayBuckets.has(key)) return dayBuckets.get(key);
-        const pathForDay = getDailyLogPath(channelId, dateObj);
+        const fileForDay = getDailyLogFile(channelId, dateObj);
 
         // 🔵 keep your explicit log
-        console.log("reading/writing to daily log path:", pathForDay);
+        console.log("reading/writing to daily log file:", fileForDay);
 
-        const bucket = { path: pathForDay, existingIds: new Set(), records: [] };
+        const bucket = { file: fileForDay, existingText: "", existingIds: new Set(), records: [] };
 
         // Load existing IDs for that day to prevent duplicates
         try {
-            const raw = await fs.readFile(pathForDay, "utf-8");
+            const { data } = await supabase.storage.from(SUPABASE_BUCKET).download(fileForDay);
+            const raw = await data.text();
+            bucket.existingText = raw;
             const lines = raw.trim() ? raw.trim().split("\n") : [];
             for (const line of lines) {
                 try {
@@ -352,13 +310,12 @@ export async function backfillLastDayMessages(client, channelId) {
         lastId = messages.last().id;
     }
 
-    // Write per-day and commit
+    // Write per-day
     let total = 0;
-    for (const { path: p, records } of dayBuckets.values()) {
+    for (const { file: f, existingText, records } of dayBuckets.values()) {
         if (records.length === 0) continue;
-        const logData = records.map(r => JSON.stringify(r)).join("\n") + "\n";
-        await fs.appendFile(p, logData, "utf-8");
-        await commitLogIfChanged(p);
+        const logData = existingText + records.map(r => JSON.stringify(r)).join("\n") + "\n";
+        await supabase.storage.from(SUPABASE_BUCKET).upload(f, logData, { upsert: true, contentType: "application/jsonl" });
         total += records.length;
     }
 

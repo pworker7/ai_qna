@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-12T14:17:53.810Z",
+  "updated": "2025-09-12T14:19:31.511Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -8606,12 +8606,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416065287559844063",
       "timestamp": "2025-09-12T14:17:53.775Z",
       "content": "SERV / RR / both?"
+    },
+    {
+      "ticker": "RGTI",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1416065696395165846",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416065696395165846",
+      "timestamp": "2025-09-12T14:19:31.249Z",
+      "content": "RGTI"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1416065208442556457",
-      "lastProcessedAt": "2025-09-12T14:17:34.912Z"
+      "lastProcessedId": "1416065363824742522",
+      "lastProcessedAt": "2025-09-12T14:18:11.958Z"
     }
   }
 }

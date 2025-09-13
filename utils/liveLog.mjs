@@ -1,8 +1,11 @@
 import { supabase } from "./supabaseClient.mjs";
 import { logStorageError } from "./storageErrorLogger.mjs";
+import { ensureBucketExists } from './storageBootstrap.mjs';
 
 const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET;
 if (!SUPABASE_BUCKET) throw new Error("SUPABASE_BUCKET is not set");
+
+await ensureBucketExists(process.env.SUPABASE_BUCKET || 'discord-logs');
 
 // ===== debug + Israel timezone helpers (no deps) =====
 const LOG_DEBUG = true; // keep your explicit always-on logs

@@ -32,6 +32,28 @@ function israelFormat(isoOrDate) {
     }).format(d);
 }
 
+function ilISOString(d = new Date()) {
+    const parts = new Intl.DateTimeFormat("sv-SE", {
+      timeZone: "Asia/Jerusalem",
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit",
+      hour12: false,
+    }).formatToParts(d);
+    const map = Object.fromEntries(parts.map(p => [p.type, p.value]));
+    const y = map.year, m = map.month, day = map.day, hh = map.hour, mm = map.minute, ss = map.second;
+  
+    const utc = new Date(d.toLocaleString("en-US", { timeZone: "UTC" }));
+    const il  = new Date(d.toLocaleString("en-US", { timeZone: "Asia/Jerusalem" }));
+    let offMin = Math.round((il - utc) / 60000);
+    const sign = offMin >= 0 ? "+" : "-";
+    offMin = Math.abs(offMin);
+    const offH = String(Math.floor(offMin / 60)).padStart(2, "0");
+    const offM = String(offMin % 60).padStart(2, "0");
+    const offset = `${sign}${offH}:${offM}`;
+  
+    return `${y}-${m}-${day}T${hh}:${mm}:${ss}${offset}`;
+}
+  
 function getDailyLogFile(channelId, date) {
     const formattedDate = israelDateString(date); // YYYY-MM-DD in Israel time
     return `${channelId}_${formattedDate}.jsonl`;
@@ -76,7 +98,7 @@ export async function appendToLog(msg) {
         refMsgLink: referenceMessageLink,
         author: userInitials || "אנונימי",
         content: msg.content || "",
-        createdAt: msg.createdAt?.toISOString?.() || new Date().toISOString(),
+        createdAt: ilISOString(msg.createdAt ?? new Date()),
         attachments: [...(msg.attachments?.values?.() || [])].map(a => ({ url: a.url, name: a.name })),
     };
 
@@ -328,7 +350,7 @@ export async function backfillLastDayMessages(client, channelId) {
                 refMsgLink: referenceMessageLink,
                 author: userInitials || "אנונימי",
                 content: msg.content || "",
-                createdAt: msg.createdAt?.toISOString?.() || new Date().toISOString(),
+                createdAt: ilISOString(msg.createdAt ?? new Date()),
                 attachments: [...(msg.attachments?.values?.() || [])].map(a => ({ url: a.url, name: a.name })),
             };
             bucket.records.push(rec);

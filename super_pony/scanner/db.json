@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-13T19:00:46.793Z",
+  "updated": "2025-09-13T19:52:40.728Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -8827,6 +8827,32 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416496636464463945",
       "timestamp": "2025-09-13T18:51:55.368Z",
       "content": "קרה לי עם IREN"
+    },
+    {
+      "ticker": "QUBT",
+      "user": {
+        "id": "326680778283024394",
+        "name": "Shade"
+      },
+      "messageId": "1416511925449134210",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416511925449134210",
+      "timestamp": "2025-09-13T19:52:40.546Z",
+      "content": "QUBT above 17.2\nתעשה לנו IONQ 2?"
+    },
+    {
+      "ticker": "IONQ",
+      "user": {
+        "id": "326680778283024394",
+        "name": "Shade"
+      },
+      "messageId": "1416511925449134210",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416511925449134210",
+      "timestamp": "2025-09-13T19:52:40.546Z",
+      "content": "QUBT above 17.2\nתעשה לנו IONQ 2?"
     }
   ],
   "checkpoints": {

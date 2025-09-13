@@ -4,8 +4,10 @@ import { ensureBucketExists } from './storageBootstrap.mjs';
 
 const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET;
 if (!SUPABASE_BUCKET) throw new Error("SUPABASE_BUCKET is not set");
-
 await ensureBucketExists(process.env.SUPABASE_BUCKET || 'discord-logs');
+
+// get the integer number from environment variable DAYS_2_BACK_FILL, default to 2 if not set or invalid
+const DAYS_2_BACK_FILL = parseInt(process.env.DAYS_2_BACK_FILL) || 2;
 
 // ===== debug + Israel timezone helpers (no deps) =====
 const LOG_DEBUG = true; // keep your explicit always-on logs
@@ -247,7 +249,7 @@ export async function backfillLastDayMessages(client, channelId) {
     }
 
     const now = new Date();
-    const cutoff = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000); // 24 hours ago
+    const cutoff = new Date(now.getTime() - DAYS_2_BACK_FILL * 24 * 60 * 60 * 1000); // 24 hours ago
 
     // Build a per-day bucket so each message is written to its correct daily log (Israel local day)
     const dayBuckets = new Map();

@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-14T09:15:30.124Z",
+  "updated": "2025-09-14T09:22:11.821Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -9009,12 +9009,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416713962258432032",
       "timestamp": "2025-09-14T09:15:29.875Z",
       "content": "AFRM"
+    },
+    {
+      "ticker": "NVTS",
+      "user": {
+        "id": "1033751148378726422",
+        "name": "קמחי"
+      },
+      "messageId": "1416715647534235648",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416715647534235648",
+      "timestamp": "2025-09-14T09:22:11.676Z",
+      "content": "NVTS"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1416713678169964608",
-      "lastProcessedAt": "2025-09-14T09:14:22.143Z"
+      "lastProcessedId": "1416714300822650880",
+      "lastProcessedAt": "2025-09-14T09:16:50.595Z"
     }
   }
 }

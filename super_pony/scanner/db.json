@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-14T09:40:28.543Z",
+  "updated": "2025-09-14T09:41:57.742Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -9100,12 +9100,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416720247599268011",
       "timestamp": "2025-09-14T09:40:28.417Z",
       "content": "PLTR"
+    },
+    {
+      "ticker": "PLTR",
+      "user": {
+        "id": "1033751148378726422",
+        "name": "קמחי"
+      },
+      "messageId": "1416720621165088849",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416720621165088849",
+      "timestamp": "2025-09-14T09:41:57.482Z",
+      "content": "PLTR"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1416720055835693137",
-      "lastProcessedAt": "2025-09-14T09:39:42.697Z"
+      "lastProcessedId": "1416720247599268011",
+      "lastProcessedAt": "2025-09-14T09:40:28.417Z"
     }
   }
 }

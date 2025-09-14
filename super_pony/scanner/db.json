@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-14T08:12:20.213Z",
+  "updated": "2025-09-14T08:12:45.078Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -8879,12 +8879,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416698066165170216",
       "timestamp": "2025-09-14T08:12:19.951Z",
       "content": "HD above 423"
+    },
+    {
+      "ticker": "MMM",
+      "user": {
+        "id": "666602162587041812",
+        "name": "Rotem"
+      },
+      "messageId": "1416698170670579753",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416698170670579753",
+      "timestamp": "2025-09-14T08:12:44.867Z",
+      "content": "MMM\nאני קונה כל עוד מעל 154\nC&H"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1416693657242959943",
-      "lastProcessedAt": "2025-09-14T07:54:48.782Z"
+      "lastProcessedId": "1416698135123726349",
+      "lastProcessedAt": "2025-09-14T08:12:36.392Z"
     }
   }
 }

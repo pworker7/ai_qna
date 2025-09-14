@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-14T09:13:04.065Z",
+  "updated": "2025-09-14T09:15:30.124Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -8996,12 +8996,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416713350129127454",
       "timestamp": "2025-09-14T09:13:03.932Z",
       "content": "RKLB"
+    },
+    {
+      "ticker": "AFRM",
+      "user": {
+        "id": "1033751148378726422",
+        "name": "קמחי"
+      },
+      "messageId": "1416713962258432032",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416713962258432032",
+      "timestamp": "2025-09-14T09:15:29.875Z",
+      "content": "AFRM"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1416713154519371889",
-      "lastProcessedAt": "2025-09-14T09:12:17.295Z"
+      "lastProcessedId": "1416713678169964608",
+      "lastProcessedAt": "2025-09-14T09:14:22.143Z"
     }
   }
 }

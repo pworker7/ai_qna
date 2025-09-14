@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-13T21:00:42.062Z",
+  "updated": "2025-09-14T04:47:16.954Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -8853,6 +8853,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416511925449134210",
       "timestamp": "2025-09-13T19:52:40.546Z",
       "content": "QUBT above 17.2\nתעשה לנו IONQ 2?"
+    },
+    {
+      "ticker": "HD",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1416646462644682894",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1416646462644682894",
+      "timestamp": "2025-09-14T04:47:16.713Z",
+      "content": "HD above 423"
     }
   ],
   "checkpoints": {

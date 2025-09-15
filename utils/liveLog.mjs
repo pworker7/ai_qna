@@ -104,15 +104,15 @@ export async function appendToLog(msg) {
 
     const fileName = channelLogFile(msg.channelId);
     // 🔵 keep your explicit log
-    console.log("Appending to log:", fileName, "record:", rec);
+    // console.log("Appending to log:", fileName, "record:", rec);
     let existing = "";
     try {
         const { data } = await supabase.storage.from(SUPABASE_BUCKET).download(fileName);
-        console.log("  → downloaded existing log file:", fileName);
-        console.log("content:", data);
+        // console.log("  → downloaded existing log file:", fileName);
+        // console.log("content:", data);
 
         existing = await data.text();
-        console.log("data text:", existing);
+        // console.log("data text:", existing);
 
     } catch (error) {
         console.warn("Failed to fetch log file: ", fileName, error.message || error);
@@ -138,12 +138,12 @@ export async function readRecent(channelId, minutes = 60, maxLines = 4000) {
     const todayFile = getDailyLogFile(channelId, now);
 
     // 🔵 keep your explicit logs
-    console.log("Reading recent messages for channel:", channelId, "from", minutes, "minutes ago");
+    // console.log("Reading recent messages for channel:", channelId, "from", minutes, "minutes ago");
 
     const y = new Date(now);
     y.setDate(y.getDate() - 1);
     const yesterdayFile = getDailyLogFile(channelId, y);
-    console.log("Yesterday's log file:", yesterdayFile);
+    // console.log("Yesterday's log file:", yesterdayFile);
 
     dlog("channelId:", channelId);
     dlog("IL now:", israelFormat(now), "| window(min):", minutes);
@@ -286,7 +286,7 @@ export async function backfillLastDayMessages(client, channelId) {
         const fileForDay = getDailyLogFile(channelId, dateObj);
 
         // 🔵 keep your explicit log
-        console.log("reading/writing to daily log file:", fileForDay);
+        // console.log("reading/writing to daily log file:", fileForDay);
 
         const bucket = { file: fileForDay, existingText: "", existingIds: new Set(), records: [] };
 

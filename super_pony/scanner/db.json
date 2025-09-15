@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-15T19:17:05.959Z",
+  "updated": "2025-09-15T19:32:04.251Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -9282,12 +9282,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1417227747247394827",
       "timestamp": "2025-09-15T19:17:05.762Z",
       "content": "DNN"
+    },
+    {
+      "ticker": "HUT",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1417231514889879713",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1417231514889879713",
+      "timestamp": "2025-09-15T19:32:04.038Z",
+      "content": "HUT פרצה"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1417207534653149325",
-      "lastProcessedAt": "2025-09-15T17:56:46.704Z"
+      "lastProcessedId": "1417227747247394827",
+      "lastProcessedAt": "2025-09-15T19:17:05.762Z"
     }
   }
 }

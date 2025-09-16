@@ -1,8 +1,11 @@
 #!/usr/bin/env node
+
+import module from 'module';
+
 const API = 'https://www.alphavantage.co/query';
 const KEY = process.env.ALPHAVANTAGE_API_KEY || "YOUR_API_KEY";
 
-export async function getLastClose(symbol, interval = 'daily') {
+async function getLastClose(symbol, interval = 'daily') {
   if (!KEY) throw new Error('Missing ALPHAVANTAGE_API_KEY env var');
 
   const endpoint = interval === 'weekly'
@@ -37,7 +40,7 @@ export async function getLastClose(symbol, interval = 'daily') {
   return { close, timestamp: lastTs };
 }
 
-export async function getATR(symbol, timePeriod = 14, interval = 'daily') {
+async function getATR(symbol, timePeriod = 14, interval = 'daily') {
   if (!KEY) throw new Error('Missing ALPHAVANTAGE_API_KEY env var');
   const url = `${API}?function=ATR&symbol=${encodeURIComponent(symbol)}&interval=${encodeURIComponent(interval)}&time_period=${encodeURIComponent(timePeriod)}&series_type=close&apikey=${KEY}`;
 
@@ -75,7 +78,7 @@ export async function getATR(symbol, timePeriod = 14, interval = 'daily') {
 }
 
 // CLI
-if (require.main === module) {
+if (main === module) {
   (async () => {
     try {
       const [symbol = 'AAPL', tpArg = '14', interval = 'daily'] = process.argv.slice(2);
@@ -91,3 +94,5 @@ if (require.main === module) {
     }
   })();
 }
+
+module.exports = { getATR, getLastClose };

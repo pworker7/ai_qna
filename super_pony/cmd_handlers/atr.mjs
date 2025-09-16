@@ -1,6 +1,3 @@
-#!/usr/bin/env node
-
-import module from 'module';
 
 const API = 'https://www.alphavantage.co/query';
 const KEY = process.env.ALPHAVANTAGE_API_KEY || "YOUR_API_KEY";
@@ -77,20 +74,3 @@ export async function getATR(symbol, timePeriod = 14, interval = 'daily') {
   };
 }
 
-// CLI
-if (main === module) {
-  (async () => {
-    try {
-      const [symbol = 'AAPL', tpArg = '14', interval = 'daily'] = process.argv.slice(2);
-      const timePeriod = Number(tpArg);
-      if (!symbol) throw new Error('Usage: node atr.js SYMBOL [TIME_PERIOD=14] [INTERVAL=daily|weekly|monthly]');
-      if (!Number.isFinite(timePeriod) || timePeriod <= 0) throw new Error('TIME_PERIOD must be a positive integer');
-
-      const r = await getATR(symbol.toUpperCase(), timePeriod, interval);
-      console.log(JSON.stringify(r, null, 2));
-    } catch (err) {
-      console.error('Error:', err.message);
-      process.exit(1);
-    }
-  })();
-}

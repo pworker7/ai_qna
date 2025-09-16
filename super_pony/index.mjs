@@ -23,6 +23,7 @@ import { registerMonthlyScores } from "./cmd_handlers/monthlyScores.mjs";
 
 import { appendToLog, readRecent, backfillLastDayMessages } from "../utils/liveLog.mjs";
 import { askGemini } from "../utils/askGemini.mjs";
+import { getATR } from "./cmd_handlers/atr.mjs";
 
 // paths
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -65,6 +66,7 @@ async function shutdown(reason = "discord-webhook") {
 
 // slash command def
 const commands = [
+  // ### todays_earnings slash command
   new SlashCommandBuilder()
     .setName("todays_earnings")
     .setDescription("הצג את הטיקרים של החברות שמדווחות היום")
@@ -87,22 +89,51 @@ const commands = [
         .setRequired(false)
     ),
 
+  // ### start_survey command
   new SlashCommandBuilder()
     .setName("start_survey")
     .setDescription("פותח חלון הזנה חדש בסקר התשואה החודשי"),
 
+    // ### remind_survey command
   new SlashCommandBuilder()
     .setName("remind_survey")
     .setDescription("שולח תזכורת למשתמשים להשתתף בסקר"),
 
+    // ### publish_survey command
   new SlashCommandBuilder()
     .setName("publish_survey")
     .setDescription("מסכם את התשואות שהתקבלו ומפרסם את התוצאות"),
     
+    // ### survey_help command
   new SlashCommandBuilder()
     .setName("survey_help")
     .setDescription("מציג עזרה לגבי הפקודות הזמינות לניהול סקר התשואה החודשי"),
+
+    // ### atr command
+    new SlashCommandBuilder()
+    .setName('atr')
+    .setDescription('Get ATR and ATR% for a stock symbol')
+    .addStringOption(o =>
+      o.setName('symbol')
+        .setDescription('Ticker symbol (e.g., AAPL)')
+        .setRequired(true)
+    )
+    .addIntegerOption(o =>
+      o.setName('period')
+        .setDescription('ATR period (default 14)')
+        .setMinValue(1)
+    )
+    .addStringOption(o =>
+      o.setName('interval')
+        .setDescription('Timeframe: daily | weekly | monthly (default daily)')
+        .addChoices(
+          { name: 'daily', value: 'daily' },
+          { name: 'weekly', value: 'weekly' },
+          { name: 'monthly', value: 'monthly' },
+        )
+    )
 ].map((c) => c.toJSON());
+
 
 async function registerSlashCommands() {
   const rest = new REST({ version: "10" }).setToken(DISCORD_TOKEN);
@@ -185,21 +216,52 @@ client.once("ready", async () => {
 // Interaction router (components first!)
 client.on("interactionCreate", async (interaction) => {
   try {
+    // Handle button and select menu interactions first
     if (interaction.isButton() || interaction.isStringSelectMenu()) {
       const handled = await handleDashboardInteraction({ interaction, dbPath: DB_PATH });
       if (handled) return;
     }
+
+    // Slash commands, else ignore
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.commandName !== "todays_earnings") return;
 
-    await interaction.deferReply();
-    const filter = interaction.options.getString("type") || "all";
-    const limit = interaction.options.getInteger("limit") || 0;
+    if (interaction.commandName == "todays_earnings") {
+      await interaction.deferReply();
+      const filter = interaction.options.getString("type") || "all";
+      const limit = interaction.options.getInteger("limit") || 0;
 
-    if (filter === "anticipated") {
-      await handleAnticipatedImage({ client, interaction, ANTICIPATED_CHANNEL_ID });
-    } else {
-      await handleTodaysEarnings({ client, interaction, filter, limit, FINNHUB_TOKEN });
+      if (filter === "anticipated") {
+        await handleAnticipatedImage({ client, interaction, ANTICIPATED_CHANNEL_ID });
+      } else {
+        await handleTodaysEarnings({ client, interaction, filter, limit, FINNHUB_TOKEN });
+      }
+    }
+    else if (interaction.commandName == 'atr') {
+      // Parse options
+      const rawSymbol = interaction.options.getString('symbol', true).trim();
+      const symbol = rawSymbol.toUpperCase().replace(/\s+/g, '');
+      const period = interaction.options.getInteger('period') ?? 14;
+      const interval = interaction.options.getString('interval') ?? 'daily';
+
+      // Basic validation
+      if (!/^[A-Z0-9.\-=/_+]{1,15}$/.test(symbol)) {
+        await interaction.reply({ content: '❌ סימול לא תקין.', ephemeral: true });
+        return;
+      }
+
+      // Dynamic import to avoid loading if not needed
+      await interaction.deferReply();
+
+      // Fetch ATR
+      const { atr, atrPct, close, timestamp } = await getATR(symbol, period, interval);
+
+      const msg =
+        `ATR (${period}) עבור **${symbol}** [${interval}] ב-${timestamp}:\n` +
+        `• ATR: **${atr.toFixed(4)}**\n` +
+        `• Close: **${close.toFixed(4)}**\n` +
+        `• ATR%: **${atrPct.toFixed(2)}%**`;
+
+      await interaction.editReply({ content: msg, allowedMentions: { parse: [] } });
     }
   } catch (err) {
     console.error(err);

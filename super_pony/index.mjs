@@ -267,7 +267,7 @@ client.on("interactionCreate", async (interaction) => {
       }
 
       const msg =
-        `**${symbol} · ${atrInterval} · (${close.toFixed(2)})**  ${timestamp}:\n` +
+        `**${symbol} · ${atrInterval} · (${close.toFixed(2)}$)**  ${timestamp}:\n` +
         `**ATR(${period}): ${atr.toFixed(2)} ${atrPct.toFixed(2)}%**`;
 
       await interaction.editReply({ content: msg, allowedMentions: { parse: [] } });

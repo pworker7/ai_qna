@@ -255,11 +255,20 @@ client.on("interactionCreate", async (interaction) => {
       // Fetch ATR
       const { atr, atrPct, close, timestamp } = await getATR(symbol, period, interval);
 
+      var atrInterval = '1D';
+      if(interval === 'daily') {
+        atrInterval = '1D';
+      }
+      else if(interval === 'weekly') {
+        atrInterval = '1W';
+      }
+      else if(interval === 'monthly') {
+        atrInterval = '1M';
+      }
+
       const msg =
-        `ATR (${period}) עבור **${symbol}** [${interval}] ב-${timestamp}:\n` +
-        `• ATR: **${atr.toFixed(4)}**\n` +
-        `• Close: **${close.toFixed(4)}**\n` +
-        `• ATR%: **${atrPct.toFixed(2)}%**`;
+        `**${symbol} · ${atrInterval} · (${close.toFixed(2)})**  ${timestamp}:\n` +
+        `**ATR(${period}): ${atr.toFixed(2)} ${atrPct.toFixed(2)}%**`;
 
       await interaction.editReply({ content: msg, allowedMentions: { parse: [] } });
     }

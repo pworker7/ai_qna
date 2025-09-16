@@ -40,7 +40,7 @@ async function getLastClose(symbol, interval = 'daily') {
   return { close, timestamp: lastTs };
 }
 
-async function getATR(symbol, timePeriod = 14, interval = 'daily') {
+export async function getATR(symbol, timePeriod = 14, interval = 'daily') {
   if (!KEY) throw new Error('Missing ALPHAVANTAGE_API_KEY env var');
   const url = `${API}?function=ATR&symbol=${encodeURIComponent(symbol)}&interval=${encodeURIComponent(interval)}&time_period=${encodeURIComponent(timePeriod)}&series_type=close&apikey=${KEY}`;
 
@@ -94,5 +94,3 @@ if (main === module) {
     }
   })();
 }
-
-module.exports = { getATR, getLastClose };

@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-17T20:54:00.927Z",
+  "updated": "2025-09-17T20:56:00.662Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -9828,12 +9828,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1417976912688451674",
       "timestamp": "2025-09-17T20:54:00.722Z",
       "content": "nne שומרת"
+    },
+    {
+      "ticker": "AEVA",
+      "user": {
+        "id": "1309511619138682943",
+        "name": "Omer"
+      },
+      "messageId": "1417977414449107038",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1417977414449107038",
+      "timestamp": "2025-09-17T20:56:00.351Z",
+      "content": "AEVA"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1417976175183270080",
-      "lastProcessedAt": "2025-09-17T20:51:04.887Z"
+      "lastProcessedId": "1417976912688451674",
+      "lastProcessedAt": "2025-09-17T20:54:00.722Z"
     }
   }
 }

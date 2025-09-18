@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-18T22:25:54.019Z",
+  "updated": "2025-09-18T22:31:47.734Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10439,12 +10439,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418362424591126669",
       "timestamp": "2025-09-18T22:25:53.922Z",
       "content": "below 150 ma"
+    },
+    {
+      "ticker": "TSLL",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1418363907587965000",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418363907587965000",
+      "timestamp": "2025-09-18T22:31:47.496Z",
+      "content": "TSLL ABOVE 21.49"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1418362359457644716",
-      "lastProcessedAt": "2025-09-18T22:25:38.393Z"
+      "lastProcessedId": "1418362424591126669",
+      "lastProcessedAt": "2025-09-18T22:25:53.922Z"
     }
   }
 }

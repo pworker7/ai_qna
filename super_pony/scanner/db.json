@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-18T22:32:48.749Z",
+  "updated": "2025-09-18T22:35:50.346Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10465,12 +10465,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418364162274496513",
       "timestamp": "2025-09-18T22:32:48.218Z",
       "content": "TSLL 1H תקריב"
+    },
+    {
+      "ticker": "PONY",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1418364923565707314",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418364923565707314",
+      "timestamp": "2025-09-18T22:35:49.724Z",
+      "content": "PONY ABOVE 18.5"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1418363907587965000",
-      "lastProcessedAt": "2025-09-18T22:31:47.496Z"
+      "lastProcessedId": "1418364162274496513",
+      "lastProcessedAt": "2025-09-18T22:32:48.218Z"
     }
   }
 }

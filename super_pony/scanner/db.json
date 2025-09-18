@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-18T14:25:19.364Z",
+  "updated": "2025-09-18T14:25:51.152Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10205,12 +10205,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418241483470803056",
       "timestamp": "2025-09-18T14:25:19.312Z",
       "content": "NTLA above 14.60"
+    },
+    {
+      "ticker": "MVRL",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1418241615801356308",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418241615801356308",
+      "timestamp": "2025-09-18T14:25:50.862Z",
+      "content": "mvrl"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1418241314851393586",
-      "lastProcessedAt": "2025-09-18T14:24:39.110Z"
+      "lastProcessedId": "1418241483470803056",
+      "lastProcessedAt": "2025-09-18T14:25:19.312Z"
     }
   }
 }

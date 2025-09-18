@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-18T22:37:10.063Z",
+  "updated": "2025-09-18T22:40:07.670Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10491,12 +10491,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418365259508486216",
       "timestamp": "2025-09-18T22:37:09.819Z",
       "content": "RR ABOVE 5.21"
+    },
+    {
+      "ticker": "FDX",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1418366004089721033",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418366004089721033",
+      "timestamp": "2025-09-18T22:40:07.341Z",
+      "content": "FDX ABOVE 246.66"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1418364923565707314",
-      "lastProcessedAt": "2025-09-18T22:35:49.724Z"
+      "lastProcessedId": "1418365259508486216",
+      "lastProcessedAt": "2025-09-18T22:37:09.819Z"
     }
   }
 }

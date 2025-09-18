@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-18T22:15:38.420Z",
+  "updated": "2025-09-18T22:16:06.366Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10335,12 +10335,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418359842229321801",
       "timestamp": "2025-09-18T22:15:38.239Z",
       "content": "GOOLE  2M C&H"
+    },
+    {
+      "ticker": "GOOGL",
+      "user": {
+        "id": "1339671554371485789",
+        "name": "MrKnowAll"
+      },
+      "messageId": "1418359959934074931",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418359959934074931",
+      "timestamp": "2025-09-18T22:16:06.302Z",
+      "content": "GOOGL above 254.1\nהצלחתי!"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1418359780090839142",
-      "lastProcessedAt": "2025-09-18T22:15:23.424Z"
+      "lastProcessedId": "1418359842229321801",
+      "lastProcessedAt": "2025-09-18T22:15:38.239Z"
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-18T22:21:26.361Z",
+  "updated": "2025-09-18T22:22:12.282Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10400,12 +10400,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418361301088075930",
       "timestamp": "2025-09-18T22:21:26.058Z",
       "content": "ACHR ABOVE 9.52"
+    },
+    {
+      "ticker": "ACHR",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1418361493866545284",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418361493866545284",
+      "timestamp": "2025-09-18T22:22:12.020Z",
+      "content": "ACHR 15M C&H תקריב"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1418360335928397854",
-      "lastProcessedAt": "2025-09-18T22:17:35.946Z"
+      "lastProcessedId": "1418361301088075930",
+      "lastProcessedAt": "2025-09-18T22:21:26.058Z"
     }
   }
 }

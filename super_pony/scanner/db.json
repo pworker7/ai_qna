@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-18T22:16:58.390Z",
+  "updated": "2025-09-18T22:17:36.142Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10361,12 +10361,38 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418360177198891048",
       "timestamp": "2025-09-18T22:16:58.102Z",
       "content": "GOOGL ABOVE 254.1"
+    },
+    {
+      "ticker": "C",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1418360335928397854",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418360335928397854",
+      "timestamp": "2025-09-18T22:17:35.946Z",
+      "content": "GOOLE  2M C&H תקריב"
+    },
+    {
+      "ticker": "H",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1418360335928397854",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418360335928397854",
+      "timestamp": "2025-09-18T22:17:35.946Z",
+      "content": "GOOLE  2M C&H תקריב"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1418359959934074931",
-      "lastProcessedAt": "2025-09-18T22:16:06.302Z"
+      "lastProcessedId": "1418360177198891048",
+      "lastProcessedAt": "2025-09-18T22:16:58.102Z"
     }
   }
 }

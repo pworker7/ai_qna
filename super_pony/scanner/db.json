@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-18T22:16:06.366Z",
+  "updated": "2025-09-18T22:16:58.390Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10348,12 +10348,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418359959934074931",
       "timestamp": "2025-09-18T22:16:06.302Z",
       "content": "GOOGL above 254.1\nהצלחתי!"
+    },
+    {
+      "ticker": "GOOGL",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1418360177198891048",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418360177198891048",
+      "timestamp": "2025-09-18T22:16:58.102Z",
+      "content": "GOOGL ABOVE 254.1"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1418359842229321801",
-      "lastProcessedAt": "2025-09-18T22:15:38.239Z"
+      "lastProcessedId": "1418359959934074931",
+      "lastProcessedAt": "2025-09-18T22:16:06.302Z"
     }
   }
 }

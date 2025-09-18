@@ -170,6 +170,7 @@ export async function askGemini(userPrompt) {
     for (const ymd of dates) {
       const msgs = await readLogsForDate(channelId, ymd);
       if (msgs.length === 0) continue;
+      console.log(`Found ${msgs.length} messages for ${ymd}`);
 
       const MAX = 15000;
       let acc = [], sum = 0;
@@ -179,15 +180,6 @@ export async function askGemini(userPrompt) {
         acc.push(s); sum += s.length;
       }
       acc = acc.reverse();
-
-      // const dayPrompt = [
-      //   `הקשר משיחות בתאריך ${ymd} (שעון ישראל).`,
-      //   `ענה לשאלת המשתמש תוך סיכום נקודות חשובות, עם שמות/תאריכים/מספרים:`,
-      //   userPrompt,
-      //   "",
-      //   "--- הקשר ---",
-      //   acc.join("")
-      // ].join("\n");
 
       const now = new Date().toISOString().split("T")[0]; // Current date: 2025-08-18
 
@@ -212,6 +204,7 @@ export async function askGemini(userPrompt) {
 
       const dayAnswer = await callGemini(GEMINI_MODEL, GEMINI_API_KEY, dayPrompt);
       if (dayAnswer) {
+        console.log(`Answer for ${ymd}:`, dayAnswer.slice(0,200));
         perDaySummaries.push(`### ${ymd}\n${dayAnswer}`);
       }
     }

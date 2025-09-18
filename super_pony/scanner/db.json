@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-18T12:00:51.784Z",
+  "updated": "2025-09-18T14:24:39.281Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10179,6 +10179,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418174855735541901",
       "timestamp": "2025-09-18T10:00:34.022Z",
       "content": "GRRR"
+    },
+    {
+      "ticker": "NTLA",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1418241314851393586",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418241314851393586",
+      "timestamp": "2025-09-18T14:24:39.110Z",
+      "content": "ntla"
     }
   ],
   "checkpoints": {

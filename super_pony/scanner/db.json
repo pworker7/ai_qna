@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-19T14:03:37.256Z",
+  "updated": "2025-09-19T14:09:20.080Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10660,12 +10660,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418598409484374179",
       "timestamp": "2025-09-19T14:03:37.105Z",
       "content": "JOBY above 16"
+    },
+    {
+      "ticker": "JOBY",
+      "user": {
+        "id": "1339671554371485789",
+        "name": "MrKnowAll"
+      },
+      "messageId": "1418599847044448319",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418599847044448319",
+      "timestamp": "2025-09-19T14:09:19.846Z",
+      "content": "JOBY above 16"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1418598385329639454",
-      "lastProcessedAt": "2025-09-19T14:03:31.346Z"
+      "lastProcessedId": "1418598409484374179",
+      "lastProcessedAt": "2025-09-19T14:03:37.105Z"
     }
   }
 }

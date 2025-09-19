@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-19T14:10:36.893Z",
+  "updated": "2025-09-19T14:12:43.093Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10686,12 +10686,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418600169452343326",
       "timestamp": "2025-09-19T14:10:36.714Z",
       "content": "crcl -רק מתחילה"
+    },
+    {
+      "ticker": "BMNR",
+      "user": {
+        "id": "1339671554371485789",
+        "name": "MrKnowAll"
+      },
+      "messageId": "1418600698651869274",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418600698651869274",
+      "timestamp": "2025-09-19T14:12:42.885Z",
+      "content": "BMNR"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1418599847044448319",
-      "lastProcessedAt": "2025-09-19T14:09:19.846Z"
+      "lastProcessedId": "1418600300616487023",
+      "lastProcessedAt": "2025-09-19T14:11:07.986Z"
     }
   }
 }

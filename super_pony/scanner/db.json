@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-19T15:48:00.619Z",
+  "updated": "2025-09-19T16:01:00.257Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10742,8 +10742,8 @@
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1418624259907125348",
-      "lastProcessedAt": "2025-09-19T15:46:20.326Z"
+      "lastProcessedId": "1418624679756955658",
+      "lastProcessedAt": "2025-09-19T15:48:00.426Z"
     }
   }
 }

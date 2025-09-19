@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-19T14:09:20.080Z",
+  "updated": "2025-09-19T14:10:36.893Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10673,12 +10673,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418599847044448319",
       "timestamp": "2025-09-19T14:09:19.846Z",
       "content": "JOBY above 16"
+    },
+    {
+      "ticker": "CRCL",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1418600169452343326",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418600169452343326",
+      "timestamp": "2025-09-19T14:10:36.714Z",
+      "content": "crcl -רק מתחילה"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1418598409484374179",
-      "lastProcessedAt": "2025-09-19T14:03:37.105Z"
+      "lastProcessedId": "1418599847044448319",
+      "lastProcessedAt": "2025-09-19T14:09:19.846Z"
     }
   }
 }

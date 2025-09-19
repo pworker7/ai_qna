@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-19T14:12:43.093Z",
+  "updated": "2025-09-19T14:14:02.862Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10699,12 +10699,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418600698651869274",
       "timestamp": "2025-09-19T14:12:42.885Z",
       "content": "BMNR"
+    },
+    {
+      "ticker": "UPST",
+      "user": {
+        "id": "1339671554371485789",
+        "name": "MrKnowAll"
+      },
+      "messageId": "1418601033080377415",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418601033080377415",
+      "timestamp": "2025-09-19T14:14:02.619Z",
+      "content": "UPST \nפורצת קו שיאים יורד"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1418600300616487023",
-      "lastProcessedAt": "2025-09-19T14:11:07.986Z"
+      "lastProcessedId": "1418600698651869274",
+      "lastProcessedAt": "2025-09-19T14:12:42.885Z"
     }
   }
 }

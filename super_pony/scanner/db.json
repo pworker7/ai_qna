@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-19T22:00:53.164Z",
+  "updated": "2025-09-19T22:06:56.151Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10816,6 +10816,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418717061781258441",
       "timestamp": "2025-09-19T21:55:06.017Z",
       "content": "TWO"
+    },
+    {
+      "ticker": "NVR",
+      "user": {
+        "id": "1147127141524328579",
+        "name": "David Bakal"
+      },
+      "messageId": "1418720039019745433",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418720039019745433",
+      "timestamp": "2025-09-19T22:06:55.846Z",
+      "content": "NVR"
     }
   ],
   "checkpoints": {

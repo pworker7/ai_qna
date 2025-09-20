@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-20T16:00:57.887Z",
+  "updated": "2025-09-20T16:20:34.591Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -10985,12 +10985,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418984650080256164",
       "timestamp": "2025-09-20T15:38:24.039Z",
       "content": "ZION ABOVE 59.59"
+    },
+    {
+      "ticker": "GEN",
+      "user": {
+        "id": "1147127141524328579",
+        "name": "David Bakal"
+      },
+      "messageId": "1418995262655041597",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1418995262655041597",
+      "timestamp": "2025-09-20T16:20:34.274Z",
+      "content": "מספר מניות על ה150 למי שמעוניין GEN,GILD,NEE,CF,PHM,MAS,ESL"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1418984650080256164",
-      "lastProcessedAt": "2025-09-20T15:38:24.039Z"
+      "lastProcessedId": "1418991778614476921",
+      "lastProcessedAt": "2025-09-20T16:06:43.614Z"
     }
   }
 }

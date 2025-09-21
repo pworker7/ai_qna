@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-21T13:21:10.267Z",
+  "updated": "2025-09-21T13:22:05.102Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -11284,12 +11284,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1419312502600237127",
       "timestamp": "2025-09-21T13:21:10.171Z",
       "content": "ROKU ABOVE 102"
+    },
+    {
+      "ticker": "HOOD",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1419312732452294706",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1419312732452294706",
+      "timestamp": "2025-09-21T13:22:04.972Z",
+      "content": "HOOD ABOVE 125"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1419312402528337961",
-      "lastProcessedAt": "2025-09-21T13:20:46.312Z"
+      "lastProcessedId": "1419312625384423445",
+      "lastProcessedAt": "2025-09-21T13:21:39.445Z"
     }
   }
 }

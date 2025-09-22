@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-22T20:00:46.949Z",
+  "updated": "2025-09-22T20:28:44.712Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -11414,6 +11414,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1419769130579398808",
       "timestamp": "2025-09-22T19:35:38.765Z",
       "content": "ASTS שתי האופציות נפרצו"
+    },
+    {
+      "ticker": "ASPI",
+      "user": {
+        "id": "1339671554371485789",
+        "name": "MrKnowAll"
+      },
+      "messageId": "1419782492751134760",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1419782492751134760",
+      "timestamp": "2025-09-22T20:28:44.555Z",
+      "content": "ASPI above 11.68"
     }
   ],
   "checkpoints": {

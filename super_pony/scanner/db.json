@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-23T13:26:13.494Z",
+  "updated": "2025-09-23T13:26:34.512Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -11765,12 +11765,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1420038550023307374",
       "timestamp": "2025-09-23T13:26:13.366Z",
       "content": "ABCL 1D  ABOVE 5.37"
+    },
+    {
+      "ticker": "ABCL",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1420038638397554801",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1420038638397554801",
+      "timestamp": "2025-09-23T13:26:34.436Z",
+      "content": "ABCL ABOVE 5.37"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1420038527319543918",
-      "lastProcessedAt": "2025-09-23T13:26:07.953Z"
+      "lastProcessedId": "1420038550023307374",
+      "lastProcessedAt": "2025-09-23T13:26:13.366Z"
     }
   }
 }

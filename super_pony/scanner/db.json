@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-23T08:17:45.473Z",
+  "updated": "2025-09-23T08:21:35.795Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -11505,12 +11505,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1419960922062979123",
       "timestamp": "2025-09-23T08:17:45.418Z",
       "content": "https://tenor.com/view/psycho-saturday-night-live-snl-crazy-insane-gif-20587741"
+    },
+    {
+      "ticker": "PDYN",
+      "user": {
+        "id": "1339671554371485789",
+        "name": "MrKnowAll"
+      },
+      "messageId": "1419961887709462599",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1419961887709462599",
+      "timestamp": "2025-09-23T08:21:35.646Z",
+      "content": "PDYN above 10.54\n3 ימים של ווליום עולה"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1419960840592949248",
-      "lastProcessedAt": "2025-09-23T08:17:25.994Z"
+      "lastProcessedId": "1419961024118919260",
+      "lastProcessedAt": "2025-09-23T08:18:09.750Z"
     }
   }
 }

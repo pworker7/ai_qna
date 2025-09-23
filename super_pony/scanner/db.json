@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-23T17:00:49.036Z",
+  "updated": "2025-09-23T19:41:32.044Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -11791,6 +11791,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1420059232912408626",
       "timestamp": "2025-09-23T14:48:24.551Z",
       "content": "TGTX"
+    },
+    {
+      "ticker": "LUNR",
+      "user": {
+        "id": "1339671554371485789",
+        "name": "MrKnowAll"
+      },
+      "messageId": "1420132999323975791",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1420132999323975791",
+      "timestamp": "2025-09-23T19:41:31.834Z",
+      "content": "LUNR"
     }
   ],
   "checkpoints": {

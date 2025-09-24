@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-24T15:13:36.301Z",
+  "updated": "2025-09-24T15:19:48.524Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -11856,12 +11856,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1420427960564977797",
       "timestamp": "2025-09-24T15:13:36.074Z",
       "content": "FSLR C&H"
+    },
+    {
+      "ticker": "TLRY",
+      "user": {
+        "id": "1033751148378726422",
+        "name": "קמחי"
+      },
+      "messageId": "1420429521961619610",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1420429521961619610",
+      "timestamp": "2025-09-24T15:19:48.340Z",
+      "content": "TLRY"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1420360393045573734",
-      "lastProcessedAt": "2025-09-24T10:45:06.722Z"
+      "lastProcessedId": "1420427960564977797",
+      "lastProcessedAt": "2025-09-24T15:13:36.074Z"
     }
   }
 }

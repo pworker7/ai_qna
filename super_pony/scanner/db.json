@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-24T17:24:05.069Z",
+  "updated": "2025-09-24T17:44:27.125Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -11895,12 +11895,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1420460796248326211",
       "timestamp": "2025-09-24T17:24:04.711Z",
       "content": "ALB above 88"
+    },
+    {
+      "ticker": "MRVL",
+      "user": {
+        "id": "1033751148378726422",
+        "name": "קמחי"
+      },
+      "messageId": "1420465922778464328",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1420465922778464328",
+      "timestamp": "2025-09-24T17:44:26.971Z",
+      "content": "MRVL"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1420459963196768307",
-      "lastProcessedAt": "2025-09-24T17:20:46.096Z"
+      "lastProcessedId": "1420460796248326211",
+      "lastProcessedAt": "2025-09-24T17:24:04.711Z"
     }
   }
 }

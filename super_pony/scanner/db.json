@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-24T16:00:56.385Z",
+  "updated": "2025-09-24T17:20:46.333Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -11869,6 +11869,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1420429521961619610",
       "timestamp": "2025-09-24T15:19:48.340Z",
       "content": "TLRY"
+    },
+    {
+      "ticker": "WRD",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1420459963196768307",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1420459963196768307",
+      "timestamp": "2025-09-24T17:20:46.096Z",
+      "content": "WRD above 12.55"
     }
   ],
   "checkpoints": {

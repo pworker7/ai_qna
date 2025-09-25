@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-25T23:07:36.290Z",
+  "updated": "2025-09-25T23:10:42.374Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -12194,12 +12194,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1420909634700578856",
       "timestamp": "2025-09-25T23:07:36.137Z",
       "content": "hims"
+    },
+    {
+      "ticker": "PTON",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1420910415143108738",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1420910415143108738",
+      "timestamp": "2025-09-25T23:10:42.209Z",
+      "content": "pton נראת מצויין"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1420904964049338573",
-      "lastProcessedAt": "2025-09-25T22:49:02.567Z"
+      "lastProcessedId": "1420909634700578856",
+      "lastProcessedAt": "2025-09-25T23:07:36.137Z"
     }
   }
 }

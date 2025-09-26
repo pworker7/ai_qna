@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-26T20:34:15.544Z",
+  "updated": "2025-09-26T20:38:40.895Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -12636,12 +12636,38 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1421233431530045612",
       "timestamp": "2025-09-26T20:34:15.317Z",
       "content": "SOFI 1D RETESTS (MID 2026 BRAKOUT)"
+    },
+    {
+      "ticker": "AFRM",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1421234544450736229",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1421234544450736229",
+      "timestamp": "2025-09-26T20:38:40.658Z",
+      "content": "AFRM 1D RETESTS (MID 2026 BRAKOUT)"
+    },
+    {
+      "ticker": "MID",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1421234544450736229",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1421234544450736229",
+      "timestamp": "2025-09-26T20:38:40.658Z",
+      "content": "AFRM 1D RETESTS (MID 2026 BRAKOUT)"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1421232677314363544",
-      "lastProcessedAt": "2025-09-26T20:31:15.498Z"
+      "lastProcessedId": "1421233431530045612",
+      "lastProcessedAt": "2025-09-26T20:34:15.317Z"
     }
   }
 }

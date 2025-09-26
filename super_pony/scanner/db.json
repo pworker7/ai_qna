@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-26T00:11:51.402Z",
+  "updated": "2025-09-26T00:13:07.341Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -12324,12 +12324,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1420925804191158392",
       "timestamp": "2025-09-26T00:11:51.244Z",
       "content": "KC"
+    },
+    {
+      "ticker": "MRVL",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1420926122379444284",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1420926122379444284",
+      "timestamp": "2025-09-26T00:13:07.106Z",
+      "content": "MRVL - מעל!!"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1420923771555942541",
-      "lastProcessedAt": "2025-09-26T00:03:46.626Z"
+      "lastProcessedId": "1420925804191158392",
+      "lastProcessedAt": "2025-09-26T00:11:51.244Z"
     }
   }
 }

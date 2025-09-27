@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-27T10:00:49.493Z",
+  "updated": "2025-09-27T13:26:02.354Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -12961,12 +12961,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1421433336479486011",
       "timestamp": "2025-09-27T09:48:36.371Z",
       "content": "KTOS nv8-9-25 מישהו יודע משהו"
+    },
+    {
+      "ticker": "NB",
+      "user": {
+        "id": "326680778283024394",
+        "name": "Shade"
+      },
+      "messageId": "1421488054949904505",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1421488054949904505",
+      "timestamp": "2025-09-27T13:26:02.271Z",
+      "content": "NB above 7.4"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1421435058606051399",
-      "lastProcessedAt": "2025-09-27T09:55:26.958Z"
+      "lastProcessedId": "1421487690087661689",
+      "lastProcessedAt": "2025-09-27T13:24:35.281Z"
     }
   }
 }

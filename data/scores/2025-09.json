@@ -2,32 +2,6 @@
   "period": "2025-09",
   "entries": [
     {
-      "userHash": "c3fac6553ffe328d6942ccb78124421ef17a8299f914510245811b01709fb2a6",
-      "score": 25,
-      "createdAt": "2025-08-31T21:03:18.526Z",
-      "updatedAt": "2025-09-01T19:00:44.288Z"
-    },
-    {
-      "userHash": "d0652b721860d847a92fec87780c15ec0fd3ce4995a277d54c712a861e0016e7",
-      "score": 20,
-      "createdAt": "2025-08-31T21:09:55.765Z"
-    },
-    {
-      "userHash": "3f76927d4341e7b2f4e295160d434c06d7ab741375fc7efe3f6ac14a65342201",
-      "score": -14.34,
-      "createdAt": "2025-08-31T21:12:24.287Z"
-    },
-    {
-      "userHash": "5ef9728ed0cdc5f3017a424bd33a59b5fb9a9a39aabbd073b29c428b89100213",
-      "score": 10.7,
-      "createdAt": "2025-08-31T21:25:31.262Z"
-    },
-    {
-      "userHash": "a7347c6fbde0cdd8ea42b193b4c59d70cf4f9a5acdeecbe4582112dedfb89a0f",
-      "score": 3,
-      "createdAt": "2025-08-31T21:35:20.147Z"
-    },
-    {
       "userHash": "4f71ae66706710b6d8bbfc72fe972e6f2807f4a7a6f6821de03bc47a5f6548ad",
       "score": 15,
       "createdAt": "2025-09-28T10:15:09.395Z",

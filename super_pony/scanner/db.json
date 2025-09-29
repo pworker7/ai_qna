@@ -1,5 +1,5 @@
 {
-  "updated": "2025-09-29T11:24:49.022Z",
+  "updated": "2025-09-29T11:28:58.481Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -13156,12 +13156,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1422182323851624448",
       "timestamp": "2025-09-29T11:24:48.876Z",
       "content": "SMTC"
+    },
+    {
+      "ticker": "MLTX",
+      "user": {
+        "id": "1333376647340101685",
+        "name": "iTamaR"
+      },
+      "messageId": "1422183370582134896",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1422183370582134896",
+      "timestamp": "2025-09-29T11:28:58.436Z",
+      "content": "Mltx מזה ההתרסקות הזאת"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1422181410827145340",
-      "lastProcessedAt": "2025-09-29T11:21:11.194Z"
+      "lastProcessedId": "1422182323851624448",
+      "lastProcessedAt": "2025-09-29T11:24:48.876Z"
     }
   }
 }

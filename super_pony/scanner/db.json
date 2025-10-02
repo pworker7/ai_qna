@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-02T09:00:58.584Z",
+  "updated": "2025-10-02T11:52:45.480Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -13637,6 +13637,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1422984914160324690",
       "timestamp": "2025-10-01T16:34:01.317Z",
       "content": "asts above 56"
+    },
+    {
+      "ticker": "DAY",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1423276518628397117",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1423276518628397117",
+      "timestamp": "2025-10-02T11:52:45.240Z",
+      "content": "NIKE 1 DAY"
     }
   ],
   "checkpoints": {

@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-02T11:53:34.202Z",
+  "updated": "2025-10-02T11:53:49.880Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -13663,12 +13663,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1423276722824155239",
       "timestamp": "2025-10-02T11:53:33.924Z",
       "content": "NKE 1MIN"
+    },
+    {
+      "ticker": "NKE",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1423276789496680520",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1423276789496680520",
+      "timestamp": "2025-10-02T11:53:49.820Z",
+      "content": "NKE ABOVE 75"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1423276518628397117",
-      "lastProcessedAt": "2025-10-02T11:52:45.240Z"
+      "lastProcessedId": "1423276722824155239",
+      "lastProcessedAt": "2025-10-02T11:53:33.924Z"
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-02T19:00:52.193Z",
+  "updated": "2025-10-02T19:25:35.741Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -13832,6 +13832,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1423377738928230551",
       "timestamp": "2025-10-02T18:34:58.040Z",
       "content": "VSAT above 33.7"
+    },
+    {
+      "ticker": "DHI",
+      "user": {
+        "id": "1147127141524328579",
+        "name": "David Bakal"
+      },
+      "messageId": "1423390479025701055",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1423390479025701055",
+      "timestamp": "2025-10-02T19:25:35.516Z",
+      "content": "DHI"
     }
   ],
   "checkpoints": {

@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-02T18:01:00.836Z",
+  "updated": "2025-10-02T18:34:58.202Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -13819,6 +13819,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1423354192893837454",
       "timestamp": "2025-10-02T17:01:24.228Z",
       "content": "SOUN"
+    },
+    {
+      "ticker": "VSAT",
+      "user": {
+        "id": "1339671554371485789",
+        "name": "MrKnowAll"
+      },
+      "messageId": "1423377738928230551",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1423377738928230551",
+      "timestamp": "2025-10-02T18:34:58.040Z",
+      "content": "VSAT above 33.7"
     }
   ],
   "checkpoints": {

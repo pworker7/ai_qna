@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-03T15:01:07.557Z",
+  "updated": "2025-10-03T15:19:51.627Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -14352,6 +14352,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1423679482149081190",
       "timestamp": "2025-10-03T14:33:59.230Z",
       "content": "OSCR"
+    },
+    {
+      "ticker": "GSAT",
+      "user": {
+        "id": "1339671554371485789",
+        "name": "MrKnowAll"
+      },
+      "messageId": "1423691025754357902",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1423691025754357902",
+      "timestamp": "2025-10-03T15:19:51.440Z",
+      "content": "GSAT above 44.7\nבסיס של 4 שנים"
     }
   ],
   "checkpoints": {

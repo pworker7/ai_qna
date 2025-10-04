@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-04T17:33:49.997Z",
+  "updated": "2025-10-04T17:35:36.985Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -14690,12 +14690,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424087128341483570",
       "timestamp": "2025-10-04T17:33:49.656Z",
       "content": "TOL נראת מדהים"
+    },
+    {
+      "ticker": "DCTH",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1424087577421549652",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424087577421549652",
+      "timestamp": "2025-10-04T17:35:36.725Z",
+      "content": "DCTH"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1424086625205616774",
-      "lastProcessedAt": "2025-10-04T17:31:49.699Z"
+      "lastProcessedId": "1424087128341483570",
+      "lastProcessedAt": "2025-10-04T17:33:49.656Z"
     }
   }
 }

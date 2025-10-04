@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-04T17:50:39.969Z",
+  "updated": "2025-10-04T17:50:51.349Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -14807,12 +14807,38 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424091365586899066",
       "timestamp": "2025-10-04T17:50:39.894Z",
       "content": "אני ממש מרגיש כאילו שהחשבונות שלכם נפלו קורבן להאקרים ועכשיו הופכים את הקבוצה לוואטסאפ סקאם שמריץ את ASTS"
+    },
+    {
+      "ticker": "WWW",
+      "user": {
+        "id": "1033751148378726422",
+        "name": "קמחי"
+      },
+      "messageId": "1424091413272068278",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424091413272068278",
+      "timestamp": "2025-10-04T17:50:51.263Z",
+      "content": "https://www.reuters.com/business/energy/us-selects-11-projects-program-fast-track-small-nuclear-test-reactors-2025-08-13/"
+    },
+    {
+      "ticker": "FAST",
+      "user": {
+        "id": "1033751148378726422",
+        "name": "קמחי"
+      },
+      "messageId": "1424091413272068278",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424091413272068278",
+      "timestamp": "2025-10-04T17:50:51.263Z",
+      "content": "https://www.reuters.com/business/energy/us-selects-11-projects-program-fast-track-small-nuclear-test-reactors-2025-08-13/"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1424091341151015105",
-      "lastProcessedAt": "2025-10-04T17:50:34.068Z"
+      "lastProcessedId": "1424091365586899066",
+      "lastProcessedAt": "2025-10-04T17:50:39.894Z"
     }
   }
 }

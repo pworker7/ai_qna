@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-04T17:50:51.349Z",
+  "updated": "2025-10-04T17:51:06.050Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -14833,12 +14833,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424091413272068278",
       "timestamp": "2025-10-04T17:50:51.263Z",
       "content": "https://www.reuters.com/business/energy/us-selects-11-projects-program-fast-track-small-nuclear-test-reactors-2025-08-13/"
+    },
+    {
+      "ticker": "SMR",
+      "user": {
+        "id": "1033751148378726422",
+        "name": "קמחי"
+      },
+      "messageId": "1424091474743656468",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424091474743656468",
+      "timestamp": "2025-10-04T17:51:05.919Z",
+      "content": "SMR עם רישיון זמני, ולא הוזמנה לקבוצה הראשונה"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1424091365586899066",
-      "lastProcessedAt": "2025-10-04T17:50:39.894Z"
+      "lastProcessedId": "1424091413272068278",
+      "lastProcessedAt": "2025-10-04T17:50:51.263Z"
     }
   }
 }

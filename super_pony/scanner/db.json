@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-04T14:01:12.990Z",
+  "updated": "2025-10-04T16:50:17.240Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -14586,6 +14586,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424019164456288417",
       "timestamp": "2025-10-04T13:03:45.803Z",
       "content": "RDDT ABOVE 215"
+    },
+    {
+      "ticker": "ASTS",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1424076170340732939",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424076170340732939",
+      "timestamp": "2025-10-04T16:50:17.065Z",
+      "content": "ASTS"
     }
   ],
   "checkpoints": {

@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-06T15:00:48.914Z",
+  "updated": "2025-10-06T15:23:56.404Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -14963,12 +14963,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424760979719196796",
       "timestamp": "2025-10-06T14:11:28.344Z",
       "content": "DRI"
+    },
+    {
+      "ticker": "DCTH",
+      "user": {
+        "id": "1017366188361273345",
+        "name": "shay.(s.h)"
+      },
+      "messageId": "1424779216120971364",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424779216120971364",
+      "timestamp": "2025-10-06T15:23:56.241Z",
+      "content": "נכנסתי DCTH"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1424761115501658295",
-      "lastProcessedAt": "2025-10-06T14:12:00.717Z"
+      "lastProcessedId": "1424775819024269532",
+      "lastProcessedAt": "2025-10-06T15:10:26.310Z"
     }
   }
 }

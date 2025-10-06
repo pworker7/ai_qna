@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-06T12:00:42.677Z",
+  "updated": "2025-10-06T14:11:28.482Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -14950,6 +14950,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424726728865218631",
       "timestamp": "2025-10-06T11:55:22.304Z",
       "content": "AI"
+    },
+    {
+      "ticker": "DRI",
+      "user": {
+        "id": "1147127141524328579",
+        "name": "David Bakal"
+      },
+      "messageId": "1424760979719196796",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424760979719196796",
+      "timestamp": "2025-10-06T14:11:28.344Z",
+      "content": "DRI"
     }
   ],
   "checkpoints": {

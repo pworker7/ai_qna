@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-06T17:00:40.979Z",
+  "updated": "2025-10-06T18:16:43.927Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -15015,6 +15015,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424803246693814413",
       "timestamp": "2025-10-06T16:59:25.576Z",
       "content": "AMZN,META"
+    },
+    {
+      "ticker": "SNAP",
+      "user": {
+        "id": "1339671554371485789",
+        "name": "MrKnowAll"
+      },
+      "messageId": "1424822699640754206",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424822699640754206",
+      "timestamp": "2025-10-06T18:16:43.520Z",
+      "content": "SNAP"
     }
   ],
   "checkpoints": {

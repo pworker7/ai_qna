@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-07T14:08:29.426Z",
+  "updated": "2025-10-07T14:29:02.322Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -15275,12 +15275,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425122616921948241",
       "timestamp": "2025-10-07T14:08:29.372Z",
       "content": "ITS TIME"
+    },
+    {
+      "ticker": "TMC",
+      "user": {
+        "id": "1309604524666785842",
+        "name": "idan bas"
+      },
+      "messageId": "1425127787299078354",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425127787299078354",
+      "timestamp": "2025-10-07T14:29:02.086Z",
+      "content": "tmc פורצת עם ווליום"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1425122566825181275",
-      "lastProcessedAt": "2025-10-07T14:08:17.428Z"
+      "lastProcessedId": "1425122616921948241",
+      "lastProcessedAt": "2025-10-07T14:08:29.372Z"
     }
   }
 }

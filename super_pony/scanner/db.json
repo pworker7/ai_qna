@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-06T23:00:45.804Z",
+  "updated": "2025-10-07T08:57:22.100Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -15054,6 +15054,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1424884995369074739",
       "timestamp": "2025-10-06T22:24:15.979Z",
       "content": "CRWV"
+    },
+    {
+      "ticker": "VEEV",
+      "user": {
+        "id": "1147127141524328579",
+        "name": "David Bakal"
+      },
+      "messageId": "1425044320041308252",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425044320041308252",
+      "timestamp": "2025-10-07T08:57:21.941Z",
+      "content": "VEEV"
     }
   ],
   "checkpoints": {

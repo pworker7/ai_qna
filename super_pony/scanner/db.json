@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-07T19:53:12.905Z",
+  "updated": "2025-10-07T19:58:17.815Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -15587,12 +15587,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425209368621875282",
       "timestamp": "2025-10-07T19:53:12.589Z",
       "content": "ZBRA"
+    },
+    {
+      "ticker": "BKR",
+      "user": {
+        "id": "1147127141524328579",
+        "name": "David Bakal"
+      },
+      "messageId": "1425210647918022706",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425210647918022706",
+      "timestamp": "2025-10-07T19:58:17.597Z",
+      "content": "BKR"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1425208833378353327",
-      "lastProcessedAt": "2025-10-07T19:51:04.977Z"
+      "lastProcessedId": "1425209539783037091",
+      "lastProcessedAt": "2025-10-07T19:53:53.397Z"
     }
   }
 }

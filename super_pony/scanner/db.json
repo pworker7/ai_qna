@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-07T22:54:41.709Z",
+  "updated": "2025-10-07T22:54:47.638Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -15704,12 +15704,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425255039391371346",
       "timestamp": "2025-10-07T22:54:41.349Z",
       "content": "CNC"
+    },
+    {
+      "ticker": "KDP",
+      "user": {
+        "id": "1147127141524328579",
+        "name": "David Bakal"
+      },
+      "messageId": "1425255065538531338",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425255065538531338",
+      "timestamp": "2025-10-07T22:54:47.583Z",
+      "content": "BFBX, KDP"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1425247519104962600",
-      "lastProcessedAt": "2025-10-07T22:24:48.373Z"
+      "lastProcessedId": "1425255039391371346",
+      "lastProcessedAt": "2025-10-07T22:54:41.349Z"
     }
   }
 }

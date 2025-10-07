@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-07T20:01:03.159Z",
+  "updated": "2025-10-07T20:01:35.757Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -15600,6 +15600,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425210647918022706",
       "timestamp": "2025-10-07T19:58:17.597Z",
       "content": "BKR"
+    },
+    {
+      "ticker": "HIG",
+      "user": {
+        "id": "1147127141524328579",
+        "name": "David Bakal"
+      },
+      "messageId": "1425211478075510876",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425211478075510876",
+      "timestamp": "2025-10-07T20:01:35.522Z",
+      "content": "HIG"
     }
   ],
   "checkpoints": {

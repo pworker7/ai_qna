@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-07T22:54:47.638Z",
+  "updated": "2025-10-07T23:00:52.974Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -15717,12 +15717,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425255065538531338",
       "timestamp": "2025-10-07T22:54:47.583Z",
       "content": "BFBX, KDP"
+    },
+    {
+      "ticker": "ANET",
+      "user": {
+        "id": "1147127141524328579",
+        "name": "David Bakal"
+      },
+      "messageId": "1425256241214652488",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425256241214652488",
+      "timestamp": "2025-10-07T22:59:27.886Z",
+      "content": "ANET כניסה מעולה"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1425255039391371346",
-      "lastProcessedAt": "2025-10-07T22:54:41.349Z"
+      "lastProcessedId": "1425256436082151544",
+      "lastProcessedAt": "2025-10-07T23:00:14.346Z"
     }
   }
 }

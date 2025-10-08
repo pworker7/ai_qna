@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-08T23:00:36.715Z",
+  "updated": "2025-10-08T23:32:02.373Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -15990,6 +15990,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425616938607841320",
       "timestamp": "2025-10-08T22:52:44.846Z",
       "content": "SLX ABOVE 76.76"
+    },
+    {
+      "ticker": "AMZN",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1425626825559638128",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425626825559638128",
+      "timestamp": "2025-10-08T23:32:02.079Z",
+      "content": "AMZN ABOVE  226.56"
     }
   ],
   "checkpoints": {

@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-08T16:33:25.690Z",
+  "updated": "2025-10-08T16:34:12.885Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -15886,12 +15886,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425521479130288138",
       "timestamp": "2025-10-08T16:33:25.533Z",
       "content": "JOBY"
+    },
+    {
+      "ticker": "CCI",
+      "user": {
+        "id": "485813821659938827",
+        "name": "crown hotdog"
+      },
+      "messageId": "1425521677399490683",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425521677399490683",
+      "timestamp": "2025-10-08T16:34:12.804Z",
+      "content": "יש חיתוך בcci, macd,rsi"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1425520699589787809",
-      "lastProcessedAt": "2025-10-08T16:30:19.676Z"
+      "lastProcessedId": "1425521479130288138",
+      "lastProcessedAt": "2025-10-08T16:33:25.533Z"
     }
   }
 }

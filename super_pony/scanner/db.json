@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-09T00:00:32.789Z",
+  "updated": "2025-10-09T10:09:40.790Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -16003,6 +16003,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425626825559638128",
       "timestamp": "2025-10-08T23:32:02.079Z",
       "content": "AMZN ABOVE  226.56"
+    },
+    {
+      "ticker": "PATH",
+      "user": {
+        "id": "643815611658403861",
+        "name": "manana"
+      },
+      "messageId": "1425787293410787338",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425787293410787338",
+      "timestamp": "2025-10-09T10:09:40.596Z",
+      "content": "PATH"
     }
   ],
   "checkpoints": {

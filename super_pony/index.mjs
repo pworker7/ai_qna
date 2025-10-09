@@ -153,7 +153,7 @@ const client = new Client({
   ],
 });
 
-client.once("ready", async () => {
+client.once("clientReady", async () => {
   console.log(`✅ Logged in as ${client.user.tag}`);
   try {
     botLogChannel = client.channels.cache.get(LOG_CHANNEL_ID);

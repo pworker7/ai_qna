@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-09T22:01:00.034Z",
+  "updated": "2025-10-09T22:36:15.791Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -16055,12 +16055,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425966302954258574",
       "timestamp": "2025-10-09T22:00:59.797Z",
       "content": "RUN מתקדמת"
+    },
+    {
+      "ticker": "FUN",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1425975177963114536",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1425975177963114536",
+      "timestamp": "2025-10-09T22:36:15.764Z",
+      "content": "https://tenor.com/view/hot-tub-relaxing-chill-jacuzzi-fun-gif-16695392"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1425965977056706732",
-      "lastProcessedAt": "2025-10-09T21:59:42.097Z"
+      "lastProcessedId": "1425975055455617098",
+      "lastProcessedAt": "2025-10-09T22:35:46.556Z"
     }
   }
 }

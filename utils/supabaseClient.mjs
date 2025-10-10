@@ -31,18 +31,33 @@ const fetchWithLogging = async (input, init) => {
     try {
       const headers = Object.fromEntries(res.headers.entries());
       const ct = (res.headers.get('content-type') || '').toLowerCase();
-      const resClone = res.clone();
-
-      console.error('Supabase request failed', { method, url, status: res.status, headers });
+      let bodyText = '';
+      let severity = 'error';
+      let resClone;
 
       if (ct.includes('application/json') || ct.includes('text/') || ct.includes('xml')) {
-        let bodyText = '';
-        try { bodyText = await resClone.text(); } catch {}
-        if (bodyText) {
-          const max = 4000;
-          if (bodyText.length > max) bodyText = bodyText.slice(0, max) + '…[truncated]';
-          console.error('Supabase error body:', bodyText);
+        try {
+          resClone = res.clone();
+          bodyText = await resClone.text();
+        } catch {
+          bodyText = '';
         }
+      }
+
+      if (
+        res.status === 404 ||
+        (res.status === 400 && /"statusCode"\s*:\s*"404"/.test(bodyText))
+      ) {
+        severity = 'warn';
+      }
+
+      const logger = severity === 'warn' ? console.warn : console.error;
+      logger('Supabase request failed', { method, url, status: res.status, headers });
+
+      if (bodyText) {
+        const max = 4000;
+        if (bodyText.length > max) bodyText = bodyText.slice(0, max) + '…[truncated]';
+        logger('Supabase error body:', bodyText);
       }
     } catch (e) {
       console.error('Failed to log Supabase error response', e);

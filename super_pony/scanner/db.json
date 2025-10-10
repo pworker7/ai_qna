@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-10T22:41:20.835Z",
+  "updated": "2025-10-10T22:45:05.952Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -16276,12 +16276,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1426338844306968596",
       "timestamp": "2025-10-10T22:41:20.577Z",
       "content": "GRDN שודרגה ל30"
+    },
+    {
+      "ticker": "MDGL",
+      "user": {
+        "id": "1147127141524328579",
+        "name": "David Bakal"
+      },
+      "messageId": "1426339788931465256",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1426339788931465256",
+      "timestamp": "2025-10-10T22:45:05.793Z",
+      "content": "MDGL שודרגה ל590"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1426222404933517353",
-      "lastProcessedAt": "2025-10-10T14:58:39.267Z"
+      "lastProcessedId": "1426338844306968596",
+      "lastProcessedAt": "2025-10-10T22:41:20.577Z"
     }
   }
 }

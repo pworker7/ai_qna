@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-17T14:02:22.902Z",
+  "updated": "2025-10-17T15:36:45.425Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -17095,6 +17095,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1428743817728884787",
       "timestamp": "2025-10-17T13:57:50.923Z",
       "content": "LITE"
+    },
+    {
+      "ticker": "DAN",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1428768708536569886",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1428768708536569886",
+      "timestamp": "2025-10-17T15:36:45.354Z",
+      "content": "https://tenor.com/view/creep-creep-radiohead-radiohead-dan-hentschel-gif-13139450097995332114"
     }
   ],
   "checkpoints": {

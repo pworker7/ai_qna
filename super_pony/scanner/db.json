@@ -1,5 +1,5 @@
 {
-  "updated": "2025-10-19T19:43:24.382Z",
+  "updated": "2025-10-19T19:43:30.699Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -17238,12 +17238,25 @@
       "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1429555555738845266",
       "timestamp": "2025-10-19T19:43:24.346Z",
       "content": "https://x.com/chenhofit13/status/1979952185707552897?s=46"
+    },
+    {
+      "ticker": "S",
+      "user": {
+        "id": "1306341288420966504",
+        "name": "CHEN HOFIT"
+      },
+      "messageId": "1429555582246981742",
+      "channelId": "1397977551078686871",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1397977551078686871/1429555582246981742",
+      "timestamp": "2025-10-19T19:43:30.666Z",
+      "content": "https://x.com/chenhofit13/status/1979950518714962139?s=46"
     }
   ],
   "checkpoints": {
     "1397977551078686871": {
-      "lastProcessedId": "1429534818290499594",
-      "lastProcessedAt": "2025-10-19T18:21:00.153Z"
+      "lastProcessedId": "1429555555738845266",
+      "lastProcessedAt": "2025-10-19T19:43:24.346Z"
     }
   }
 }

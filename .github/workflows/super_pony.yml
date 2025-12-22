@@ -47,6 +47,7 @@ jobs:
           CHATROOM_IDS: ${{ vars.CHATROOM_IDS }}
           GEMINI_API_KEY: ${{ vars.GEMINI_API_KEY }}
           SCORE_CHANNEL_ID: ${{ vars.SCORE_CHANNEL_ID }}
+          LOBBY_CHANNEL_ID: ${{ vars.LOBBY_CHANNEL_ID }}
           TIMEZONE: ${{ vars.TIMEZONE }}
           SCORES_DIR: ${{ vars.SCORES_DIR }}
           SECRET_SALT: ${{ vars.SECRET_SALT }}

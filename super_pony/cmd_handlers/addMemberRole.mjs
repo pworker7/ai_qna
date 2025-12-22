@@ -108,8 +108,10 @@ export function registerAddMemeberRoleCmdHandler(client) {
       if (message.channelId !== LOBBY_CHANNEL_ID) return;
 
       const content = normalize(message.content);
+      console.log("Got message in lobby channel: ", content);
       if (!content.startsWith(normalize(CMD_PREFIX) + "news")) return;
 
+      console.log("checking messahge is post");
       const parts = content.split(/\s+/g); // e.g., ["!news","post"]
       const cmd = parts[1] || "";
       if (cmd !== "post") return;
@@ -121,11 +123,13 @@ export function registerAddMemeberRoleCmdHandler(client) {
         member.permissions.has(PermissionsBitField.Flags.Administrator) ||
         member.permissions.has(PermissionsBitField.Flags.ManageRoles);
 
+      console.log("checking user is admin");
       if (!isAllowed) {
         await message.reply("❌ Only admins/mods can post the member-role button.");
         return;
       }
 
+      console.log("checking channel this message was written in");
       const targetChannel =
         (MEMBER_ROLE_CHANNEL_ID &&
           (await message.guild.channels.fetch(MEMBER_ROLE_CHANNEL_ID).catch(() => null))) ||
@@ -207,4 +211,5 @@ export function registerAddMemeberRoleCmdHandler(client) {
     }
   });
 }
+
 

@@ -102,11 +102,16 @@ export function registerAddMemeberRoleCmdHandler(client) {
   // 1) Admin text command: post the button
   client.on("messageCreate", async (message) => {
     try {
+      console.log("is bot ?");
       if (message.author?.bot) return;
+      console.log("is guid ?");
       if (!message.guild) return; // no DMs
+      console.log("is channel text ?");
       if (message.channel?.type !== ChannelType.GuildText) return;
+      console.log("is channel lobby ?");
       if (message.channelId !== LOBBY_CHANNEL_ID) return;
 
+      console.log("is normilize msg ?");
       const content = normalize(message.content);
       console.log("Got message in lobby channel: ", content);
       if (!content.startsWith(normalize(CMD_PREFIX) + "news")) return;
@@ -211,5 +216,6 @@ export function registerAddMemeberRoleCmdHandler(client) {
     }
   });
 }
+
 
 

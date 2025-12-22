@@ -96,8 +96,8 @@ async function ensureBotCanManageRole({ guild, role }) {
  * - Listens for:  !news post  (admin only) in LOBBY_CHANNEL_ID
  * - Listens for: button clicks (anywhere)
  */
-export function registerNewsCmdHandler(client) {
-  if (!client) throw new Error("registerNewsCmdHandler: client is required");
+export function registerAddMemeberRoleCmdHandler(client) {
+  if (!client) throw new Error("registerAddMemeberRoleCmdHandler: client is required");
 
   // 1) Admin text command: post the button
   client.on("messageCreate", async (message) => {
@@ -207,3 +207,4 @@ export function registerNewsCmdHandler(client) {
     }
   });
 }
+

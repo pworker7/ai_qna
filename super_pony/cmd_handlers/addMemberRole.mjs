@@ -1,12 +1,11 @@
 // addMemberRole.mjs
 // ESM module for discord.js v14
-// Replaces the old "!news register" flow with a BUTTON users can click to get the "member" role.
 // Usage:
-// 1) Admin posts the button message in a channel with:  !news post
+// 1) Admin posts the button message in a channel with:  !inactive post
 // 2) Users click the button to receive the role.
 //
 // Environment variables:
-// - LOBBY_CHANNEL_ID              (required) -> channel where the bot listens for the "!news post" admin command
+// - LOBBY_CHANNEL_ID              (required) -> channel where the bot listens for the "!inactive post" admin command
 // - MEMBER_ROLE_CHANNEL_ID      (optional) -> where the button message should be posted (defaults to LOBBY_CHANNEL_ID)
 // - MEMBER_ROLE_ID              (optional) -> role ID (preferred if set)
 // - MEMBER_ROLE_NAME            (optional) -> defaults to "member" (used if MEMBER_ROLE_ID not provided)
@@ -93,7 +92,7 @@ async function ensureBotCanManageRole({ guild, role }) {
 
 /**
  * Call once on startup.
- * - Listens for:  !news post  (admin only) in LOBBY_CHANNEL_ID
+ * - Listens for:  !inactive post  (admin only) in LOBBY_CHANNEL_ID
  * - Listens for: button clicks (anywhere)
  */
 export function registerAddMemeberRoleCmdHandler(client) {
@@ -114,10 +113,10 @@ export function registerAddMemeberRoleCmdHandler(client) {
       console.log("is normilize msg ?");
       const content = normalize(message.content);
       console.log("Got message in lobby channel: ", content);
-      if (!content.startsWith(normalize(CMD_PREFIX) + "news")) return;
+      if (!content.startsWith(normalize(CMD_PREFIX) + "inactive")) return;
 
       console.log("checking messahge is post");
-      const parts = content.split(/\s+/g); // e.g., ["!news","post"]
+      const parts = content.split(/\s+/g); // e.g., ["!inactive","post"]
       const cmd = parts[1] || "";
       if (cmd !== "post") return;
 
@@ -216,6 +215,7 @@ export function registerAddMemeberRoleCmdHandler(client) {
     }
   });
 }
+
 
 
 

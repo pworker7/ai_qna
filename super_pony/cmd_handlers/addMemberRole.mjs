@@ -26,6 +26,9 @@ const MEMBER_ROLE_CHANNEL_ID = process.env.MEMBER_ROLE_CHANNEL_ID || LOBBY_CHANN
 const MEMBER_ROLE_ID = (process.env.MEMBER_ROLE_ID || "").trim();
 const MEMBER_ROLE_NAME = (process.env.MEMBER_ROLE_NAME || "member").trim();
 
+const INACTIVE_ROLE_ID = (process.env.INACTIVE_ROLE_ID || "").trim();
+const INACTIVE_ROLE_NAME = (process.env.INACTIVE_ROLE_NAME || "inactive").trim();
+
 const CMD_PREFIX = (process.env.CMD_PREFIX || "!").trim();
 const BUTTON_LABEL = (process.env.MEMBER_ROLE_BUTTON_LABEL || "חזרה לשרת").trim();
 
@@ -57,6 +60,20 @@ async function resolveMemberRole(guild) {
     null;
 
   return byName;
+}
+
+async function resolveInactiveRole(guild) {
+  if (!guild) return null;
+
+  if (INACTIVE_ROLE_ID) {
+    try {
+      const byId = await guild.roles.fetch(INACTIVE_ROLE_ID);
+      if (byId) return byId;
+    } catch {}
+  }
+
+  await guild.roles.fetch();
+  return guild.roles.cache.find((r) => normalize(r.name) === normalize(INACTIVE_ROLE_NAME)) || null;
 }
 
 function buildRoleButtonRow() {
@@ -201,6 +218,12 @@ export function registerAddMemeberRoleCmdHandler(client) {
       }
 
       await member.roles.add(role, "Self-assign via button");
+
+      const inactiveRole = await resolveInactiveRole(interaction.guild);
+      if (inactiveRole && member.roles.cache.has(inactiveRole.id)) {
+        await member.roles.remove(inactiveRole, "Self-restore via button: remove inactive");
+      }
+      
       await interaction.reply({
         content: `✅ Added **${role.name}**.`,
         ephemeral: true,
@@ -215,6 +238,7 @@ export function registerAddMemeberRoleCmdHandler(client) {
     }
   });
 }
+
 
 
 

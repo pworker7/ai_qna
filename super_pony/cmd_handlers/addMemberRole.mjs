@@ -27,7 +27,7 @@ const MEMBER_ROLE_ID = (process.env.MEMBER_ROLE_ID || "").trim();
 const MEMBER_ROLE_NAME = (process.env.MEMBER_ROLE_NAME || "member").trim();
 
 const CMD_PREFIX = (process.env.CMD_PREFIX || "!").trim();
-const BUTTON_LABEL = (process.env.MEMBER_ROLE_BUTTON_LABEL || "Get Member Role").trim();
+const BUTTON_LABEL = (process.env.MEMBER_ROLE_BUTTON_LABEL || "חזרה לשרת").trim();
 
 const BUTTON_CUSTOM_ID = "member_role_claim_v1";
 
@@ -146,7 +146,7 @@ export function registerAddMemeberRoleCmdHandler(client) {
 
       // Post the button
       const posted = await targetChannel.send({
-        content: "Click the button to receive the **member** role:",
+        content: "⚠️  אם מצאתם את עצמכם בחדר הזה זה סימן שאתם לא פעילים בשרת כבר הרבה זמן, כדי להיכנס חזרה לחצו על הלחצן הזה.\n\nאם אתם לא מצליחים להתחבר אל השרת - שלחו הודעה ישירה אל המשתמש: @Cubby",
         components: [buildRoleButtonRow()],
         allowedMentions: { parse: [] },
       });
@@ -215,6 +215,7 @@ export function registerAddMemeberRoleCmdHandler(client) {
     }
   });
 }
+
 
 
 

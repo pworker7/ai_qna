@@ -224,10 +224,10 @@ export function registerAddMemeberRoleCmdHandler(client) {
         await member.roles.remove(inactiveRole, "Self-restore via button: remove inactive");
       }
       
-      await interaction.reply({
-        content: `✅ Added **${role.name}**.`,
-        ephemeral: true,
-      });
+//      await interaction.reply({
+//        content: `✅ Added **${role.name}**.`,
+//        ephemeral: true,
+//      });
     } catch (err) {
       console.error("memberRoleButton (button) error:", err);
       if (interaction.deferred || interaction.replied) {
@@ -238,6 +238,7 @@ export function registerAddMemeberRoleCmdHandler(client) {
     }
   });
 }
+
 
 
 

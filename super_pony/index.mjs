@@ -18,7 +18,7 @@ import { listFirstByUser } from "./cmd_handlers/listFirstByUser.mjs";
 import { handleGraphChannelMessage, runBackfillOnce } from "./cmd_handlers/graphChannelHandler.mjs";
 import { showTickersDashboard, handleDashboardInteraction } from "./cmd_handlers/tickersDashboard.mjs";
 import { deleteAndRepost } from "./cmd_handlers/deleteAndRepost.mjs";
-import { registerNewsCmdHandler } from "./cmd_handlers/newsRoleHandler.mjs";
+//import { registerNewsCmdHandler } from "./cmd_handlers/newsRoleHandler.mjs";
 import { registerAddMemeberRoleCmdHandler } from "./cmd_handlers/addMemberRole.mjs";
 import { registerMonthlyScores } from "./cmd_handlers/monthlyScores.mjs";
 

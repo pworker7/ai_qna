@@ -1,5 +1,5 @@
 {
-  "updated": "2026-01-06T11:00:52.883Z",
+  "updated": "2026-01-08T21:37:43.194Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -18135,6 +18135,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1428394998000390316/1458044972208226538",
       "timestamp": "2026-01-06T10:30:10.540Z",
       "content": "SNPS (SYNOPSYS( חברת תוכנה עובדת בשיתוף עם אינבדיה"
+    },
+    {
+      "ticker": "S",
+      "user": {
+        "id": "1036214332993847347",
+        "name": "Omer k"
+      },
+      "messageId": "1458937740673548513",
+      "channelId": "1428394998000390316",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1428394998000390316/1458937740673548513",
+      "timestamp": "2026-01-08T21:37:43.129Z",
+      "content": "https://x.com/JSpitTrades/status/2009306374409167255?s=20"
     }
   ],
   "checkpoints": {

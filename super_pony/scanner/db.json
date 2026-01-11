@@ -1,5 +1,5 @@
 {
-  "updated": "2026-01-09T17:01:12.004Z",
+  "updated": "2026-01-11T12:20:24.794Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -18161,6 +18161,32 @@
       "link": "https://discord.com/channels/1397974486581772494/1428394998000390316/1459218303410241731",
       "timestamp": "2026-01-09T16:12:34.498Z",
       "content": "AMD טריפל בוטום"
+    },
+    {
+      "ticker": "CHYM",
+      "user": {
+        "id": "633034454457384990",
+        "name": "NOLA-ALON"
+      },
+      "messageId": "1459884653015076916",
+      "channelId": "1428394998000390316",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1428394998000390316/1459884653015076916",
+      "timestamp": "2026-01-11T12:20:24.624Z",
+      "content": "CHYM looks going to breack out .."
+    },
+    {
+      "ticker": "OUT",
+      "user": {
+        "id": "633034454457384990",
+        "name": "NOLA-ALON"
+      },
+      "messageId": "1459884653015076916",
+      "channelId": "1428394998000390316",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1428394998000390316/1459884653015076916",
+      "timestamp": "2026-01-11T12:20:24.624Z",
+      "content": "CHYM looks going to breack out .."
     }
   ],
   "checkpoints": {

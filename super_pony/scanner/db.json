@@ -1,5 +1,5 @@
 {
-  "updated": "2026-02-08T13:01:04.561Z",
+  "updated": "2026-02-08T17:52:13.058Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -19253,6 +19253,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1428394998000390316/1470037323918999705",
       "timestamp": "2026-02-08T12:43:29.995Z",
       "content": "➡️ NOW \n<:pony_trump:1422338660077932617>"
+    },
+    {
+      "ticker": "T",
+      "user": {
+        "id": "1147127141524328579",
+        "name": "David Bakal"
+      },
+      "messageId": "1470115014991020063",
+      "channelId": "1428394998000390316",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1428394998000390316/1470115014991020063",
+      "timestamp": "2026-02-08T17:52:12.990Z",
+      "content": "t,v nmkhj?"
     }
   ],
   "checkpoints": {

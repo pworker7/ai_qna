@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-24T11:28:50.369Z",
+  "updated": "2026-03-24T12:01:12.860Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -19638,8 +19638,8 @@
       "lastProcessedAt": "2025-10-20T14:50:33.651Z"
     },
     "1428394998000390316": {
-      "lastProcessedId": "1484528950234316861",
-      "lastProcessedAt": "2026-03-20T12:28:02.950Z"
+      "lastProcessedId": "1485963599716290741",
+      "lastProcessedAt": "2026-03-24T11:28:50.041Z"
     }
   }
 }

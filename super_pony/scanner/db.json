@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-26T12:49:56.110Z",
+  "updated": "2026-03-26T12:51:37.143Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -19656,6 +19656,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1428394998000390316/1486708785039937606",
       "timestamp": "2026-03-26T12:49:56.067Z",
       "content": "GLD"
+    },
+    {
+      "ticker": "BTC",
+      "user": {
+        "id": "633034454457384990",
+        "name": "NOLA-ALON"
+      },
+      "messageId": "1486709208433950880",
+      "channelId": "1428394998000390316",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1428394998000390316/1486709208433950880",
+      "timestamp": "2026-03-26T12:51:37.012Z",
+      "content": "BTC"
     }
   ],
   "checkpoints": {
@@ -19664,8 +19677,8 @@
       "lastProcessedAt": "2025-10-20T14:50:33.651Z"
     },
     "1428394998000390316": {
-      "lastProcessedId": "1486479409761488927",
-      "lastProcessedAt": "2026-03-25T21:38:28.739Z"
+      "lastProcessedId": "1486709000065253486",
+      "lastProcessedAt": "2026-03-26T12:50:47.333Z"
     }
   }
 }

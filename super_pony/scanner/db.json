@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-25T22:01:06.155Z",
+  "updated": "2026-03-26T12:49:56.110Z",
   "entries": [
     {
       "ticker": "SBET",
@@ -19643,6 +19643,19 @@
       "link": "https://discord.com/channels/1397974486581772494/1428394998000390316/1486479409761488927",
       "timestamp": "2026-03-25T21:38:28.739Z",
       "content": "ASTS"
+    },
+    {
+      "ticker": "GLD",
+      "user": {
+        "id": "633034454457384990",
+        "name": "NOLA-ALON"
+      },
+      "messageId": "1486708785039937606",
+      "channelId": "1428394998000390316",
+      "guildId": "1397974486581772494",
+      "link": "https://discord.com/channels/1397974486581772494/1428394998000390316/1486708785039937606",
+      "timestamp": "2026-03-26T12:49:56.067Z",
+      "content": "GLD"
     }
   ],
   "checkpoints": {
